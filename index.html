@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Simulator Kelayakan Investasi — RSP UI</title>
   <meta name="description" content="Simulator kelayakan investasi pengembangan rumah sakit: NPV, IRR, payback, BEP, serta analisis BOR dan pendapatan rawat inap.">
-  <meta name="theme-color" content="#0E5E52">
+  <meta name="theme-color" content="#111E6C">
   <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMEU3QzZCIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMEE1RjUyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik0xMyA3aDZ2Nmg2djZoLTZ2NmgtNnYtNkg3di02aDZ6IiBmaWxsPSIjZmZmIi8+PC9zdmc+Cg==">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,20 +16,20 @@
    ========================================================================= */
 
 :root {
-  --bg: #F4F6F5;
-  --bg-grad: radial-gradient(1200px 500px at 85% -10%, #DDEFEA 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, #E6ECF6 0%, transparent 55%);
+  --bg: #F4F5FA;
+  --bg-grad: radial-gradient(1200px 500px at 85% -10%, #DDE2F6 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, #E9ECF8 0%, transparent 55%);
   --surface: #FFFFFF;
-  --surface-2: #F7F9F8;
-  --sunk: #EDF1EF;
-  --line: #E1E6E3;
-  --line-strong: #C9D1CD;
-  --ink: #12211E;
-  --ink-soft: #46554F;
-  --ink-faint: #7B8984;
-  --primary: #0E7C6B;
-  --primary-strong: #0A5F52;
-  --primary-tint: #E2F3EE;
-  --primary-ink: #064237;
+  --surface-2: #F7F8FC;
+  --sunk: #ECEEF6;
+  --line: #E0E3EE;
+  --line-strong: #C8CDE0;
+  --ink: #111733;
+  --ink-soft: #454B66;
+  --ink-faint: #7B809A;
+  --primary: #111E6C;          /* Royal */
+  --primary-strong: #0B1450;
+  --primary-tint: #E6E9F7;
+  --primary-ink: #0A1240;
   --brass: #B07A12;
   --brass-tint: #FBF1DC;
   --red: #C0392B;
@@ -37,9 +37,9 @@
   --amber: #B7791F;
   --amber-tint: #FDF3DD;
   --on-primary: #FFFFFF;
-  --shadow-sm: 0 1px 2px rgba(16, 33, 30, .06);
-  --shadow: 0 1px 2px rgba(16, 33, 30, .05), 0 8px 24px -12px rgba(16, 33, 30, .14);
-  --shadow-lg: 0 20px 40px -20px rgba(10, 60, 52, .35);
+  --shadow-sm: 0 1px 2px rgba(17, 23, 51, .06);
+  --shadow: 0 1px 2px rgba(17, 23, 51, .05), 0 8px 24px -12px rgba(17, 23, 51, .14);
+  --shadow-lg: 0 20px 40px -20px rgba(17, 30, 108, .35);
   --radius: 16px;
   --radius-sm: 10px;
   --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -49,16 +49,16 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0C1311;
-    --bg-grad: radial-gradient(1200px 500px at 85% -10%, rgba(30, 140, 118, .18) 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, rgba(70, 100, 160, .12) 0%, transparent 55%);
-    --surface: #131C19; --surface-2: #17211E; --sunk: #0F1714;
-    --line: #23302C; --line-strong: #34443F;
-    --ink: #E8EFEC; --ink-soft: #B3C1BC; --ink-faint: #7D8D88;
-    --primary: #3CC5A8; --primary-strong: #5BD6BB; --primary-tint: #12302A; --primary-ink: #B9F0E2;
+    --bg: #0B0D18;
+    --bg-grad: radial-gradient(1200px 500px at 85% -10%, rgba(40, 60, 190, .22) 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, rgba(17, 30, 108, .25) 0%, transparent 55%);
+    --surface: #12152A; --surface-2: #161A31; --sunk: #0E1022;
+    --line: #232845; --line-strong: #343A5C;
+    --ink: #E8EAF5; --ink-soft: #B4B8D0; --ink-faint: #7E83A0;
+    --primary: #7F8CE8; --primary-strong: #A3ADF0; --primary-tint: #161C40; --primary-ink: #D3D8FA;
     --brass: #E2B04F; --brass-tint: #2B2210;
     --red: #F07D70; --red-tint: #33150F;
     --amber: #F0B95A; --amber-tint: #2E2410;
-    --on-primary: #06231D;
+    --on-primary: #0B1035;
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
     --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 10px 30px -14px rgba(0, 0, 0, .6);
     --shadow-lg: 0 20px 40px -20px rgba(0, 0, 0, .7);
@@ -66,16 +66,16 @@
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0C1311;
-  --bg-grad: radial-gradient(1200px 500px at 85% -10%, rgba(30, 140, 118, .18) 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, rgba(70, 100, 160, .12) 0%, transparent 55%);
-  --surface: #131C19; --surface-2: #17211E; --sunk: #0F1714;
-  --line: #23302C; --line-strong: #34443F;
-  --ink: #E8EFEC; --ink-soft: #B3C1BC; --ink-faint: #7D8D88;
-  --primary: #3CC5A8; --primary-strong: #5BD6BB; --primary-tint: #12302A; --primary-ink: #B9F0E2;
+  --bg: #0B0D18;
+  --bg-grad: radial-gradient(1200px 500px at 85% -10%, rgba(40, 60, 190, .22) 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, rgba(17, 30, 108, .25) 0%, transparent 55%);
+  --surface: #12152A; --surface-2: #161A31; --sunk: #0E1022;
+  --line: #232845; --line-strong: #343A5C;
+  --ink: #E8EAF5; --ink-soft: #B4B8D0; --ink-faint: #7E83A0;
+  --primary: #7F8CE8; --primary-strong: #A3ADF0; --primary-tint: #161C40; --primary-ink: #D3D8FA;
   --brass: #E2B04F; --brass-tint: #2B2210;
   --red: #F07D70; --red-tint: #33150F;
   --amber: #F0B95A; --amber-tint: #2E2410;
-  --on-primary: #06231D;
+  --on-primary: #0B1035;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
   --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 10px 30px -14px rgba(0, 0, 0, .6);
   --shadow-lg: 0 20px 40px -20px rgba(0, 0, 0, .7);
@@ -371,11 +371,11 @@ kbd { font: 500 11px var(--mono); padding: 2px 6px; border: 1px solid var(--line
 .tooltip b { font-size: 13px; margin-bottom: 3px; }
 .tooltip span { display: flex; justify-content: space-between; gap: 16px; opacity: .85; }
 .tooltip i { font: normal 600 12.5px var(--mono); opacity: 1; }
-.tooltip i.pos { color: #7FE3CB; } .tooltip i.neg { color: #FFA69B; }
-:root[data-theme="dark"] .tooltip i.pos { color: #0A5F52; }
+.tooltip i.pos { color: #AEB7F5; } .tooltip i.neg { color: #FFA69B; }
+:root[data-theme="dark"] .tooltip i.pos { color: #111E6C; }
 :root[data-theme="dark"] .tooltip i.neg { color: #B3261E; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .tooltip i.pos { color: #0A5F52; }
+  :root:not([data-theme="light"]) .tooltip i.pos { color: #111E6C; }
   :root:not([data-theme="light"]) .tooltip i.neg { color: #B3261E; }
 }
 
