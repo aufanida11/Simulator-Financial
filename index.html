@@ -6,142 +6,161 @@
   <title>Simulator Kelayakan Investasi — RSP UI</title>
   <meta name="description" content="Simulator kelayakan investasi pengembangan rumah sakit: NPV, IRR, payback, BEP, serta analisis BOR dan pendapatan rawat inap.">
   <meta name="theme-color" content="#111E6C">
-  <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMEU3QzZCIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMEE1RjUyIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0idXJsKCNnKSIvPjxwYXRoIGQ9Ik0xMyA3aDZ2Nmg2djZoLTZ2NmgtNnYtNkg3di02aDZ6IiBmaWxsPSIjZmZmIi8+PC9zdmc+Cg==">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111E6C'/%3E%3Cpath d='M13 7h6v6h6v6h-6v6h-6v-6H7v-6h6z' fill='%23fff'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    /* Terapkan tema tersimpan sebelum render agar tidak berkedip. */
+    try { var t = localStorage.getItem('skrs:theme'); if (t) document.documentElement.dataset.theme = JSON.parse(t); } catch (e) {}
+  </script>
   <style>
 /* =========================================================================
-   Simulator Kelayakan Investasi — stylesheet
+   TAMPILAN — ubah warna di bagian :root
    ========================================================================= */
-
 :root {
-  --bg: #F4F5FA;
-  --bg-grad: radial-gradient(1200px 500px at 85% -10%, #DDE2F6 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, #E9ECF8 0%, transparent 55%);
+  --royal: #111E6C;            /* warna utama (Royal) */
+  --royal-strong: #0B1450;
+  --accent: #3554D1;           /* biru aksen: garis kiri header, label, tautan */
+  --accent-tint: #EEF1FD;
+
+  --bg: #F4F5F9;
   --surface: #FFFFFF;
-  --surface-2: #F7F8FC;
-  --sunk: #ECEEF6;
-  --line: #E0E3EE;
-  --line-strong: #C8CDE0;
-  --ink: #111733;
-  --ink-soft: #454B66;
-  --ink-faint: #7B809A;
-  --primary: #111E6C;          /* Royal */
-  --primary-strong: #0B1450;
-  --primary-tint: #E6E9F7;
-  --primary-ink: #0A1240;
-  --brass: #B07A12;
-  --brass-tint: #FBF1DC;
-  --red: #C0392B;
-  --red-tint: #FBE9E6;
-  --amber: #B7791F;
-  --amber-tint: #FDF3DD;
+  --surface-2: #F8F9FC;
+  --sunk: #EEF0F5;
+  --line: #E4E7EF;
+  --line-strong: #CDD2DF;
+  --ink: #0F172A;
+  --ink-soft: #475069;
+  --ink-faint: #8A91A6;
+
+  --primary: var(--royal);
+  --primary-tint: #E8EBF8;
   --on-primary: #FFFFFF;
-  --shadow-sm: 0 1px 2px rgba(17, 23, 51, .06);
-  --shadow: 0 1px 2px rgba(17, 23, 51, .05), 0 8px 24px -12px rgba(17, 23, 51, .14);
-  --shadow-lg: 0 20px 40px -20px rgba(17, 30, 108, .35);
-  --radius: 16px;
-  --radius-sm: 10px;
-  --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --blue: #2563EB;   --blue-bg: #EFF4FF;   --blue-line: #C9D9FB;
+  --green: #059669;  --green-bg: #ECFAF3;  --green-line: #BDEBD5;
+  --red: #DC2626;    --red-bg: #FEF2F2;    --red-line: #F8CACA;
+  --amber: #B45309;  --amber-bg: #FFF8EB;  --amber-line: #F5DDB0;
+  --indigo: #4338CA; --indigo-bg: #F1F0FF; --indigo-line: #D4D1FA;
+  --gray: #64748B;   --gray-bg: #FFFFFF;   --gray-line: #E4E7EF;
+  --brass: #B07A12;
+
+  --side-bg: #0E111C;
+  --side-ink: #E7E9F2;
+  --side-faint: #7C8299;
+  --side-hover: #1A1F30;
+  --side-active: #1C2340;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05);
+  --shadow: 0 1px 2px rgba(15, 23, 42, .04), 0 4px 16px -6px rgba(15, 23, 42, .08);
+  --radius: 14px;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0B0D18;
-    --bg-grad: radial-gradient(1200px 500px at 85% -10%, rgba(40, 60, 190, .22) 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, rgba(17, 30, 108, .25) 0%, transparent 55%);
-    --surface: #12152A; --surface-2: #161A31; --sunk: #0E1022;
-    --line: #232845; --line-strong: #343A5C;
-    --ink: #E8EAF5; --ink-soft: #B4B8D0; --ink-faint: #7E83A0;
-    --primary: #7F8CE8; --primary-strong: #A3ADF0; --primary-tint: #161C40; --primary-ink: #D3D8FA;
-    --brass: #E2B04F; --brass-tint: #2B2210;
-    --red: #F07D70; --red-tint: #33150F;
-    --amber: #F0B95A; --amber-tint: #2E2410;
-    --on-primary: #0B1035;
+    --accent: #7C93F5; --accent-tint: #18204A;
+    --bg: #0A0D16; --surface: #121626; --surface-2: #161B2E; --sunk: #0E1220;
+    --line: #232A40; --line-strong: #353D58;
+    --ink: #E8EAF3; --ink-soft: #B3B8CC; --ink-faint: #7D8399;
+    --primary: #7F8CE8; --primary-tint: #1A2148; --on-primary: #0B1035;
+    --blue: #6E9BFF; --blue-bg: #121C36; --blue-line: #233766;
+    --green: #34D399; --green-bg: #0E2219; --green-line: #1B4634;
+    --red: #F87171; --red-bg: #2A1214; --red-line: #4F2226;
+    --amber: #F5B454; --amber-bg: #281E0C; --amber-line: #4D3913;
+    --indigo: #A5A1FF; --indigo-bg: #18173A; --indigo-line: #322F6E;
+    --gray: #94A3B8; --gray-bg: #121626; --gray-line: #232A40;
+    --brass: #E2B04F;
+    --side-bg: #070912; --side-hover: #121729; --side-active: #182046;
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
-    --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 10px 30px -14px rgba(0, 0, 0, .6);
-    --shadow-lg: 0 20px 40px -20px rgba(0, 0, 0, .7);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 6px 20px -8px rgba(0, 0, 0, .55);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0B0D18;
-  --bg-grad: radial-gradient(1200px 500px at 85% -10%, rgba(40, 60, 190, .22) 0%, transparent 60%), radial-gradient(900px 400px at -10% 0%, rgba(17, 30, 108, .25) 0%, transparent 55%);
-  --surface: #12152A; --surface-2: #161A31; --sunk: #0E1022;
-  --line: #232845; --line-strong: #343A5C;
-  --ink: #E8EAF5; --ink-soft: #B4B8D0; --ink-faint: #7E83A0;
-  --primary: #7F8CE8; --primary-strong: #A3ADF0; --primary-tint: #161C40; --primary-ink: #D3D8FA;
-  --brass: #E2B04F; --brass-tint: #2B2210;
-  --red: #F07D70; --red-tint: #33150F;
-  --amber: #F0B95A; --amber-tint: #2E2410;
-  --on-primary: #0B1035;
+  --accent: #7C93F5; --accent-tint: #18204A;
+  --bg: #0A0D16; --surface: #121626; --surface-2: #161B2E; --sunk: #0E1220;
+  --line: #232A40; --line-strong: #353D58;
+  --ink: #E8EAF3; --ink-soft: #B3B8CC; --ink-faint: #7D8399;
+  --primary: #7F8CE8; --primary-tint: #1A2148; --on-primary: #0B1035;
+  --blue: #6E9BFF; --blue-bg: #121C36; --blue-line: #233766;
+  --green: #34D399; --green-bg: #0E2219; --green-line: #1B4634;
+  --red: #F87171; --red-bg: #2A1214; --red-line: #4F2226;
+  --amber: #F5B454; --amber-bg: #281E0C; --amber-line: #4D3913;
+  --indigo: #A5A1FF; --indigo-bg: #18173A; --indigo-line: #322F6E;
+  --gray: #94A3B8; --gray-bg: #121626; --gray-line: #232A40;
+  --brass: #E2B04F;
+  --side-bg: #070912; --side-hover: #121729; --side-active: #182046;
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
-  --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 10px 30px -14px rgba(0, 0, 0, .6);
-  --shadow-lg: 0 20px 40px -20px rgba(0, 0, 0, .7);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .35), 0 6px 20px -8px rgba(0, 0, 0, .55);
   color-scheme: dark;
 }
 
 /* ---------- dasar ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
 body {
-  margin: 0;
-  background: var(--bg-grad), var(--bg);
-  background-attachment: fixed;
-  color: var(--ink);
-  font: 15px/1.6 var(--font);
-  min-height: 100vh;
-  display: flex; flex-direction: column;
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 14.5px/1.55 var(--font); font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
-main { flex: 1; }
-svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 button { font: inherit; color: inherit; }
-h1, h2, h3 { margin: 0; letter-spacing: -.015em; line-height: 1.25; }
-h2 { font-size: 19px; font-weight: 700; }
-h3 { font-size: 15.5px; font-weight: 700; }
-.muted { color: var(--ink-faint); font-size: 13px; margin: 0; }
+h1, h2, h3 { margin: 0; letter-spacing: -.02em; line-height: 1.25; }
+h2 { font-size: 17px; font-weight: 800; }
+h3 { font-size: 15px; font-weight: 800; }
+.muted { color: var(--ink-faint); font-size: 12.5px; margin: 0; }
 [hidden] { display: none !important; }
-:focus-visible { outline: 2.5px solid var(--primary); outline-offset: 2px; border-radius: 6px; }
+:focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 
-.skip-link { position: absolute; left: 12px; top: -48px; background: var(--primary); color: var(--on-primary); padding: 8px 14px; border-radius: 8px; z-index: 100; text-decoration: none; }
-.skip-link:focus { top: 12px; }
+/* ---------- kerangka: sidebar + konten ---------- */
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  position: fixed; inset: 0 auto 0 0; width: 236px; z-index: 50;
+  background: var(--side-bg); color: var(--side-ink);
+  display: flex; flex-direction: column; padding: 14px 12px;
+  transition: transform .25s ease;
+}
+.side-brand { display: flex; align-items: center; gap: 11px; padding: 6px 6px 16px; border-bottom: 1px solid rgba(255, 255, 255, .07); margin-bottom: 8px; text-decoration: none; color: inherit; }
+.side-logo { width: 38px; height: 38px; border-radius: 10px; background: #fff; display: grid; place-items: center; flex: none; }
+.side-logo svg { width: 20px; height: 20px; fill: var(--royal); stroke: none; }
+.side-brand b { display: block; font-size: 14.5px; font-weight: 800; letter-spacing: -.01em; }
+.side-brand small { display: block; font-size: 11px; color: var(--side-faint); }
+.side-section { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #9AA3C7; padding: 14px 8px 6px; }
+.nav-item {
+  position: relative; display: flex; align-items: center; gap: 11px; width: 100%; text-align: left;
+  padding: 8px 10px; border: 0; border-radius: 8px; background: none; cursor: pointer;
+  font-size: 13.5px; font-weight: 600; color: var(--side-ink); transition: background .15s;
+}
+.nav-item svg { width: 16px; height: 16px; color: #A7AFCB; }
+.nav-item:hover { background: var(--side-hover); }
+.nav-item.active { background: var(--side-active); }
+.nav-item.active::before { content: ''; position: absolute; left: -12px; top: 7px; bottom: 7px; width: 3px; border-radius: 0 3px 3px 0; background: #6F86FF; }
+.nav-item.active svg { color: #9FB0FF; }
+.side-user { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; background: #161A28; border: 1px solid rgba(255, 255, 255, .06); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: #3554D1; color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; flex: none; box-shadow: 0 0 0 2px rgba(255, 255, 255, .15); }
+.side-user b { display: block; font-size: 12.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.side-user small { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--side-faint); }
+.side-user small::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #22C55E; }
+.side-user > div { min-width: 0; }
+.scrim { display: none; }
 
-.wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
-
-/* ---------- topbar ---------- */
+.main { flex: 1; min-width: 0; margin-left: 236px; display: flex; flex-direction: column; }
 .topbar {
-  position: sticky; top: 0; z-index: 40;
-  background: color-mix(in srgb, var(--bg) 78%, transparent);
-  backdrop-filter: saturate(1.6) blur(14px); -webkit-backdrop-filter: saturate(1.6) blur(14px);
-  border-bottom: 1px solid var(--line);
-  padding-top: env(safe-area-inset-top, 0px);
+  position: sticky; top: 0; z-index: 30; height: 58px; display: flex; align-items: center; gap: 12px;
+  padding: 0 28px; background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
 }
-.topbar-inner { max-width: 1120px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 20px; }
-.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; margin-right: auto; min-width: 0; }
-.brand-logo {
-  width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; flex: none;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%); color: var(--on-primary);
-  box-shadow: var(--shadow-lg);
-}
-.brand-logo svg { width: 20px; height: 20px; fill: currentColor; stroke: none; }
-.brand-text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
-.brand-text b { font-size: 15px; font-weight: 800; letter-spacing: -.01em; }
-.brand-text small { font-size: 11.5px; color: var(--ink-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.mode-switch { display: flex; gap: 4px; padding: 4px; background: var(--sunk); border: 1px solid var(--line); border-radius: 12px; }
-.mode-tab {
-  display: flex; align-items: center; gap: 8px; border: 0; background: none; cursor: pointer;
-  padding: 8px 14px; border-radius: 9px; font-size: 13.5px; font-weight: 600; color: var(--ink-soft);
-  transition: background .2s, color .2s, box-shadow .2s;
-}
-.mode-tab:hover { color: var(--ink); }
-.mode-tab.active { background: var(--surface); color: var(--primary-strong); box-shadow: var(--shadow-sm); }
-.mode-tab svg { width: 16px; height: 16px; }
-
-.icon-btn { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 11px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; color: var(--ink-soft); transition: color .2s, border-color .2s; }
+.crumb { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink-faint); font-weight: 600; margin-right: auto; min-width: 0; }
+.crumb b { color: var(--ink); font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.crumb svg { width: 13px; height: 13px; }
+.status-pill { display: inline-flex; align-items: center; gap: 7px; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--green); background: var(--green-bg); border: 1px solid var(--green-line); white-space: nowrap; }
+.status-pill::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.icon-btn { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; color: var(--ink-soft); }
 .icon-btn:hover { color: var(--ink); border-color: var(--line-strong); }
+.menu-btn { display: none; }
 .i-moon { display: none; }
 :root[data-theme="dark"] .i-sun { display: none; }
 :root[data-theme="dark"] .i-moon { display: block; }
@@ -150,368 +169,357 @@ h3 { font-size: 15.5px; font-weight: 700; }
   :root:not([data-theme="light"]) .i-moon { display: block; }
 }
 
-/* ---------- hero ---------- */
-.hero { padding: 44px 0 28px; max-width: 760px; }
-.eyebrow {
-  display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--primary-strong); background: var(--primary-tint); padding: 5px 11px; border-radius: 999px; margin-bottom: 16px;
-}
-.eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent); }
-.hero h1 { font-size: clamp(28px, 4.4vw, 42px); font-weight: 800; letter-spacing: -.03em; line-height: 1.12; margin-bottom: 14px; }
-.hero h1 em { font-style: normal; background: linear-gradient(90deg, var(--primary), var(--primary-strong) 60%, var(--brass)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.lede { font-size: 16.5px; color: var(--ink-soft); margin: 0; max-width: 64ch; }
+.content { padding: 26px 28px 40px; width: 100%; max-width: 1240px; }
 
-#modeA.compact .hero { display: none; }
-#modeA.compact .stepper { margin-top: 24px; }
-
-/* ---------- stepper ---------- */
-.stepper { list-style: none; padding: 0; margin: 0 0 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; counter-reset: s; }
-.step {
-  width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; cursor: pointer;
-  padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm);
-  transition: border-color .2s, box-shadow .2s, transform .2s;
-}
-.step:not(:disabled):hover { border-color: var(--line-strong); }
-.step:disabled { cursor: not-allowed; opacity: .6; box-shadow: none; background: transparent; }
-.step-num {
-  width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; flex: none;
-  font: 600 14px var(--mono); background: var(--sunk); color: var(--ink-faint); transition: background .2s, color .2s;
-}
-.step-text { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
-.step-text b { font-size: 14px; font-weight: 700; }
-.step-text small { font-size: 12px; color: var(--ink-faint); }
-.step.active { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint), var(--shadow); }
-.step.active .step-num { background: var(--primary); color: var(--on-primary); }
-.step.done .step-num { background: var(--primary-tint); color: var(--primary-strong); font-size: 0; }
-.step.done .step-num::after { content: '✓'; font-size: 15px; }
-
-/* ---------- panel & kartu ---------- */
-.panel { display: none; }
-.panel.show { display: block; animation: rise .35s cubic-bezier(.2, .8, .2, 1); }
-@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { .panel.show { animation: none; } * { transition: none !important; } }
-
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; margin-bottom: 16px; }
-.card-head { display: flex; align-items: center; justify-content: space-between; gap: 12px 16px; flex-wrap: wrap; margin-bottom: 16px; }
-.card-head > div:first-child, .card-head > h2, .card-head > h3 { min-width: 0; }
+/* ---------- kartu ---------- */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 22px; margin-bottom: 18px; }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.card-head > div:first-child { min-width: 0; }
+.card-head .muted { margin-top: 3px; }
 .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
-.panel-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.count-pill { font-size: 12px; font-weight: 700; color: var(--ink-soft); background: var(--sunk); border: 1px solid var(--line); padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
 
-/* ---------- kategori ---------- */
-.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-.cat {
-  position: relative; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; text-align: left;
-  padding: 16px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--surface-2); cursor: pointer;
-  transition: border-color .2s, background .2s, transform .2s, box-shadow .2s;
+/* header halaman: garis aksen kiri */
+.page-head {
+  position: relative; display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap;
+  padding: 22px 24px 22px 26px; overflow: hidden;
 }
-.cat:hover { border-color: var(--line-strong); transform: translateY(-1px); }
-.cat-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); color: var(--ink-soft); transition: all .2s; }
-.cat-icon svg { width: 22px; height: 22px; }
-.cat-text { display: flex; flex-direction: column; gap: 3px; }
-.cat-text b { font-size: 14.5px; font-weight: 700; }
-.cat-text small { font-size: 12.5px; color: var(--ink-faint); line-height: 1.45; }
-.cat-check { position: absolute; top: 12px; right: 12px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); opacity: 0; transform: scale(.6); transition: all .2s; }
-.cat-check svg { width: 13px; height: 13px; stroke-width: 3; }
-.cat.active { border-color: var(--primary); background: var(--primary-tint); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 14%, transparent); }
-.cat.active .cat-icon { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
-.cat.active .cat-check { opacity: 1; transform: none; }
-
-/* ---------- textarea & deteksi ---------- */
-textarea {
-  width: 100%; min-height: 128px; resize: vertical; padding: 14px 16px; font: 15px/1.65 var(--font);
-  color: var(--ink); background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 12px; transition: border-color .2s, box-shadow .2s;
-}
-textarea::placeholder { color: var(--ink-faint); }
-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-tint); background: var(--surface); }
-.detect-bar { display: flex; align-items: center; gap: 8px 10px; flex-wrap: wrap; margin-top: 12px; padding: 10px 12px; background: var(--sunk); border-radius: 10px; font-size: 13px; }
-.detect-label { font-weight: 600; color: var(--ink-soft); }
-.detect-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.dchip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 7px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font: 500 12.5px var(--mono); color: var(--primary-strong); animation: pop .25s ease; }
-.dchip svg { width: 13px; height: 13px; stroke-width: 2.6; }
-@keyframes pop { from { transform: scale(.85); opacity: 0; } }
-.kbd-hint { font-size: 12px; color: var(--ink-faint); }
-kbd { font: 500 11px var(--mono); padding: 2px 6px; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; background: var(--surface); color: var(--ink-soft); }
+.page-head::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); }
+.eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.page-head h1 { font-size: 23px; font-weight: 800; letter-spacing: -.025em; margin-bottom: 8px; }
+.page-head p { margin: 0; color: var(--ink-soft); font-size: 13.5px; max-width: 68ch; line-height: 1.65; }
+.page-head p b { color: var(--ink); }
+.head-side { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; text-align: right; }
+.head-side small { display: block; font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); }
+.head-side b { font-size: 14px; font-weight: 800; }
 
 /* ---------- tombol ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; white-space: nowrap;
-  padding: 11px 20px; border-radius: 11px; font-size: 14px; font-weight: 700; border: 1px solid transparent;
-  transition: background .2s, transform .1s, box-shadow .2s, border-color .2s;
+  padding: 10px 18px; border-radius: 9px; font-size: 13.5px; font-weight: 700; border: 1px solid transparent;
+  transition: background .15s, border-color .15s, transform .1s;
 }
 .btn:active { transform: translateY(1px); }
-.btn.primary { background: linear-gradient(180deg, var(--primary), var(--primary-strong)); color: var(--on-primary); box-shadow: var(--shadow-lg); }
-.btn.primary:hover { filter: brightness(1.06); }
+.btn.dark { background: #0F172A; color: #fff; }
+.btn.dark:hover { background: #1E293B; }
+:root[data-theme="dark"] .btn.dark { background: var(--primary); color: var(--on-primary); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn.dark { background: var(--primary); color: var(--on-primary); } }
+.btn.primary { background: var(--primary); color: var(--on-primary); }
+.btn.primary:hover { filter: brightness(1.15); }
 .btn.primary svg { transition: transform .2s; }
 .btn.primary:hover svg { transform: translateX(3px); }
 .btn.ghost { background: var(--surface); border-color: var(--line); color: var(--ink); }
 .btn.ghost:hover { border-color: var(--line-strong); background: var(--surface-2); }
-.btn.sm { padding: 7px 12px; font-size: 13px; border-radius: 9px; }
+.btn.sm { padding: 7px 12px; font-size: 12.5px; }
 .btn.sm svg { width: 15px; height: 15px; }
+.btn.caps { text-transform: uppercase; letter-spacing: .06em; font-weight: 800; font-size: 12.5px; }
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.link-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 4px 2px; cursor: pointer; color: var(--primary-strong); font-size: 13.5px; font-weight: 600; }
+.link-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 4px 2px; cursor: pointer; color: var(--accent); font-size: 13px; font-weight: 700; }
 .link-btn:hover { text-decoration: underline; text-underline-offset: 3px; }
 .link-btn svg { width: 15px; height: 15px; }
+.chip { border: 1px solid var(--line); background: var(--surface); padding: 5px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 600; cursor: pointer; color: var(--ink-soft); }
+.chip:hover { border-color: var(--primary); color: var(--primary); }
 
-.chip { border: 1px solid var(--line); background: var(--surface); padding: 5px 12px; border-radius: 999px; font: 500 12.5px var(--mono); cursor: pointer; color: var(--ink-soft); transition: all .15s; }
-.chip:hover { border-color: var(--primary); color: var(--primary-strong); }
-
-/* segmented control */
-.seg { display: inline-flex; padding: 4px; gap: 4px; background: var(--sunk); border: 1px solid var(--line); border-radius: 12px; }
+.seg { display: inline-flex; padding: 3px; gap: 3px; background: var(--sunk); border: 1px solid var(--line); border-radius: 10px; }
 .seg-full { display: flex; width: 100%; margin-bottom: 8px; }
 .seg-full .seg-btn { flex: 1; }
-.seg-btn { border: 0; background: none; cursor: pointer; padding: 7px 14px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--ink-soft); transition: all .2s; }
+.seg-btn { border: 0; background: none; cursor: pointer; padding: 7px 14px; border-radius: 7px; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
 .seg-btn:hover { color: var(--ink); }
-.seg-btn.active { background: var(--surface); color: var(--primary-strong); box-shadow: var(--shadow-sm); }
+.seg-btn.active { background: var(--surface); color: var(--primary); box-shadow: var(--shadow-sm); font-weight: 700; }
+
+/* ---------- stepper (kartu filter) ---------- */
+.step-card { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 14px 18px; }
+.stepper { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.stepper li { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.stepper li + li::before { content: ''; width: 22px; height: 1px; background: var(--line-strong); flex: none; }
+.step { width: 100%; display: flex; align-items: center; gap: 10px; text-align: left; cursor: pointer; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface-2); min-width: 0; }
+.step:disabled { cursor: not-allowed; opacity: .55; }
+.step:not(:disabled):hover { border-color: var(--line-strong); }
+.step-num { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; flex: none; font-weight: 800; font-size: 12.5px; background: var(--sunk); color: var(--ink-faint); }
+.step-text { display: flex; flex-direction: column; line-height: 1.3; min-width: 0; }
+.step-text small { font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.step-text b { font-size: 13.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.step.active { border-color: var(--primary); background: var(--primary-tint); }
+.step.active .step-num { background: var(--primary); color: var(--on-primary); }
+.step.done .step-num { background: var(--green-bg); color: var(--green); font-size: 0; }
+.step.done .step-num::after { content: '✓'; font-size: 13px; }
+.range-pill { font-size: 12.5px; color: var(--ink-faint); font-weight: 600; white-space: nowrap; }
+.range-pill b { color: var(--accent); background: var(--accent-tint); padding: 3px 9px; border-radius: 7px; margin-left: 4px; }
+
+/* ---------- panel ---------- */
+.panel { display: none; }
+.panel.show { display: block; animation: rise .3s ease; }
+@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .panel.show { animation: none; } * { transition: none !important; } }
+
+/* ---------- kategori ---------- */
+.cat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.cat { position: relative; display: flex; flex-direction: column; gap: 10px; align-items: flex-start; text-align: left; padding: 14px; border-radius: 12px; border: 1.5px solid var(--line); background: var(--surface); cursor: pointer; transition: border-color .15s, background .15s; }
+.cat:hover { border-color: var(--line-strong); }
+.cat-icon { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: var(--sunk); color: var(--ink-soft); }
+.cat-icon svg { width: 19px; height: 19px; }
+.cat-text b { display: block; font-size: 13.5px; font-weight: 700; }
+.cat-text small { display: block; font-size: 12px; color: var(--ink-faint); line-height: 1.45; margin-top: 2px; }
+.cat-check { position: absolute; top: 12px; right: 12px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); opacity: 0; transform: scale(.6); transition: all .2s; }
+.cat-check svg { width: 12px; height: 12px; stroke-width: 3; }
+.cat.active { border-color: var(--primary); background: var(--primary-tint); }
+.cat.active .cat-icon { background: var(--primary); color: var(--on-primary); }
+.cat.active .cat-check { opacity: 1; transform: none; }
+
+textarea {
+  width: 100%; min-height: 120px; resize: vertical; padding: 13px 15px; font: 14.5px/1.65 var(--font);
+  color: var(--ink); background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 10px;
+}
+textarea::placeholder { color: var(--ink-faint); }
+textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); background: var(--surface); }
+.detect-bar { display: flex; align-items: center; gap: 8px 10px; flex-wrap: wrap; margin-top: 12px; padding: 10px 12px; background: var(--sunk); border-radius: 9px; font-size: 12.5px; }
+.detect-label { font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.detect-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.dchip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px 3px 7px; border-radius: 999px; background: var(--accent-tint); color: var(--accent); font-size: 12px; font-weight: 700; }
+.dchip svg { width: 12px; height: 12px; stroke-width: 2.8; }
+.kbd-hint { font-size: 12px; color: var(--ink-faint); }
+kbd { font: 600 11px var(--font); padding: 2px 6px; border: 1px solid var(--line-strong); border-bottom-width: 2px; border-radius: 5px; background: var(--surface); color: var(--ink-soft); }
 
 /* ---------- worksheet ---------- */
-.note { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; background: var(--primary-tint); color: var(--primary-ink); font-size: 13.5px; margin-bottom: 16px; border: 1px solid color-mix(in srgb, var(--primary) 20%, transparent); }
-.note svg { margin-top: 2px; }
-.ws-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.note { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: var(--accent-tint); color: var(--ink-soft); font-size: 13px; margin-bottom: 18px; border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); }
+.note svg { color: var(--accent); margin-top: 2px; }
+.note b { color: var(--ink); }
+.ws-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
 .ws-grid .card { margin: 0; }
-.ws-title { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.ws-title svg { width: 30px; height: 30px; padding: 6px; border-radius: 9px; background: var(--primary-tint); color: var(--primary-strong); }
-.ws-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px dashed var(--line); }
+.ws-title { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.ws-title svg { width: 30px; height: 30px; padding: 7px; border-radius: 8px; background: var(--primary-tint); color: var(--primary); }
+.ws-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
 .ws-row:last-child { border-bottom: 0; }
-.ws-label { font-size: 13.5px; color: var(--ink-soft); font-weight: 500; flex: 1; min-width: 0; }
+.ws-label { font-size: 13.5px; color: var(--ink-soft); font-weight: 600; flex: 1; min-width: 0; }
 .ws-label .hint { display: block; font-size: 11.5px; color: var(--ink-faint); font-weight: 400; margin-top: 1px; }
-.tag { display: inline-block; font: 600 10px var(--mono); padding: 2px 7px; border-radius: 999px; margin-left: 7px; vertical-align: 1px; text-transform: uppercase; letter-spacing: .04em; }
-.tag.detected { background: var(--primary-tint); color: var(--primary-strong); border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent); }
+.tag { display: inline-block; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 999px; margin-left: 7px; vertical-align: 1px; text-transform: uppercase; letter-spacing: .06em; }
+.tag.detected { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-line); }
 .tag.default { background: var(--sunk); color: var(--ink-faint); border: 1px solid var(--line); }
 
-.input-unit { display: flex; align-items: stretch; border: 1.5px solid var(--line); border-radius: 10px; background: var(--surface-2); overflow: hidden; flex: none; transition: border-color .2s, box-shadow .2s; }
-.input-unit:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); background: var(--surface); }
-.input-unit input { width: 96px; border: 0; background: transparent; padding: 8px 10px; font: 500 14.5px var(--mono); color: var(--ink); text-align: right; outline: none; -moz-appearance: textfield; }
+.input-unit { display: flex; align-items: stretch; border: 1.5px solid var(--line); border-radius: 9px; background: var(--surface); overflow: hidden; flex: none; }
+.input-unit:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); }
+.input-unit input { width: 96px; border: 0; background: transparent; padding: 8px 10px; font: 600 14px var(--font); font-variant-numeric: tabular-nums; color: var(--ink); text-align: right; outline: none; -moz-appearance: textfield; }
 .input-unit input::-webkit-outer-spin-button, .input-unit input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.input-unit span { display: flex; align-items: center; padding: 0 10px; font: 500 12px var(--mono); color: var(--ink-faint); background: var(--sunk); border-left: 1px solid var(--line); min-width: 44px; justify-content: center; white-space: nowrap; }
+.input-unit span { display: flex; align-items: center; justify-content: center; padding: 0 10px; font-size: 12px; font-weight: 600; color: var(--ink-faint); background: var(--surface-2); border-left: 1px solid var(--line); min-width: 44px; white-space: nowrap; }
 .input-unit.sm input { width: 62px; padding: 6px 8px; font-size: 13px; }
 .input-unit.sm span { min-width: 30px; padding: 0 7px; }
-.fin-note { font-size: 13px; color: var(--ink-faint); margin: 10px 0 0; padding: 10px 12px; background: var(--sunk); border-radius: 10px; }
+.fin-note { font-size: 13px; color: var(--ink-faint); margin: 10px 0 0; padding: 10px 12px; background: var(--sunk); border-radius: 9px; }
 
 .seg-table { margin-top: 6px; }
 .seg-head, .seg-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: center; }
-.seg-head { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-faint); padding: 4px 0 6px; }
-.seg-head span:nth-child(2) { width: 94px; } .seg-head span:nth-child(3) { width: 94px; }
+.seg-head { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); padding: 4px 0 6px; }
+.seg-head span:nth-child(2), .seg-head span:nth-child(3) { width: 94px; }
 .seg-row { padding: 5px 0; }
-.seg-name { min-width: 0; width: 100%; font: 500 13px var(--font); padding: 7px 10px; border: 1.5px solid var(--line); background: var(--surface-2); border-radius: 9px; color: var(--ink); }
+.seg-name { min-width: 0; width: 100%; font: 600 13px var(--font); padding: 7px 10px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 8px; color: var(--ink); }
 .seg-name:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); }
-.seg-summary { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-faint); padding: 10px 12px; margin: 8px 0 4px; background: var(--sunk); border-radius: 10px; }
-.seg-summary b { font-family: var(--mono); color: var(--ink); }
-.seg-summary.warn { background: var(--amber-tint); color: var(--amber); }
+.seg-summary { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-faint); padding: 10px 12px; margin: 8px 0 4px; background: var(--sunk); border-radius: 9px; }
+.seg-summary b { color: var(--ink); }
+.seg-summary.warn { background: var(--amber-bg); color: var(--amber); }
 .seg-summary.warn b { color: var(--amber); }
 
 .action-bar {
   position: sticky; bottom: 12px; z-index: 20; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  margin-top: 20px; padding: 10px; border-radius: 16px; border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: var(--shadow);
+  margin-top: 20px; padding: 10px; border-radius: 12px; border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: var(--shadow);
 }
 
-/* ---------- hasil ---------- */
-.verdict { display: flex; gap: 16px; align-items: flex-start; padding: 18px 20px; border-radius: var(--radius); margin-bottom: 16px; border: 1px solid; }
-.verdict b { font-size: 17px; font-weight: 800; display: block; margin-bottom: 2px; }
-.verdict p { margin: 0; font-size: 14px; opacity: .9; }
-.verdict-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; flex: none; }
-.verdict-icon svg { width: 22px; height: 22px; stroke-width: 2.6; }
-.verdict.good { background: var(--primary-tint); border-color: color-mix(in srgb, var(--primary) 30%, transparent); color: var(--primary-ink); }
-.verdict.good .verdict-icon { background: var(--primary); color: var(--on-primary); }
-.verdict.warn { background: var(--amber-tint); border-color: color-mix(in srgb, var(--amber) 35%, transparent); color: var(--ink); }
-.verdict.warn .verdict-icon { background: var(--amber); color: #fff; }
-.verdict.bad { background: var(--red-tint); border-color: color-mix(in srgb, var(--red) 30%, transparent); color: var(--ink); }
-.verdict.bad .verdict-icon { background: var(--red); color: #fff; }
-
-.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 16px; }
-.kpi { position: relative; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 16px 14px; box-shadow: var(--shadow); }
-.kpi::before { content: ''; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--line-strong); }
-.kpi.pos::before { background: var(--primary); }
-.kpi.neg::before { background: var(--red); }
-.kpi-label { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--ink-faint); margin-bottom: 8px; }
-.kpi-label svg { width: 15px; height: 15px; }
-.kpi-value { font: 600 24px/1.15 var(--mono); letter-spacing: -.02em; }
-.kpi.pos .kpi-value { color: var(--primary-strong); }
-.kpi.neg .kpi-value { color: var(--red); }
+/* ---------- kartu statistik (KPI) ---------- */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.kpi {
+  --tone: var(--ink); --tone-bg: var(--surface); --tone-line: var(--line);
+  background: var(--tone-bg); border: 1px solid var(--tone-line); border-radius: var(--radius); padding: 16px 16px 14px;
+  box-shadow: var(--shadow-sm); display: flex; flex-direction: column; min-width: 0;
+}
+.kpi.blue { --tone: var(--blue); --tone-bg: var(--blue-bg); --tone-line: var(--blue-line); }
+.kpi.green { --tone: var(--green); --tone-bg: var(--green-bg); --tone-line: var(--green-line); }
+.kpi.red { --tone: var(--red); --tone-bg: var(--red-bg); --tone-line: var(--red-line); }
+.kpi.amber { --tone: var(--amber); --tone-bg: var(--amber-bg); --tone-line: var(--amber-line); }
+.kpi.indigo { --tone: var(--indigo); --tone-bg: var(--indigo-bg); --tone-line: var(--indigo-line); }
+.kpi.gray { --tone: var(--gray); --tone-bg: var(--gray-bg); --tone-line: var(--gray-line); }
+.kpi-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+.kpi-label { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--tone); padding-top: 6px; }
+.kpi:not(.blue):not(.green):not(.red):not(.amber):not(.indigo) .kpi-label { color: var(--ink-soft); }
+.kpi-icon { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; color: var(--tone); background: color-mix(in srgb, var(--tone) 12%, transparent); flex: none; }
+.kpi-icon svg { width: 16px; height: 16px; }
+.kpi-value { font-size: 27px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; color: var(--tone); }
+.kpi-value small { font-size: .6em; font-weight: 700; margin-left: 2px; }
 .kpi-sub { font-size: 12px; color: var(--ink-faint); margin-top: 6px; }
+.kpi.blue .kpi-sub, .kpi.green .kpi-sub, .kpi.red .kpi-sub, .kpi.indigo .kpi-sub, .kpi.amber .kpi-sub { color: var(--tone); opacity: .85; }
+.kpi-bar { margin-top: auto; padding-top: 12px; }
+.kpi-bar i { display: block; height: 4px; border-radius: 4px; background: color-mix(in srgb, var(--tone) 15%, transparent); overflow: hidden; }
+.kpi-bar i::after { content: ''; display: block; height: 100%; width: var(--w, 0%); background: var(--tone); border-radius: 4px; transition: width .4s; }
 
-.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-soft); }
+.verdict { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: var(--radius); margin-bottom: 18px; border: 1px solid; }
+.verdict b { font-size: 15.5px; font-weight: 800; display: block; margin-bottom: 2px; }
+.verdict p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+.verdict-icon { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; flex: none; color: #fff; }
+.verdict-icon svg { width: 19px; height: 19px; stroke-width: 2.6; }
+.verdict.good { background: var(--green-bg); border-color: var(--green-line); }
+.verdict.good b { color: var(--green); } .verdict.good .verdict-icon { background: var(--green); }
+.verdict.warn { background: var(--amber-bg); border-color: var(--amber-line); }
+.verdict.warn b { color: var(--amber); } .verdict.warn .verdict-icon { background: var(--amber); }
+.verdict.bad { background: var(--red-bg); border-color: var(--red-line); }
+.verdict.bad b { color: var(--red); } .verdict.bad .verdict-icon { background: var(--red); }
+
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--ink-soft); font-weight: 600; }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
-.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
+.sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; }
 .sw-pos { background: var(--primary); } .sw-neg { background: var(--red); }
 .sw-line { height: 3px; width: 16px; border-radius: 2px; background: var(--ink); }
-.sw-line.teal { background: var(--primary); }
+.sw-line.royal { background: var(--primary); }
 .sw-dash { height: 0; width: 16px; border-top: 3px dashed var(--brass); border-radius: 0; }
 
-/* grafik */
+/* ---------- grafik ---------- */
 .chart { width: 100%; overflow-x: auto; }
 .chart svg { width: 100%; height: auto; min-width: 520px; display: block; stroke: none; overflow: visible; }
-.chart text { font: 500 11px var(--mono); fill: var(--ink-faint); stroke: none; }
-.chart text.teal { fill: var(--primary); } .chart text.brass { fill: var(--brass); }
+.chart text { font: 600 11px var(--font); fill: var(--ink-faint); stroke: none; }
+.chart text.royal { fill: var(--primary); } .chart text.brass { fill: var(--brass); }
 .chart .grid { stroke: var(--line); stroke-width: 1; }
 .chart .zero { stroke: var(--line-strong); stroke-width: 1.5; }
-.chart .bar { transition: opacity .2s; }
 .chart .bar.pos { fill: var(--primary); } .chart .bar.neg { fill: var(--red); }
 .chart .cum { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; }
 .chart .cum-dot { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
 .chart .hit { fill: transparent; cursor: crosshair; }
-.chart .hit.on { fill: color-mix(in srgb, var(--primary) 8%, transparent); }
+.chart .hit.on { fill: color-mix(in srgb, var(--primary) 7%, transparent); }
 .chart .line { fill: none; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
-.chart .line.teal { stroke: var(--primary); } .chart .line.brass { stroke: var(--brass); }
+.chart .line.royal { stroke: var(--primary); } .chart .line.brass { stroke: var(--brass); }
 .chart .line.dash { stroke-dasharray: 6 4; }
-.chart .g0 { stop-color: var(--primary); stop-opacity: .28; } .chart .g1 { stop-color: var(--primary); stop-opacity: 0; }
-.chart .ideal { fill: color-mix(in srgb, var(--primary) 7%, transparent); }
+.chart .area { fill: color-mix(in srgb, var(--primary) 10%, transparent); }
+.chart .ideal { fill: color-mix(in srgb, var(--green) 8%, transparent); }
 .chart .cursor { stroke: var(--ink-faint); stroke-dasharray: 3 4; stroke-width: 1.3; }
 .chart .knob { fill: var(--surface); stroke-width: 3; }
-.chart .knob.teal { stroke: var(--primary); } .chart .knob.brass { stroke: var(--brass); }
+.chart .knob.royal { stroke: var(--primary); } .chart .knob.brass { stroke: var(--brass); }
 .chart .flag rect { fill: var(--ink); }
-.chart .flag text { fill: var(--surface); font-weight: 600; font-size: 12px; }
+.chart .flag text { fill: var(--surface); font-weight: 700; font-size: 12px; }
 .chart svg.draggable { cursor: ew-resize; touch-action: pan-y; }
 
-.tooltip {
-  position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; min-width: 180px;
-  background: var(--ink); color: var(--surface); padding: 10px 12px; border-radius: 10px; box-shadow: var(--shadow-lg); font-size: 12.5px;
-  display: flex; flex-direction: column; gap: 3px;
-}
+.tooltip { position: fixed; left: 0; top: 0; z-index: 60; pointer-events: none; min-width: 180px; background: #0F172A; color: #fff; padding: 10px 12px; border-radius: 9px; box-shadow: 0 12px 28px -10px rgba(0, 0, 0, .45); font-size: 12.5px; display: flex; flex-direction: column; gap: 3px; }
 .tooltip b { font-size: 13px; margin-bottom: 3px; }
-.tooltip span { display: flex; justify-content: space-between; gap: 16px; opacity: .85; }
-.tooltip i { font: normal 600 12.5px var(--mono); opacity: 1; }
-.tooltip i.pos { color: #AEB7F5; } .tooltip i.neg { color: #FFA69B; }
-:root[data-theme="dark"] .tooltip i.pos { color: #111E6C; }
-:root[data-theme="dark"] .tooltip i.neg { color: #B3261E; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .tooltip i.pos { color: #111E6C; }
-  :root:not([data-theme="light"]) .tooltip i.neg { color: #B3261E; }
-}
+.tooltip span { display: flex; justify-content: space-between; gap: 16px; color: #CBD2E4; }
+.tooltip i { font-style: normal; font-weight: 700; color: #fff; }
+.tooltip i.pos { color: #A9B6FF; } .tooltip i.neg { color: #FCA5A5; }
 
-/* tabel */
-.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; -webkit-overflow-scrolling: touch; }
-table { border-collapse: separate; border-spacing: 0; width: 100%; font: 500 12.5px var(--mono); }
-thead th { position: sticky; top: 0; text-align: right; font: 700 11.5px var(--font); color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; padding: 11px 12px; background: var(--sunk); border-bottom: 1px solid var(--line); white-space: nowrap; }
-tbody td { padding: 10px 12px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+/* ---------- tabel ---------- */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; -webkit-overflow-scrolling: touch; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; }
+thead th { text-align: right; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); padding: 11px 14px; background: var(--surface-2); border-bottom: 1px solid var(--line); white-space: nowrap; }
+tbody td { padding: 11px 14px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; font-weight: 500; }
 tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover td { background: var(--surface-2); }
-th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); font-family: var(--font); font-weight: 600; color: var(--ink-soft); z-index: 1; }
-thead th:first-child { background: var(--sunk); z-index: 2; }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); z-index: 1; }
+td:first-child { font-weight: 700; color: var(--ink); }
+thead th:first-child { background: var(--surface-2); z-index: 2; }
 tbody tr:hover td:first-child { background: var(--surface-2); }
-.proj-table { min-width: 860px; }
+.proj-table { min-width: 880px; }
 .proj-table tr.year0 td { color: var(--ink-faint); }
 .proj-table td.neg { color: var(--red); }
-.proj-table tr.breakeven td { background: var(--primary-tint); }
-.proj-table tr.breakeven td:first-child { background: var(--primary-tint); box-shadow: inset 3px 0 0 var(--primary); }
+.proj-table tr.breakeven td, .proj-table tr.breakeven td:first-child { background: var(--green-bg); }
+.proj-table tr.breakeven td:first-child { box-shadow: inset 3px 0 0 var(--green); }
 .cmp-table { min-width: 520px; }
-.cmp-table th button { border: 0; background: none; cursor: pointer; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; padding: 4px 8px; border-radius: 6px; }
+.cmp-table th button { border: 0; background: none; cursor: pointer; font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; padding: 4px 9px; border-radius: 6px; }
 .cmp-table th button:hover { background: var(--surface); color: var(--ink); }
 .cmp-table th.on button { background: var(--primary); color: var(--on-primary); }
-.cmp-table td.pos { color: var(--primary-strong); } .cmp-table td.neg { color: var(--red); }
-.cmp-table td.on { background: color-mix(in srgb, var(--primary) 6%, transparent); font-weight: 700; }
+.cmp-table td.pos { color: var(--green); } .cmp-table td.neg { color: var(--red); }
+.cmp-table td.on { background: color-mix(in srgb, var(--primary) 5%, transparent); font-weight: 800; }
 
-.caveat { margin-top: 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 2px 16px; font-size: 13px; color: var(--ink-faint); }
-.caveat summary { cursor: pointer; padding: 12px 0; font-weight: 600; color: var(--ink-soft); }
+.badge { align-self: flex-start; display: inline-flex; font-size: 10.5px; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1px solid; text-transform: uppercase; letter-spacing: .05em; margin-top: 6px; }
+.badge.ok { background: var(--green-bg); color: var(--green); border-color: var(--green-line); }
+.badge.off { background: var(--amber-bg); color: var(--amber); border-color: var(--amber-line); }
+
+.caveat { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 2px 18px; font-size: 13px; color: var(--ink-soft); margin-top: 18px; }
+.caveat summary { cursor: pointer; padding: 13px 0; font-weight: 700; color: var(--ink); }
 .caveat p { margin: 0 0 14px; line-height: 1.7; }
 
 /* ---------- Mode B ---------- */
-.mb-grid { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 20px; align-items: start; }
+.mb-grid { display: grid; grid-template-columns: 310px minmax(0, 1fr); gap: 18px; align-items: start; }
 .mb-grid > * { min-width: 0; }
-.mb-inputs { position: sticky; top: 84px; margin: 0; }
-.mb-output .card { margin-bottom: 16px; }
-.field { margin-bottom: 16px; }
-.field label, .field-label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-soft); margin-bottom: 7px; }
-.field label small, .bor-head small { font-weight: 400; color: var(--ink-faint); }
+.mb-inputs { position: sticky; top: 76px; margin: 0; }
+.field { margin-bottom: 15px; }
+.field label, .field-label { display: block; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 7px; }
+.field label small { font-weight: 600; letter-spacing: 0; text-transform: none; }
 .field .input-unit { width: 100%; }
 .field .input-unit input { width: 100%; flex: 1; }
-
-.bor-block { margin-top: 6px; padding: 16px; border-radius: 14px; background: var(--primary-tint); border: 1px solid color-mix(in srgb, var(--primary) 18%, transparent); }
+.bor-block { margin-top: 4px; padding: 15px; border-radius: 12px; background: var(--primary-tint); border: 1px solid color-mix(in srgb, var(--primary) 18%, transparent); }
 .bor-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
-.bor-head label { font-weight: 700; font-size: 14px; color: var(--primary-ink); }
-.bor-val { display: flex; align-items: baseline; gap: 2px; font: 600 22px var(--mono); color: var(--primary-strong); }
-.bor-val input { width: 84px; font: inherit; color: inherit; text-align: right; border: 1.5px solid transparent; background: var(--surface); border-radius: 9px; padding: 2px 6px; -moz-appearance: textfield; }
+.bor-head label { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--primary); }
+.bor-val { display: flex; align-items: baseline; gap: 2px; font-size: 22px; font-weight: 800; color: var(--primary); }
+.bor-val input { width: 84px; font: inherit; color: inherit; text-align: right; border: 1.5px solid transparent; background: var(--surface); border-radius: 8px; padding: 2px 6px; -moz-appearance: textfield; }
 .bor-val input::-webkit-outer-spin-button, .bor-val input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .bor-val input:focus { outline: none; border-color: var(--primary); }
 .range-wrap { position: relative; height: 26px; display: flex; align-items: center; }
-.ideal-band { position: absolute; height: 14px; top: 6px; border-radius: 4px; background: color-mix(in srgb, var(--primary) 22%, transparent); pointer-events: none; }
+.ideal-band { position: absolute; height: 14px; top: 6px; border-radius: 4px; background: color-mix(in srgb, var(--green) 28%, transparent); pointer-events: none; }
 input[type=range] {
   --fill: 70%;
-  position: relative; -webkit-appearance: none; appearance: none; width: 100%; height: 8px; border-radius: 99px; margin: 0; cursor: pointer;
+  position: relative; -webkit-appearance: none; appearance: none; width: 100%; height: 7px; border-radius: 99px; margin: 0; cursor: pointer;
   background: linear-gradient(to right, var(--primary) var(--fill), color-mix(in srgb, var(--surface) 70%, transparent) var(--fill));
 }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--surface); border: 4px solid var(--primary); box-shadow: var(--shadow-lg); transition: transform .15s; }
-input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.1); }
-input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--surface); border: 4px solid var(--primary); box-shadow: var(--shadow-lg); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: var(--surface); border: 4px solid var(--primary); box-shadow: var(--shadow); }
+input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 4px solid var(--primary); }
 input[type=range]::-moz-range-track { background: transparent; }
-.range-scale { display: flex; justify-content: space-between; font: 500 10.5px var(--mono); color: var(--ink-faint); margin-top: 4px; }
+.range-scale { display: flex; justify-content: space-between; font-size: 10.5px; font-weight: 600; color: var(--ink-faint); margin-top: 4px; }
 .presets { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
 .hint { font-size: 11.5px; color: var(--ink-faint); margin: 10px 0 0; }
 
-.rev-hero { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%); color: var(--on-primary); border: 0; box-shadow: var(--shadow-lg); }
-.rev-hero .muted { color: inherit; opacity: .8; }
-.rev-num { font: 700 clamp(28px, 4.5vw, 40px)/1.15 var(--mono); letter-spacing: -.03em; margin: 2px 0 4px; }
-.rev-hero .badge { background: rgba(255, 255, 255, .18); color: inherit; border-color: rgba(255, 255, 255, .3); font-size: 12px; padding: 5px 12px; }
-
-.stat-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
-.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.stat-label { font-size: 12px; font-weight: 600; color: var(--ink-faint); }
-.stat-value { font: 600 19px var(--mono); letter-spacing: -.02em; }
-.stat small { font-size: 11.5px; color: var(--ink-faint); }
-.badge { align-self: flex-start; display: inline-flex; font: 600 10.5px var(--font); padding: 2px 8px; border-radius: 999px; border: 1px solid; }
-.badge.ok { background: var(--primary-tint); color: var(--primary-strong); border-color: color-mix(in srgb, var(--primary) 30%, transparent); }
-.badge.off { background: var(--amber-tint); color: var(--amber); border-color: color-mix(in srgb, var(--amber) 30%, transparent); }
+.rev-hero { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; background: var(--royal); color: #fff; border: 0; }
+.rev-hero small { display: block; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .7; }
+.rev-hero span { font-size: 13px; opacity: .8; }
+.rev-num { font-size: clamp(28px, 4.5vw, 38px); font-weight: 800; line-height: 1.15; letter-spacing: -.03em; margin: 4px 0; }
+.rev-hero .badge { background: rgba(255, 255, 255, .14); color: #fff; border-color: rgba(255, 255, 255, .28); font-size: 11px; padding: 5px 12px; margin: 0; }
 
 .bed-grid { display: flex; flex-wrap: wrap; gap: 5px; }
-.bed-grid i { width: 18px; height: 18px; border-radius: 5px; background: var(--sunk); border: 1px solid var(--line-strong); transition: background .25s var(--d), border-color .25s var(--d), transform .25s var(--d); }
+.bed-grid i { width: 17px; height: 17px; border-radius: 4px; background: var(--sunk); border: 1px solid var(--line-strong); transition: background .2s var(--d), border-color .2s var(--d); }
 .bed-grid i.on { background: var(--primary); border-color: var(--primary); }
 
-.cta-card {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-  padding: 18px 20px; border-radius: var(--radius); border: 1.5px dashed color-mix(in srgb, var(--primary) 45%, transparent); background: var(--primary-tint);
-}
-.cta-card b { font-size: 15px; color: var(--primary-ink); }
-.cta-card p { margin: 2px 0 0; font-size: 13px; color: var(--ink-soft); }
+.cta-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.cta-card p { margin: 3px 0 0; font-size: 13px; color: var(--ink-soft); }
 
-/* ---------- footer, toast ---------- */
-.site-footer { margin-top: 48px; border-top: 1px solid var(--line); padding: 20px 0 calc(20px + env(safe-area-inset-bottom, 0px)); font-size: 12.5px; color: var(--ink-faint); }
-.footer-inner { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-.toast {
-  position: fixed; left: 50%; bottom: 24px; z-index: 80; transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
-  background: var(--ink); color: var(--surface); padding: 11px 18px; border-radius: 12px; font-size: 13.5px; font-weight: 600; box-shadow: var(--shadow-lg);
-  transition: opacity .25s, transform .25s; max-width: calc(100% - 32px);
-}
+.foot { margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-faint); display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+
+.toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: #0F172A; color: #fff; padding: 11px 18px; border-radius: 10px; font-size: 13.5px; font-weight: 600; box-shadow: 0 12px 28px -10px rgba(0, 0, 0, .45); transition: opacity .25s, transform .25s; max-width: calc(100% - 32px); }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- responsif ---------- */
-@media (max-width: 1000px) {
-  .cat-grid { grid-template-columns: repeat(2, 1fr); }
-  .stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
+  .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 880px) {
-  .ws-grid { grid-template-columns: 1fr; }
+@media (max-width: 960px) {
+  .sidebar { transform: translateX(-100%); box-shadow: 0 0 40px rgba(0, 0, 0, .4); }
+  body.nav-open .sidebar { transform: none; }
+  body.nav-open .scrim { display: block; position: fixed; inset: 0; z-index: 45; background: rgba(5, 8, 20, .45); }
+  .main { margin-left: 0; }
+  .menu-btn { display: grid; }
+  .ws-grid { grid-template-columns: minmax(0, 1fr); }
   .mb-grid { grid-template-columns: minmax(0, 1fr); }
   .mb-inputs { position: static; }
 }
-@media (max-width: 720px) {
-  .topbar-inner { flex-wrap: wrap; gap: 10px; padding: 10px 16px; }
-  .mode-switch { order: 3; width: 100%; }
-  .mode-tab { flex: 1; justify-content: center; padding: 8px 6px; font-size: 13px; }
-  .wrap { padding: 0 16px; }
-  .hero { padding: 28px 0 20px; }
-  .lede { font-size: 15px; }
+@media (max-width: 640px) {
+  .topbar { padding: 0 14px; gap: 8px; }
+  .status-pill { display: none; }
+  .content { padding: 16px 14px 32px; }
+  .card { padding: 16px; }
+  .page-head { padding: 18px 16px 18px 20px; }
+  .page-head h1 { font-size: 20px; }
+  .head-side { align-items: flex-start; text-align: left; width: 100%; flex-direction: row; justify-content: space-between; align-items: center; }
+  .step-card { padding: 12px; }
   .stepper { gap: 6px; }
-  .step { flex-direction: column; text-align: center; gap: 6px; padding: 10px 6px; }
+  .stepper li + li::before { display: none; }
+  .step { flex-direction: column; text-align: center; gap: 5px; padding: 8px 4px; }
   .step-text small { display: none; }
-  .step-text b { font-size: 12.5px; }
-  .card { padding: 16px; border-radius: 14px; }
+  .step-text b { font-size: 12px; white-space: normal; }
+  .range-pill { display: none; }
   .kbd-hint { display: none; }
   .card-foot .btn { width: 100%; }
-  .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .kpi { padding: 14px 12px 12px; }
-  .kpi-value { font-size: 19px; }
-  .panel-head .seg { width: 100%; }
-  .panel-head .seg .seg-btn { flex: 1; }
+  .kpi { padding: 13px 12px 12px; }
+  .kpi-value { font-size: 21px; }
+  .card-head .seg { width: 100%; }
+  .card-head .seg .seg-btn { flex: 1; }
   .action-bar .btn { flex: 1; }
   .cta-card .btn { width: 100%; }
-  html { scroll-padding-top: 120px; }
 }
 @media (max-width: 440px) {
-  .cat-grid { grid-template-columns: 1fr; }
-  .cat { flex-direction: row; align-items: center; padding: 12px 14px; }
-  .brand-text small { display: none; }
-  .mode-tab .long { display: none; }
+  .cat-grid { grid-template-columns: minmax(0, 1fr); }
+  .cat { flex-direction: row; align-items: center; }
   .ws-row { flex-wrap: wrap; }
   .ws-row .input-unit { width: 100%; }
   .ws-row .input-unit input { width: 100%; flex: 1; }
@@ -519,298 +527,328 @@ input[type=range]::-moz-range-track { background: transparent; }
   .input-unit.sm input { width: 44px; }
 }
 
-/* ---------- cetak ---------- */
+/* ---------- cetak / Export PDF ---------- */
 @media print {
-  :root { --bg: #fff; --bg-grad: none; --shadow: none; --shadow-sm: none; --shadow-lg: none; }
-  .topbar, .stepper, .action-bar, .btn-row, .panel-head .seg, .site-footer, .hero, .skip-link, .toast { display: none !important; }
+  .sidebar, .topbar, .scrim, .step-card, .action-bar, .btn-row, .head-side .btn, .card-head .seg, .toast, .foot { display: none !important; }
+  .main { margin: 0; }
   body { background: #fff; }
   .card, .kpi { break-inside: avoid; box-shadow: none; }
-  .caveat { display: block; } .caveat[open] summary, .caveat summary { list-style: none; }
   .table-wrap { overflow: visible; }
 }
-</style>
-  <script>
-    /* Terapkan tema tersimpan sebelum render agar tidak berkedip. */
-    try { var t = localStorage.getItem('skrs:theme'); if (t) document.documentElement.dataset.theme = JSON.parse(t); } catch (e) {}
-  </script>
+  </style>
 </head>
 <body>
 
-<a class="skip-link" href="#main">Lewati ke konten</a>
-
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#kelayakan" aria-label="Beranda simulator">
-      <span class="brand-logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg>
-      </span>
-      <span class="brand-text">
-        <b>Simulator Kelayakan</b>
-        <small>RSP UI · Perencanaan &amp; Pengembangan</small>
-      </span>
+<div class="app">
+  <!-- =================== SIDEBAR =================== -->
+  <aside class="sidebar" id="sidebar" aria-label="Navigasi utama">
+    <a class="side-brand" href="#kelayakan">
+      <span class="side-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg></span>
+      <span><b>Simulator Kelayakan</b><small>RSP Universitas Indonesia</small></span>
     </a>
 
-    <nav class="mode-switch" role="tablist" aria-label="Pilih mode">
-      <button class="mode-tab active" role="tab" aria-selected="true" data-mode="a" id="tab-a">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
-        <span>Kelayakan<span class="long"> investasi</span></span>
-      </button>
-      <button class="mode-tab" role="tab" aria-selected="false" data-mode="b" id="tab-b">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18V7M2 13h20v5M22 18v-3a3 3 0 0 0-3-3h-9v1"/><circle cx="6" cy="10" r="2"/></svg>
-        <span>Utilisasi<span class="long"> &amp; pendapatan</span></span>
-      </button>
-    </nav>
-
-    <button class="icon-btn" id="themeToggle" type="button" aria-label="Ganti tema terang/gelap" title="Ganti tema">
-      <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-      <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <div class="side-section">Analitik</div>
+    <button class="nav-item active" type="button" data-mode="a">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+      Kelayakan Investasi
     </button>
-  </div>
-</header>
+    <button class="nav-item" type="button" data-mode="b">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 18V7M2 13h20v5M22 18v-3a3 3 0 0 0-3-3h-9v1"/><circle cx="6" cy="10" r="2"/></svg>
+      Utilisasi &amp; Pendapatan
+    </button>
 
-<main id="main" class="wrap">
+    <div class="side-section">Panduan</div>
+    <button class="nav-item" type="button" data-target="method">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h8M8 11h6"/></svg>
+      Catatan Metodologi
+    </button>
 
-  <!-- =================== MODE A: KELAYAKAN INVESTASI =================== -->
-  <div id="modeA" class="mode" role="tabpanel" aria-labelledby="tab-a">
-
-    <section class="hero">
-      <h1>Uji kelayakan <em>rencana pengembangan</em></h1>
-      <p class="lede">Tulis rencana dengan bahasa bebas, konfirmasi asumsinya, lalu lihat NPV, IRR, payback, dan BEP — lengkap dengan skenario pesimis–optimis.</p>
-    </section>
-
-    <ol class="stepper" aria-label="Langkah">
-      <li><button class="step active" data-step="1" type="button"><span class="step-num">1</span><span class="step-text"><b>Deskripsi rencana</b><small>Kategori &amp; uraian</small></span></button></li>
-      <li><button class="step" data-step="2" type="button" disabled><span class="step-num">2</span><span class="step-text"><b>Konfirmasi asumsi</b><small>Worksheet parameter</small></span></button></li>
-      <li><button class="step" data-step="3" type="button" disabled><span class="step-num">3</span><span class="step-text"><b>Hasil kelayakan</b><small>Indikator &amp; proyeksi</small></span></button></li>
-    </ol>
-
-    <!-- Langkah 1 -->
-    <section class="panel show" id="panel-1" aria-labelledby="h-step1">
-      <div class="card">
-        <div class="card-head">
-          <h2 id="h-step1">Jenis pengembangan</h2>
-          <p class="muted">Pilih kategori — asumsi baseline akan menyesuaikan.</p>
-        </div>
-        <div class="cat-grid" id="catGrid" role="radiogroup" aria-label="Kategori pengembangan"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <h2><label for="promptInput">Uraian rencana</label></h2>
-          <button class="link-btn" id="fillExample" type="button">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8L4 8.8h6.1z"/></svg>
-            Gunakan contoh
-          </button>
-        </div>
-        <textarea id="promptInput" rows="4" placeholder="Contoh: pengembangan rawat inap eksekutif 2 lantai, 40 TT, CAPEX sekitar 35 miliar, target okupansi 75% di tahun ke-3, tarif kamar rata-rata Rp 1,5 juta per hari."></textarea>
-        <div class="detect-bar" id="detectBar" aria-live="polite">
-          <span class="detect-label">Terbaca otomatis:</span>
-          <span class="detect-chips" id="detectChips"><span class="muted">belum ada — sebutkan CAPEX, TT, BOR %, tarif, atau tahun target.</span></span>
-        </div>
-        <div class="card-foot">
-          <span class="kbd-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> untuk lanjut</span>
-          <button class="btn primary" id="parseBtn" type="button">
-            Proses rencana
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Langkah 2 -->
-    <section class="panel" id="panel-2" aria-labelledby="h-step2">
-      <div class="panel-head">
-        <div>
-          <h2 id="h-step2">Worksheet asumsi</h2>
-          <p class="muted" id="worksheetCat"></p>
-        </div>
-        <button class="btn ghost sm" id="resetBtn" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-          Reset ke baseline
-        </button>
-      </div>
-      <div class="note" id="extractNote"></div>
-      <div class="ws-grid" id="worksheetGroups"></div>
-      <div class="action-bar">
-        <button class="btn ghost" id="backTo1" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-          Kembali
-        </button>
-        <button class="btn primary" id="calcBtn" type="button">
-          Hitung kelayakan
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-    </section>
-
-    <!-- Langkah 3 -->
-    <section class="panel" id="panel-3" aria-labelledby="h-step3">
-      <div class="panel-head">
-        <div>
-          <h2 id="h-step3">Hasil kelayakan</h2>
-          <p class="muted" id="resultCat"></p>
-        </div>
-        <div class="seg" id="scenarioRow" role="radiogroup" aria-label="Skenario"></div>
-      </div>
-
-      <div class="verdict" id="verdict"></div>
-      <div class="kpi-grid" id="kpiGrid"></div>
-
-      <div class="card">
-        <div class="card-head">
-          <h3>Arus kas tahunan &amp; kumulatif</h3>
-          <div class="legend">
-            <span><i class="sw sw-pos"></i>Arus kas positif</span>
-            <span><i class="sw sw-neg"></i>Negatif</span>
-            <span><i class="sw sw-line"></i>Kumulatif</span>
-          </div>
-        </div>
-        <div class="chart" id="chartWrap"></div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <h3>Perbandingan skenario</h3>
-          <p class="muted">Klik kolom untuk berpindah skenario.</p>
-        </div>
-        <div class="table-wrap"><table class="cmp-table" id="cmpTable"></table></div>
-      </div>
-
-      <div class="card">
-        <div class="card-head">
-          <h3>Proyeksi tahunan</h3>
-          <div class="btn-row">
-            <button class="btn ghost sm" id="csvBtn" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
-              Unduh CSV
-            </button>
-            <button class="btn ghost sm" id="printBtn" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2"/><rect x="6" y="14" width="12" height="7"/></svg>
-              Cetak
-            </button>
-          </div>
-        </div>
-        <div class="table-wrap"><table class="proj-table" id="projTable"></table></div>
-      </div>
-
-      <div class="action-bar">
-        <button class="btn ghost" id="backTo2" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-          Ubah asumsi
-        </button>
-        <button class="btn ghost" id="restartBtn" type="button">Rencana baru</button>
-      </div>
-
-      <details class="caveat">
-        <summary>Catatan metodologi</summary>
-        <p>Prototipe ilustratif. Ekstraksi parameter dari teks bebas memakai pencocokan kata kunci sederhana, bukan model bahasa — semua nilai tetap perlu dikonfirmasi pada worksheet. NPV/IRR/ROI dihitung dari arus kas ke RSP UI (arus kas ekuitas bila memakai pinjaman atau KSO-BLT). Depresiasi garis lurus, CAPEX dibebankan pada tahun ke-0, tanpa fasing konstruksi. Versi produksi perlu menyesuaikan dengan format kajian kelayakan RSP UI yang berlaku — termasuk skema BLT, PSAK 73 untuk sewa alkes, dan struktur Bab III market/demand.</p>
-      </details>
-    </section>
-  </div>
-
-  <!-- =================== MODE B: UTILISASI & PENDAPATAN =================== -->
-  <div id="modeB" class="mode" role="tabpanel" aria-labelledby="tab-b" hidden>
-
-    <section class="hero">
-      <span class="eyebrow">Analisis rawat inap</span>
-      <h1>Utilisasi <em>dan</em> pendapatan</h1>
-      <p class="lede">Geser BOR untuk melihat hari rawat, jumlah pasien, BTO, TOI, dan pendapatan tahunan — lalu kirim hasilnya sebagai asumsi kelayakan investasi.</p>
-    </section>
-
-    <div class="mb-grid">
-      <aside class="card mb-inputs">
-        <div class="field">
-          <label for="mbTT">Tempat tidur (TT)</label>
-          <div class="input-unit"><input type="number" id="mbTT" value="40" min="0" step="1" inputmode="numeric"><span>TT</span></div>
-        </div>
-        <div class="field">
-          <label for="mbAVLOS">AVLOS <small>lama rawat rata-rata</small></label>
-          <div class="input-unit"><input type="number" id="mbAVLOS" value="4" min="0.1" step="0.1" inputmode="decimal"><span>hari</span></div>
-        </div>
-        <div class="field">
-          <span class="field-label">Basis tarif</span>
-          <div class="seg seg-full" role="radiogroup" aria-label="Basis tarif">
-            <button class="seg-btn active" type="button" data-tmode="day" id="tmodeDay" role="radio" aria-checked="true">Per hari rawat</button>
-            <button class="seg-btn" type="button" data-tmode="episode" id="tmodeEpisode" role="radio" aria-checked="false">Per episode</button>
-          </div>
-        </div>
-        <div class="field">
-          <label for="mbTariff" id="mbTariffLabel">Tarif per hari rawat</label>
-          <div class="input-unit"><input type="number" id="mbTariff" value="1.2" min="0" step="0.05" inputmode="decimal"><span>juta</span></div>
-        </div>
-
-        <div class="bor-block">
-          <div class="bor-head">
-            <label for="mbBOR">BOR <small>target okupansi</small></label>
-            <div class="bor-val"><input type="number" id="mbBORnum" min="0" max="100" step="0.1" value="70" aria-label="Nilai BOR">%</div>
-          </div>
-          <div class="range-wrap">
-            <span class="ideal-band" style="left:60%;width:25%" title="Rentang ideal 60–85%"></span>
-            <input type="range" id="mbBOR" min="0" max="100" step="0.1" value="70">
-          </div>
-          <div class="range-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
-          <div class="presets" aria-label="Preset BOR">
-            <button type="button" class="chip" data-bor="60">60%</button>
-            <button type="button" class="chip" data-bor="70">70%</button>
-            <button type="button" class="chip" data-bor="80">80%</button>
-            <button type="button" class="chip" data-bor="85">85%</button>
-          </div>
-          <p class="hint">Pita hijau = rentang ideal Barber-Johnson (60–85%).</p>
-        </div>
-      </aside>
-
-      <div class="mb-output">
-        <div class="rev-hero card" id="mbRevenue"></div>
-        <div class="stat-grid" id="mbStats"></div>
-        <div class="card">
-          <div class="card-head"><h3>Okupansi tempat tidur</h3><span class="muted" id="mbBedCaption"></span></div>
-          <div class="bed-grid" id="mbBedGrid"></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>Pendapatan tahunan vs BOR</h3><span class="muted">Klik / seret grafik untuk mengubah BOR</span></div>
-          <div class="chart" id="mbChartWrap"></div>
-        </div>
-        <div class="card">
-          <div class="card-head">
-            <h3>BTO &amp; TOI vs BOR</h3>
-            <div class="legend"><span><i class="sw sw-line teal"></i>BTO (kiri)</span><span><i class="sw sw-dash"></i>TOI (kanan)</span></div>
-          </div>
-          <div class="chart" id="mbIndicatorChartWrap"></div>
-        </div>
-        <div class="cta-card">
-          <div>
-            <b>Lanjutkan ke kelayakan investasi</b>
-            <p>TT, BOR, dan tarif efektif per hari rawat akan dipakai sebagai asumsi.</p>
-          </div>
-          <button class="btn primary" id="bridgeBtn" type="button">
-            Pakai proyeksi ini
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </button>
-        </div>
-      </div>
+    <div class="side-user">
+      <span class="avatar" aria-hidden="true">P</span>
+      <div><b>Perencanaan &amp; Pengembangan</b><small>RSP UI</small></div>
     </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
 
-    <details class="caveat">
-      <summary>Definisi indikator</summary>
-      <p>Hari rawat tersedia = TT × 365; BOR = hari rawat terisi ÷ hari rawat tersedia; pasien keluar = hari rawat terisi ÷ AVLOS; BTO = pasien keluar ÷ TT; TOI = (hari tersedia − hari terisi) ÷ pasien keluar. Rentang ideal mengacu Barber-Johnson/Kemenkes: BOR 60–85%, AVLOS 6–9 hari, BTO 40–50 kali, TOI 1–3 hari. Kurva mengasumsikan AVLOS dan tarif konstan di seluruh rentang BOR.</p>
-    </details>
-  </div>
-</main>
+  <!-- =================== KONTEN =================== -->
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Buka menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="crumb">
+        <span>RSP UI</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        <b id="crumbTitle">Kelayakan Investasi</b>
+      </div>
+      <span class="status-pill" title="Isian terakhir tersimpan di browser ini">Tersimpan otomatis</span>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Ganti tema terang/gelap" title="Ganti tema">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </header>
 
-<footer class="site-footer">
-  <div class="wrap footer-inner">
-    <span>Simulator Kelayakan Investasi · prototipe RSP UI</span>
-    <span id="footCategory"></span>
+    <main class="content" id="main">
+
+      <!-- =================== MODE A: KELAYAKAN INVESTASI =================== -->
+      <div id="modeA" class="mode">
+
+        <section class="card page-head">
+          <div>
+            <div class="eyebrow">Kajian Kelayakan</div>
+            <h1>Kelayakan Investasi Pengembangan</h1>
+            <p>Uraikan rencana pengembangan, konfirmasi asumsinya, lalu lihat <b>NPV</b>, <b>IRR</b>, <b>payback</b>, dan <b>BEP</b> lengkap dengan skenario pesimis · moderat · optimis.</p>
+          </div>
+          <div class="head-side">
+            <div><small>Tanggal analisis</small><b class="today"></b></div>
+            <button class="btn dark sm print-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+              Export PDF
+            </button>
+          </div>
+        </section>
+
+        <div class="card step-card">
+          <ol class="stepper" aria-label="Langkah">
+            <li><button class="step active" data-step="1" type="button"><span class="step-num">1</span><span class="step-text"><small>Langkah 1</small><b>Deskripsi rencana</b></span></button></li>
+            <li><button class="step" data-step="2" type="button" disabled><span class="step-num">2</span><span class="step-text"><small>Langkah 2</small><b>Konfirmasi asumsi</b></span></button></li>
+            <li><button class="step" data-step="3" type="button" disabled><span class="step-num">3</span><span class="step-text"><small>Langkah 3</small><b>Hasil kelayakan</b></span></button></li>
+          </ol>
+          <span class="range-pill">Kategori <b id="catPill">Rawat inap</b></span>
+        </div>
+
+        <!-- Langkah 1 -->
+        <section class="panel show" id="panel-1">
+          <div class="card">
+            <div class="card-head">
+              <div><h3>Jenis pengembangan</h3><p class="muted">Pilih kategori — asumsi baseline menyesuaikan.</p></div>
+            </div>
+            <div class="cat-grid" id="catGrid" role="radiogroup" aria-label="Kategori pengembangan"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><h3><label for="promptInput">Uraian rencana</label></h3><p class="muted">Tulis bebas — angka penting terbaca otomatis.</p></div>
+              <button class="link-btn" id="fillExample" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8-5-3.6-5 3.6 1.9-5.8L4 8.8h6.1z"/></svg>
+                Gunakan contoh
+              </button>
+            </div>
+            <textarea id="promptInput" rows="4" placeholder="Contoh: pengembangan rawat inap eksekutif 2 lantai, 40 TT, CAPEX sekitar 35 miliar, target okupansi 75% di tahun ke-3, tarif kamar rata-rata Rp 1,5 juta per hari."></textarea>
+            <div class="detect-bar" aria-live="polite">
+              <span class="detect-label">Terbaca otomatis</span>
+              <span class="detect-chips" id="detectChips"></span>
+            </div>
+            <div class="card-foot">
+              <span class="kbd-hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> untuk lanjut</span>
+              <button class="btn primary" id="parseBtn" type="button">
+                Proses rencana
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Langkah 2 -->
+        <section class="panel" id="panel-2">
+          <div class="note" id="extractNote"></div>
+          <div class="ws-grid" id="worksheetGroups"></div>
+          <div class="action-bar">
+            <div class="btn-row">
+              <button class="btn ghost" id="backTo1" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+                Kembali
+              </button>
+              <button class="btn ghost" id="resetBtn" type="button">Reset ke baseline</button>
+            </div>
+            <button class="btn primary" id="calcBtn" type="button">
+              Hitung kelayakan
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- Langkah 3 -->
+        <section class="panel" id="panel-3">
+          <div class="card step-card">
+            <div style="flex:1 1 240px;min-width:0">
+              <h3>Skenario</h3>
+              <p class="muted" id="resultCat"></p>
+            </div>
+            <div class="seg" id="scenarioRow" role="radiogroup" aria-label="Skenario"></div>
+          </div>
+
+          <div class="verdict" id="verdict"></div>
+          <div class="kpi-grid" id="kpiGrid"></div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><h3>Arus kas tahunan &amp; kumulatif</h3><p class="muted">Arahkan kursor ke batang untuk detail per tahun.</p></div>
+              <div class="legend">
+                <span><i class="sw sw-pos"></i>Positif</span>
+                <span><i class="sw sw-neg"></i>Negatif</span>
+                <span><i class="sw sw-line"></i>Kumulatif</span>
+              </div>
+            </div>
+            <div class="chart" id="chartWrap"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><h3>Perbandingan skenario</h3><p class="muted">Klik judul kolom untuk berpindah skenario.</p></div>
+              <span class="count-pill">3 skenario</span>
+            </div>
+            <div class="table-wrap"><table class="cmp-table" id="cmpTable"></table></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><h3>Proyeksi tahunan</h3><p class="muted">Nilai dalam rupiah · baris hijau = tahun balik modal.</p></div>
+              <div class="btn-row">
+                <button class="btn ghost sm" id="csvBtn" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                  Unduh CSV
+                </button>
+                <button class="btn ghost sm print-btn" type="button">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4v-7h16v7h-2"/><rect x="6" y="14" width="12" height="7"/></svg>
+                  Cetak
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap"><table class="proj-table" id="projTable"></table></div>
+          </div>
+
+          <div class="action-bar">
+            <button class="btn ghost" id="backTo2" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+              Ubah asumsi
+            </button>
+            <button class="btn ghost" id="restartBtn" type="button">Rencana baru</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- =================== MODE B: UTILISASI & PENDAPATAN =================== -->
+      <div id="modeB" class="mode" hidden>
+
+        <section class="card page-head">
+          <div>
+            <div class="eyebrow">Simulasi Rawat Inap</div>
+            <h1>Utilisasi &amp; Pendapatan Rawat Inap</h1>
+            <p>Atur jumlah TT dan BOR untuk melihat <b>hari rawat</b>, <b>pasien keluar</b>, <b>BTO</b>, <b>TOI</b>, dan <b>pendapatan tahunan</b> — lalu kirim hasilnya sebagai asumsi kelayakan investasi.</p>
+          </div>
+          <div class="head-side">
+            <div><small>Tanggal analisis</small><b class="today"></b></div>
+            <button class="btn dark sm print-btn" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+              Export PDF
+            </button>
+          </div>
+        </section>
+
+        <div class="mb-grid">
+          <aside class="card mb-inputs">
+            <div class="field">
+              <label for="mbTT">Tempat tidur (TT)</label>
+              <div class="input-unit"><input type="number" id="mbTT" value="40" min="0" step="1" inputmode="numeric"><span>TT</span></div>
+            </div>
+            <div class="field">
+              <label for="mbFilled">TT terisi rata-rata <small>· otomatis mengatur BOR</small></label>
+              <div class="input-unit"><input type="number" id="mbFilled" min="0" step="1" inputmode="numeric"><span>TT</span></div>
+            </div>
+            <div class="field">
+              <label for="mbAVLOS">AVLOS <small>· lama rawat rata-rata</small></label>
+              <div class="input-unit"><input type="number" id="mbAVLOS" value="4" min="0.1" step="0.1" inputmode="decimal"><span>hari</span></div>
+            </div>
+            <div class="field">
+              <span class="field-label">Basis tarif</span>
+              <div class="seg seg-full" role="radiogroup" aria-label="Basis tarif">
+                <button class="seg-btn active" type="button" data-tmode="day" id="tmodeDay" role="radio" aria-checked="true">Per hari rawat</button>
+                <button class="seg-btn" type="button" data-tmode="episode" id="tmodeEpisode" role="radio" aria-checked="false">Per episode</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="mbTariff" id="mbTariffLabel">Tarif per hari rawat</label>
+              <div class="input-unit"><input type="number" id="mbTariff" value="1.2" min="0" step="0.05" inputmode="decimal"><span>juta</span></div>
+            </div>
+
+            <div class="bor-block">
+              <div class="bor-head">
+                <label for="mbBOR">BOR</label>
+                <div class="bor-val"><input type="number" id="mbBORnum" min="0" max="100" step="0.1" value="70" aria-label="Nilai BOR">%</div>
+              </div>
+              <div class="range-wrap">
+                <span class="ideal-band" style="left:60%;width:25%" title="Rentang ideal 60–85%"></span>
+                <input type="range" id="mbBOR" min="0" max="100" step="0.1" value="70">
+              </div>
+              <div class="range-scale"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
+              <div class="presets" aria-label="Preset BOR">
+                <button type="button" class="chip" data-bor="60">60%</button>
+                <button type="button" class="chip" data-bor="70">70%</button>
+                <button type="button" class="chip" data-bor="80">80%</button>
+                <button type="button" class="chip" data-bor="85">85%</button>
+              </div>
+              <p class="hint">Pita hijau = rentang ideal Barber-Johnson (60–85%).</p>
+            </div>
+          </aside>
+
+          <div>
+            <div class="card rev-hero" id="mbRevenue"></div>
+            <div class="kpi-grid" id="mbStats"></div>
+            <div class="card">
+              <div class="card-head">
+                <div><h3>Okupansi tempat tidur</h3><p class="muted" id="mbBedCaption"></p></div>
+                <span class="count-pill" id="mbBedPill"></span>
+              </div>
+              <div class="bed-grid" id="mbBedGrid"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div><h3>Pendapatan tahunan vs BOR</h3><p class="muted">Klik / seret grafik untuk mengubah BOR.</p></div>
+              </div>
+              <div class="chart" id="mbChartWrap"></div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <div><h3>BTO &amp; TOI vs BOR</h3><p class="muted">Pita hijau = rentang BOR ideal.</p></div>
+                <div class="legend"><span><i class="sw sw-line royal"></i>BTO (kiri)</span><span><i class="sw sw-dash"></i>TOI (kanan)</span></div>
+              </div>
+              <div class="chart" id="mbIndicatorChartWrap"></div>
+            </div>
+            <div class="card cta-card">
+              <div>
+                <h3>Lanjutkan ke kelayakan investasi</h3>
+                <p>TT, BOR, dan tarif efektif per hari rawat dipakai sebagai asumsi worksheet.</p>
+              </div>
+              <button class="btn primary" id="bridgeBtn" type="button">
+                Pakai proyeksi ini
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <details class="caveat" id="method">
+        <summary>Catatan metodologi</summary>
+        <p><b>Kelayakan investasi.</b> Ekstraksi parameter dari teks bebas memakai pencocokan kata kunci sederhana — semua nilai tetap perlu dikonfirmasi pada worksheet. NPV/IRR/ROI dihitung dari arus kas ke RSP UI (arus kas ekuitas bila memakai pinjaman atau KSO-BLT). Depresiasi garis lurus, CAPEX dibebankan pada tahun ke-0, tanpa fasing konstruksi. Perlu disesuaikan dengan format kajian kelayakan RSP UI yang berlaku — termasuk skema BLT, PSAK 73 untuk sewa alkes, dan struktur Bab III market/demand.</p>
+        <p><b>Indikator rawat inap.</b> Hari rawat tersedia = TT × 365; BOR = hari rawat terisi ÷ hari rawat tersedia; pasien keluar = hari rawat terisi ÷ AVLOS; BTO = pasien keluar ÷ TT; TOI = (hari tersedia − hari terisi) ÷ pasien keluar. Rentang ideal mengacu Barber-Johnson/Kemenkes: BOR 60–85%, AVLOS 6–9 hari, BTO 40–50 kali, TOI 1–3 hari. Kurva mengasumsikan AVLOS dan tarif konstan.</p>
+      </details>
+
+      <footer class="foot">
+        <span>Simulator Kelayakan Investasi · RSP Universitas Indonesia</span>
+        <span>Perencanaan &amp; Pengembangan</span>
+      </footer>
+    </main>
   </div>
-</footer>
+</div>
 
 <div class="tooltip" id="tooltip" role="status" hidden></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 /* =========================================================================
-   Model: pustaka asumsi, ekstraksi teks, model keuangan & indikator ranap.
-   Murni (tanpa DOM) supaya mudah diuji dan dipakai ulang.
+   MODEL — asumsi baseline, ekstraksi teks, rumus keuangan & indikator ranap
    ========================================================================= */
 
 const CATEGORIES = {
@@ -887,9 +925,7 @@ const SCENARIOS = {
 };
 
 /* Rentang ideal indikator rawat inap (Barber-Johnson / Kemenkes). */
-const IDEAL = {
-  bor: [60, 85], avlos: [6, 9], bto: [40, 50], toi: [1, 3],
-};
+const IDEAL = { bor: [60, 85], avlos: [6, 9], bto: [40, 50], toi: [1, 3] };
 
 const EXAMPLE_PROMPT = 'Rencana pengembangan Rawat Inap Eksekutif 2 lantai, 40 TT, CAPEX sekitar 35 miliar, target okupansi 75% di tahun ke-3, tarif kamar rata-rata Rp 1,5 juta per hari.';
 
@@ -1067,7 +1103,7 @@ function verdict(r, p) {
   return { level: 'bad', title: 'Belum layak', text: 'Investasi tidak kembali dalam horizon proyeksi. Asumsi perlu diubah secara signifikan.' };
 }
 
-/* ---------- indikator rawat inap (Mode B) ---------- */
+/* ---------- indikator rawat inap ---------- */
 function computeInpatient({ tt, avlos, tariff, bor, tariffMode }) {
   avlos = avlos || 0.1;
   const hariTersedia = tt * 365;
@@ -1080,10 +1116,10 @@ function computeInpatient({ tt, avlos, tariff, bor, tariffMode }) {
   return { tt, avlos, tariff, bor, hariTersedia, hariTerisi, pasienKeluar, bto, toi, revenue, effTariffPerDay };
 }
 </script>
+
 <script>
 /* =========================================================================
-   UI: navigasi mode & langkah, worksheet, hasil, grafik, Mode B.
-   Bergantung pada fungsi & konstanta di model.js.
+   UI — navigasi, langkah, worksheet, hasil, grafik, Mode Utilisasi
    ========================================================================= */
 
 const $ = (s, el = document) => el.querySelector(s);
@@ -1105,6 +1141,7 @@ const ICONS = {
   renovasi: '<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 21v-4h6v4M8 7h2M14 7h2M8 11h2M14 11h2"/>',
 };
 const svgIcon = body => '<svg viewBox="0 0 24 24" aria-hidden="true">' + body + '</svg>';
+const CHECK = '<path d="M5 12l5 5 9-10"/>';
 
 let toastTimer;
 function toast(msg) {
@@ -1126,7 +1163,7 @@ const state = {
   maxStep: 1,
 };
 
-/* ---------- tema ---------- */
+/* ---------- tema, menu, tanggal, cetak ---------- */
 $('#themeToggle').addEventListener('click', () => {
   const root = document.documentElement;
   const isDark = root.dataset.theme
@@ -1134,23 +1171,31 @@ $('#themeToggle').addEventListener('click', () => {
     : window.matchMedia('(prefers-color-scheme: dark)').matches;
   root.dataset.theme = isDark ? 'light' : 'dark';
   store.set('theme', root.dataset.theme);
-  rerenderCharts();
 });
+$('#menuBtn').addEventListener('click', () => document.body.classList.toggle('nav-open'));
+$('#scrim').addEventListener('click', () => document.body.classList.remove('nav-open'));
+$$('.today').forEach(el => { el.textContent = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); });
+$$('.print-btn').forEach(b => b.addEventListener('click', () => window.print()));
 
 /* ---------- mode (dengan hash URL) ---------- */
+const MODE_TITLE = { a: 'Kelayakan Investasi', b: 'Utilisasi & Pendapatan' };
 function setMode(m, push) {
-  $$('.mode-tab').forEach(t => {
-    const on = t.dataset.mode === m;
-    t.classList.toggle('active', on);
-    t.setAttribute('aria-selected', on);
-  });
+  $$('.nav-item[data-mode]').forEach(t => t.classList.toggle('active', t.dataset.mode === m));
   $('#modeA').hidden = m !== 'a';
   $('#modeB').hidden = m !== 'b';
+  $('#crumbTitle').textContent = MODE_TITLE[m];
+  document.body.classList.remove('nav-open');
   if (m === 'b') renderModeB();
   if (push) history.replaceState(null, '', m === 'b' ? '#utilisasi' : '#kelayakan');
   window.scrollTo({ top: 0 });
 }
-$$('.mode-tab').forEach(t => t.addEventListener('click', () => setMode(t.dataset.mode, true)));
+$$('.nav-item[data-mode]').forEach(t => t.addEventListener('click', () => setMode(t.dataset.mode, true)));
+$('.nav-item[data-target="method"]').addEventListener('click', () => {
+  document.body.classList.remove('nav-open');
+  const d = $('#method');
+  d.open = true;
+  d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 window.addEventListener('hashchange', () => setMode(location.hash === '#utilisasi' ? 'b' : 'a'));
 
 /* ---------- langkah ---------- */
@@ -1158,8 +1203,6 @@ function goToStep(n) {
   state.maxStep = Math.max(state.maxStep, n);
   $$('#modeA .panel').forEach(p => p.classList.remove('show'));
   $('#panel-' + n).classList.add('show');
-  /* Hero hanya di langkah pertama agar worksheet & hasil langsung terlihat. */
-  $('#modeA').classList.toggle('compact', n > 1);
   $$('.step').forEach(b => {
     const i = +b.dataset.step;
     b.classList.toggle('active', i === n);
@@ -1183,13 +1226,14 @@ function renderCategories() {
     return '<button type="button" class="cat' + (on ? ' active' : '') + '" role="radio" aria-checked="' + on + '" data-key="' + k + '">' +
       '<span class="cat-icon">' + svgIcon(ICONS[k]) + '</span>' +
       '<span class="cat-text"><b>' + c.label + '</b><small>' + c.desc + '</small></span>' +
-      '<span class="cat-check" aria-hidden="true">' + svgIcon('<path d="M5 12l5 5 9-10"/>') + '</span></button>';
+      '<span class="cat-check" aria-hidden="true">' + svgIcon(CHECK) + '</span></button>';
   }).join('');
   $$('#catGrid .cat').forEach(b => b.addEventListener('click', () => {
     state.category = b.dataset.key;
     state.categoryTouched = true;
     renderCategories();
   }));
+  $('#catPill').textContent = CATEGORIES[state.category].label;
 }
 
 const DETECT_LABELS = {
@@ -1209,7 +1253,7 @@ function updateDetection() {
     renderCategories();
   }
   $('#detectChips').innerHTML = keys.length
-    ? keys.map(k => '<span class="dchip">' + svgIcon('<path d="M5 12l5 5 9-10"/>') + DETECT_LABELS[k](found[k]) + '</span>').join('')
+    ? keys.map(k => '<span class="dchip">' + svgIcon(CHECK) + DETECT_LABELS[k](found[k]) + '</span>').join('')
     : '<span class="muted">belum ada — sebutkan CAPEX, TT, BOR %, tarif, atau tahun target.</span>';
   store.set('prompt', text);
 }
@@ -1277,9 +1321,8 @@ function group(title, icon, inner) {
 function renderWorksheet() {
   const d = CATEGORIES[state.category];
   const keys = Object.keys(state.detected);
+  $('#catPill').textContent = d.label;
 
-  $('#worksheetCat').textContent = 'Kategori: ' + d.label;
-  $('#footCategory').textContent = d.label;
   $('#extractNote').innerHTML = state.worksheetNote || (keys.length
     ? svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/>') + '<span><b>' + keys.length + ' parameter terbaca</b> dari uraian (ditandai <span class="tag detected">terdeteksi</span>). Sisanya memakai baseline kategori “' + d.label + '”. Periksa dan sesuaikan sebelum dihitung.</span>'
     : svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>') + '<span><b>Tidak ada parameter yang terbaca</b> dari uraian — worksheet memakai baseline kategori “' + d.label + '”. Sesuaikan nilai di bawah sebelum dihitung.</span>');
@@ -1423,10 +1466,26 @@ function setScenario(k) {
   renderResults();
 }
 
-function kpi(label, value, cls, sub, icon) {
-  return '<div class="kpi ' + (cls || '') + '"><div class="kpi-label">' + (icon ? svgIcon(icon) : '') + label + '</div>' +
-    '<div class="kpi-value">' + value + '</div>' + (sub ? '<div class="kpi-sub">' + sub + '</div>' : '') + '</div>';
+/* Kartu statistik: tone = blue | green | red | amber | indigo | gray; bar = 0–100 (opsional). */
+function kpi(label, value, tone, sub, icon, bar) {
+  return '<div class="kpi ' + (tone || '') + '">' +
+    '<div class="kpi-top"><div class="kpi-label">' + label + '</div><span class="kpi-icon">' + svgIcon(icon) + '</span></div>' +
+    '<div class="kpi-value">' + value + '</div>' + (sub ? '<div class="kpi-sub">' + sub + '</div>' : '') +
+    (bar != null ? '<div class="kpi-bar"><i style="--w:' + Math.max(0, Math.min(100, bar)) + '%"></i></div>' : '') + '</div>';
 }
+const IC = {
+  npv: '<path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  irr: '<path d="M3 17l6-6 4 4 8-8M14 7h7v7"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  pct: '<path d="M19 5L5 19M6.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM17.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>',
+  target: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/>',
+  wallet: '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  bars: '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  bed: ICONS.ranap,
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6 6 0 0 1 4 6"/>',
+  rotate: '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+  hourglass: '<path d="M6 2h12M6 22h12M7 2v4l5 6 5-6V2M7 22v-4l5-6 5 6v4"/>',
+};
 
 function renderResults() {
   const p = state.params;
@@ -1435,22 +1494,25 @@ function renderResults() {
   lastResult = r;
 
   renderScenarioRow();
-  $('#resultCat').textContent = d.label + ' · skenario ' + SCENARIOS[state.scenario].label.toLowerCase() + ' (' + SCENARIOS[state.scenario].hint.toLowerCase() + ')';
+  $('#resultCat').textContent = d.label + ' · ' + SCENARIOS[state.scenario].label + ': ' + SCENARIOS[state.scenario].hint.toLowerCase();
 
   const v = verdict(r, p);
-  const vIcon = v.level === 'good' ? '<path d="M5 12l5 5 9-10"/>' : v.level === 'warn' ? '<path d="M12 8v5M12 17h.01"/><path d="M10.3 3.9L2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>' : '<path d="M18 6L6 18M6 6l12 12"/>';
+  const vIcon = v.level === 'good' ? CHECK : v.level === 'warn' ? '<path d="M12 8v5M12 17h.01"/><path d="M10.3 3.9L2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>' : '<path d="M18 6L6 18M6 6l12 12"/>';
   $('#verdict').className = 'verdict ' + v.level;
   $('#verdict').innerHTML = '<span class="verdict-icon">' + svgIcon(vIcon) + '</span><div><b>' + v.title + '</b><p>' + v.text + '</p></div>';
 
-  const equityNote = r.scheme !== 'internal' ? 'arus kas ekuitas RSP UI' : 'arus kas proyek';
+  const equityNote = r.scheme !== 'internal' ? 'arus kas ekuitas' : 'arus kas proyek';
   const k = [];
-  k.push(kpi('NPV', fmtRp(r.NPV), r.NPV >= 0 ? 'pos' : 'neg', 'diskonto ' + fmtPct(p.discountRate) + ' · ' + equityNote, '<path d="M12 2v20M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'));
-  k.push(kpi('IRR', r.IRR === null ? 'n/a' : fmtPct(r.IRR), r.IRR === null ? '' : (r.IRR >= p.discountRate ? 'pos' : 'neg'), r.IRR === null ? 'tidak konvergen' : 'vs diskonto ' + fmtPct(p.discountRate), '<path d="M3 17l6-6 4 4 8-8M14 7h7v7"/>'));
-  k.push(kpi('Payback', r.PB === null ? '> ' + p.horizon + ' thn' : fmtNum(r.PB, 1) + ' thn', r.PB === null ? 'neg' : '', 'dari horizon ' + p.horizon + ' tahun', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'));
-  k.push(kpi('ROI kumulatif', fmtPct(r.ROI), r.ROI >= 0 ? 'pos' : 'neg', 'total arus kas ÷ ekuitas', '<path d="M19 5L5 19M6.5 9a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM17.5 20a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>'));
-  k.push(kpi('BEP utilisasi', isFinite(r.BEP) ? fmtPct(r.BEP) : 'n/a', isFinite(r.BEP) && r.BEP <= p.utilization ? 'pos' : 'neg', 'target ' + fmtPct(p.utilization) + ' · steady-state', '<path d="M3 12h18M12 3v18"/>'));
-  if (r.scheme !== 'internal') k.push(kpi('Ekuitas RSP UI', fmtRp(r.equityCapex), '', 'dari total CAPEX ' + fmtRp(r.capex), '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'));
-  if (r.scheme === 'pinjaman' && r.avgDSCR !== null) k.push(kpi('DSCR rata-rata', fmtNum(r.avgDSCR, 2) + '×', r.avgDSCR >= 1.2 ? 'pos' : 'neg', 'tenor ' + p.loanTenor + ' thn · target ≥ 1,2×', '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>'));
+  k.push(kpi('NPV', fmtRp(r.NPV), r.NPV >= 0 ? 'green' : 'red', 'Diskonto ' + fmtPct(p.discountRate) + ' · ' + equityNote, IC.npv));
+  k.push(kpi('IRR', r.IRR === null ? 'n/a' : fmtNum(r.IRR, 1) + '<small>%</small>', r.IRR === null ? 'gray' : (r.IRR >= p.discountRate ? 'blue' : 'red'),
+    r.IRR === null ? 'Tidak konvergen' : 'vs diskonto ' + fmtPct(p.discountRate), IC.irr, r.IRR === null ? null : r.IRR / (p.discountRate * 2) * 100));
+  k.push(kpi('Payback', r.PB === null ? '> ' + p.horizon + '<small>thn</small>' : fmtNum(r.PB, 1) + '<small>thn</small>', r.PB === null ? 'red' : 'gray',
+    'Dari horizon ' + p.horizon + ' tahun', IC.clock, r.PB === null ? 100 : r.PB / p.horizon * 100));
+  k.push(kpi('ROI kumulatif', fmtNum(r.ROI, 1) + '<small>%</small>', r.ROI >= 100 ? 'indigo' : 'amber', 'Total arus kas ÷ ekuitas', IC.pct, r.ROI));
+  k.push(kpi('BEP utilisasi', isFinite(r.BEP) ? fmtNum(r.BEP, 1) + '<small>%</small>' : 'n/a', isFinite(r.BEP) && r.BEP <= p.utilization ? 'green' : 'red',
+    'Target ' + fmtPct(p.utilization), IC.target, isFinite(r.BEP) ? r.BEP : 100));
+  if (r.scheme !== 'internal') k.push(kpi('Ekuitas RSP UI', fmtRp(r.equityCapex), '', 'Dari CAPEX ' + fmtRp(r.capex), IC.wallet, r.equityCapex / r.capex * 100));
+  if (r.scheme === 'pinjaman' && r.avgDSCR !== null) k.push(kpi('DSCR rata-rata', fmtNum(r.avgDSCR, 2) + '<small>×</small>', r.avgDSCR >= 1.2 ? 'green' : 'red', 'Tenor ' + p.loanTenor + ' thn · target ≥ 1,2×', IC.bars));
   $('#kpiGrid').innerHTML = k.join('');
 
   renderChart(r.rows);
@@ -1465,7 +1527,7 @@ function renderCompare(p) {
     ['NPV', r => fmtRp(r.NPV), r => r.NPV >= 0],
     ['IRR', r => r.IRR === null ? 'n/a' : fmtPct(r.IRR), r => r.IRR !== null && r.IRR >= p.discountRate],
     ['Payback', r => r.PB === null ? '> ' + p.horizon + ' thn' : fmtNum(r.PB, 1) + ' thn', r => r.PB !== null],
-    ['ROI kumulatif', r => fmtPct(r.ROI), r => r.ROI >= 0],
+    ['ROI kumulatif', r => fmtPct(r.ROI), r => r.ROI >= 100],
     ['Status', r => verdict(r, p).title, r => verdict(r, p).level === 'good'],
   ];
   let html = '<thead><tr><th>Indikator</th>' + Object.keys(SCENARIOS).map(k =>
@@ -1487,24 +1549,23 @@ function tableCols(scheme) {
   ];
   if (scheme === 'kso') cols.push({ h: 'Bagi hasil mitra', f: r => fmtRp(r.partnerShare), raw: r => r.partnerShare.toFixed(2) });
   cols.push({ h: 'Opex', f: r => fmtRp(r.opex), raw: r => r.opex.toFixed(2) });
-  cols.push({ h: 'EBITDA', f: r => fmtRp(r.ebitda), raw: r => r.ebitda.toFixed(2), sign: true });
+  cols.push({ h: 'EBITDA', f: r => fmtRp(r.ebitda), raw: r => r.ebitda.toFixed(2), key: 'ebitda' });
   cols.push({ h: 'Depresiasi', f: r => fmtRp(r.dep), raw: r => r.dep.toFixed(2) });
   if (scheme === 'pinjaman') {
     cols.push({ h: 'Bunga', f: r => fmtRp(r.interest), raw: r => r.interest.toFixed(2) });
     cols.push({ h: 'Cicilan pokok', f: r => fmtRp(r.principal), raw: r => r.principal.toFixed(2) });
   }
-  cols.push({ h: 'Laba bersih', f: r => fmtRp(r.ni), raw: r => r.ni.toFixed(2), sign: true });
-  cols.push({ h: 'Arus kas', f: r => fmtRp(r.cash), raw: r => r.cash.toFixed(2), sign: true });
-  cols.push({ h: 'Kumulatif', f: r => fmtRp(r.cum), raw: r => r.cum.toFixed(2), sign: true });
+  cols.push({ h: 'Laba bersih', f: r => fmtRp(r.ni), raw: r => r.ni.toFixed(2), key: 'ni' });
+  cols.push({ h: 'Arus kas', f: r => fmtRp(r.cash), raw: r => r.cash.toFixed(2), key: 'cash' });
+  cols.push({ h: 'Kumulatif', f: r => fmtRp(r.cum), raw: r => r.cum.toFixed(2), key: 'cum' });
   return cols;
 }
 
 function renderTable(rows, scheme) {
   const cols = tableCols(scheme);
-  const keyOf = { 'EBITDA': 'ebitda', 'Laba bersih': 'ni', 'Arus kas': 'cash', 'Kumulatif': 'cum' };
   $('#projTable').innerHTML = '<thead><tr>' + cols.map(c => '<th>' + c.h + '</th>').join('') + '</tr></thead><tbody>' +
     rows.map(r => '<tr class="' + (r.t === 0 ? 'year0' : '') + (r.t > 0 && r.cum >= 0 && rows[r.t - 1].cum < 0 ? ' breakeven' : '') + '">' +
-      cols.map(c => '<td class="' + (c.sign && r[keyOf[c.h]] < 0 ? 'neg' : '') + '">' + c.f(r) + '</td>').join('') + '</tr>').join('') + '</tbody>';
+      cols.map(c => '<td class="' + (c.key && r[c.key] < 0 ? 'neg' : '') + '">' + c.f(r) + '</td>').join('') + '</tr>').join('') + '</tbody>';
 }
 
 $('#csvBtn').addEventListener('click', () => {
@@ -1520,7 +1581,6 @@ $('#csvBtn').addEventListener('click', () => {
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   toast('CSV proyeksi diunduh');
 });
-$('#printBtn').addEventListener('click', () => window.print());
 
 /* ---------- grafik & tooltip ---------- */
 const tip = $('#tooltip');
@@ -1562,18 +1622,17 @@ function renderChart(rows) {
   ticks.forEach(v => {
     const y = yFor(v);
     s += '<line class="grid" x1="' + padL + '" y1="' + y + '" x2="' + (w - padR) + '" y2="' + y + '"/>';
-    s += '<text class="axis" x="' + (padL - 10) + '" y="' + (y + 4) + '" text-anchor="end">' + fmtRp(v) + '</text>';
+    s += '<text x="' + (padL - 10) + '" y="' + (y + 4) + '" text-anchor="end">' + fmtRp(v) + '</text>';
   });
   s += '<line class="zero" x1="' + padL + '" y1="' + zeroY + '" x2="' + (w - padR) + '" y2="' + zeroY + '"/>';
   rows.forEach((r, i) => {
     const yv = yFor(r.cash);
     s += '<rect class="bar ' + (r.cash >= 0 ? 'pos' : 'neg') + '" x="' + (xFor(i) - barW / 2) + '" y="' + Math.min(yv, zeroY) + '" width="' + barW + '" height="' + Math.max(Math.abs(yv - zeroY), 1) + '" rx="4"/>';
   });
-  const pts = rows.map((r, i) => xFor(i) + ',' + yFor(r.cum)).join(' ');
-  s += '<polyline class="cum" points="' + pts + '"/>';
+  s += '<polyline class="cum" points="' + rows.map((r, i) => xFor(i) + ',' + yFor(r.cum)).join(' ') + '"/>';
   rows.forEach((r, i) => { s += '<circle class="cum-dot" cx="' + xFor(i) + '" cy="' + yFor(r.cum) + '" r="3.5"/>'; });
   rows.forEach((r, i) => {
-    s += '<text class="axis" x="' + xFor(i) + '" y="' + (h - 9) + '" text-anchor="middle">' + (r.t === 0 ? 'T0' : 'T' + r.t) + '</text>';
+    s += '<text x="' + xFor(i) + '" y="' + (h - 9) + '" text-anchor="middle">' + (r.t === 0 ? 'T0' : 'T' + r.t) + '</text>';
     s += '<rect class="hit" data-i="' + i + '" x="' + (xFor(i) - slot / 2) + '" y="' + padT + '" width="' + slot + '" height="' + plotH + '"/>';
   });
 
@@ -1592,11 +1651,7 @@ function renderChart(rows) {
   });
 }
 
-function rerenderCharts() {
-  if (!$('#modeB').hidden) renderModeB();
-}
-
-/* ---------- Mode B ---------- */
+/* ---------- Mode Utilisasi ---------- */
 const mbState = store.get('modeB', { tt: 40, avlos: 4, tariff: 1.2, bor: 70, tariffMode: 'day' });
 
 function mbInputs() {
@@ -1646,14 +1701,18 @@ $('#mbBORnum').addEventListener('input', () => {
 });
 $('#mbBORnum').addEventListener('change', () => setBOR(parseFloat($('#mbBORnum').value) || 0));
 $$('.presets .chip').forEach(b => b.addEventListener('click', () => setBOR(+b.dataset.bor)));
+/* TT terisi → BOR (misal 50 dari 77 TT = 64,9%). */
+$('#mbFilled').addEventListener('input', () => {
+  const tt = parseFloat($('#mbTT').value) || 0;
+  const f = parseFloat($('#mbFilled').value);
+  if (tt > 0 && !isNaN(f)) setBOR(Math.min(Math.max(f, 0), tt) / tt * 100);
+});
 
-function badge(value, range) {
+function idealBadge(value, range) {
   const ok = value >= range[0] && value <= range[1];
   return '<span class="badge ' + (ok ? 'ok' : 'off') + '">' + (ok ? 'Ideal' : (value < range[0] ? 'Di bawah ideal' : 'Di atas ideal')) + '</span>';
 }
-function stat(lbl, val, extra) {
-  return '<div class="stat"><div class="stat-label">' + lbl + '</div><div class="stat-value">' + val + '</div>' + (extra || '') + '</div>';
-}
+function idealTone(value, range) { return value >= range[0] && value <= range[1] ? 'green' : 'amber'; }
 
 function renderModeB() {
   const r = computeModeB();
@@ -1661,16 +1720,16 @@ function renderModeB() {
   store.set('modeB', mbState);
 
   $('#mbRevenue').innerHTML =
-    '<div><span class="muted">Pendapatan tahunan</span><div class="rev-num">Rp ' + fmtRp(r.revenue) + '</div>' +
-    '<span class="muted">pada BOR ' + fmtPct(r.bor) + ' · ' + fmtNum(r.tt) + ' TT · tarif efektif ' + fmtRp(r.effTariffPerDay) + '/hari rawat</span></div>' +
-    '<div class="rev-badge">' + badge(r.bor, IDEAL.bor).replace('Ideal', 'BOR ideal') + '</div>';
+    '<div><small>Pendapatan tahunan</small><div class="rev-num">Rp ' + fmtRp(r.revenue) + '</div>' +
+    '<span>BOR ' + fmtPct(r.bor) + ' · ' + fmtNum(r.tt) + ' TT · tarif efektif ' + fmtRp(r.effTariffPerDay) + '/hari rawat</span></div>' +
+    idealBadge(r.bor, IDEAL.bor).replace('>Ideal<', '>BOR ideal<');
 
   $('#mbStats').innerHTML = [
-    stat('Hari rawat terisi', fmtNum(r.hariTerisi), '<small>dari ' + fmtNum(r.hariTersedia) + ' tersedia</small>'),
-    stat('Pasien keluar', fmtNum(r.pasienKeluar), '<small>pasien / tahun</small>'),
-    stat('AVLOS', fmtNum(r.avlos, 1) + ' hr', badge(r.avlos, IDEAL.avlos)),
-    stat('BTO', fmtNum(r.bto, 1) + '×', badge(r.bto, IDEAL.bto)),
-    stat('TOI', fmtNum(r.toi, 1) + ' hr', badge(r.toi, IDEAL.toi)),
+    kpi('Hari rawat terisi', fmtNum(r.hariTerisi), 'blue', 'Dari ' + fmtNum(r.hariTersedia) + ' hari tersedia', IC.bed, r.bor),
+    kpi('Pasien keluar', fmtNum(r.pasienKeluar), 'indigo', 'Pasien per tahun', IC.users),
+    kpi('AVLOS', fmtNum(r.avlos, 1) + '<small>hr</small>', idealTone(r.avlos, IDEAL.avlos), 'Ideal 6–9 hari' + idealBadge(r.avlos, IDEAL.avlos), IC.hourglass),
+    kpi('BTO', fmtNum(r.bto, 1) + '<small>×</small>', idealTone(r.bto, IDEAL.bto), 'Ideal 40–50 kali' + idealBadge(r.bto, IDEAL.bto), IC.rotate),
+    kpi('TOI', fmtNum(r.toi, 1) + '<small>hr</small>', idealTone(r.toi, IDEAL.toi), 'Ideal 1–3 hari' + idealBadge(r.toi, IDEAL.toi), IC.clock),
   ].join('');
 
   renderBedGrid(r);
@@ -1681,20 +1740,21 @@ function renderModeB() {
 function renderBedGrid(r) {
   const tt = Math.max(0, Math.round(r.tt));
   const filled = Math.min(tt, Math.round(tt * r.bor / 100));
+  if (document.activeElement !== $('#mbFilled')) $('#mbFilled').value = filled;
   const scale = tt > 240 ? Math.ceil(tt / 240) : 1;
   const total = Math.ceil(tt / scale), fill = Math.round(filled / scale);
   let cells = '';
-  for (let i = 0; i < total; i++) cells += '<i class="' + (i < fill ? 'on' : '') + '" style="--d:' + (i * 6) + 'ms"></i>';
+  for (let i = 0; i < total; i++) cells += '<i class="' + (i < fill ? 'on' : '') + '" style="--d:' + (i * 4) + 'ms"></i>';
   $('#mbBedGrid').innerHTML = cells;
-  $('#mbBedCaption').innerHTML = '<b>' + filled + '</b> dari ' + tt + ' TT terisi rata-rata' + (scale > 1 ? ' · 1 kotak = ' + scale + ' TT' : '');
+  $('#mbBedCaption').textContent = filled + ' dari ' + tt + ' TT terisi rata-rata' + (scale > 1 ? ' · 1 kotak = ' + scale + ' TT' : '');
+  $('#mbBedPill').textContent = tt + ' TT';
 }
 
 function attachBorDrag(svg, xToBor) {
   let dragging = false;
   const fromEvent = e => {
     const rect = svg.getBoundingClientRect();
-    const vb = svg.viewBox.baseVal;
-    setBOR(xToBor((e.clientX - rect.left) / rect.width * vb.width));
+    setBOR(xToBor((e.clientX - rect.left) / rect.width * svg.viewBox.baseVal.width));
   };
   svg.addEventListener('pointerdown', e => { dragging = true; svg.setPointerCapture(e.pointerId); fromEvent(e); });
   svg.addEventListener('pointermove', e => { if (dragging) fromEvent(e); });
@@ -1715,18 +1775,17 @@ function renderRevenueChart(cur) {
   ticks.forEach(v => {
     const y = yFor(v);
     s += '<line class="grid" x1="' + padL + '" y1="' + y + '" x2="' + (w - padR) + '" y2="' + y + '"/>';
-    s += '<text class="axis" x="' + (padL - 10) + '" y="' + (y + 4) + '" text-anchor="end">' + fmtRp(v) + '</text>';
+    s += '<text x="' + (padL - 10) + '" y="' + (y + 4) + '" text-anchor="end">' + fmtRp(v) + '</text>';
   });
-  [0, 25, 50, 75, 100].forEach(b => { s += '<text class="axis" x="' + xFor(b) + '" y="' + (h - 9) + '" text-anchor="middle">' + b + '%</text>'; });
+  [0, 25, 50, 75, 100].forEach(b => { s += '<text x="' + xFor(b) + '" y="' + (h - 9) + '" text-anchor="middle">' + b + '%</text>'; });
   const line = pts.map(p => xFor(p.bor) + ',' + yFor(p.revenue)).join(' ');
-  s += '<defs><linearGradient id="revFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" class="g0"/><stop offset="1" class="g1"/></linearGradient></defs>';
-  s += '<polygon fill="url(#revFill)" points="' + padL + ',' + (h - padB) + ' ' + line + ' ' + (w - padR) + ',' + (h - padB) + '"/>';
-  s += '<polyline class="line teal" points="' + line + '"/>';
+  s += '<polygon class="area" points="' + padL + ',' + (h - padB) + ' ' + line + ' ' + (w - padR) + ',' + (h - padB) + '"/>';
+  s += '<polyline class="line royal" points="' + line + '"/>';
   const cx = xFor(cur.bor), cy = yFor(cur.revenue);
   s += '<line class="cursor" x1="' + cx + '" y1="' + padT + '" x2="' + cx + '" y2="' + (h - padB) + '"/>';
-  s += '<circle class="knob teal" cx="' + cx + '" cy="' + cy + '" r="6"/>';
-  const lx = Math.min(Math.max(cx, padL + 60), w - padR - 60);
-  s += '<g class="flag"><rect x="' + (lx - 56) + '" y="' + Math.max(cy - 38, 2) + '" width="112" height="24" rx="6"/><text x="' + lx + '" y="' + (Math.max(cy - 38, 2) + 16) + '" text-anchor="middle">Rp ' + fmtRp(cur.revenue) + '</text></g>';
+  s += '<circle class="knob royal" cx="' + cx + '" cy="' + cy + '" r="6"/>';
+  const lx = Math.min(Math.max(cx, padL + 60), w - padR - 60), ly = Math.max(cy - 38, 2);
+  s += '<g class="flag"><rect x="' + (lx - 56) + '" y="' + ly + '" width="112" height="24" rx="6"/><text x="' + lx + '" y="' + (ly + 16) + '" text-anchor="middle">Rp ' + fmtRp(cur.revenue) + '</text></g>';
 
   $('#mbChartWrap').innerHTML = '<svg class="draggable" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Kurva pendapatan tahunan terhadap BOR">' + s + '</svg>';
   attachBorDrag($('#mbChartWrap svg'), x => (x - padL) / plotW * 100);
@@ -1742,26 +1801,26 @@ function renderIndicatorChart(cur) {
   const xFor = b => padL + (b / 100) * plotW;
   const yF = f => padT + plotH * (1 - Math.min(1, f));
 
-  let s = '';
+  let s = '<rect class="ideal" x="' + xFor(IDEAL.bor[0]) + '" y="' + padT + '" width="' + (xFor(IDEAL.bor[1]) - xFor(IDEAL.bor[0])) + '" height="' + plotH + '"/>';
   [0, 0.25, 0.5, 0.75, 1].forEach(f => {
     const y = yF(f);
     s += '<line class="grid" x1="' + padL + '" y1="' + y + '" x2="' + (w - padR) + '" y2="' + y + '"/>';
-    s += '<text class="axis teal" x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end">' + fmtNum(maxBto * f, 0) + '</text>';
-    s += '<text class="axis brass" x="' + (w - padR + 8) + '" y="' + (y + 4) + '">' + fmtNum(maxToi * f, 1) + '</text>';
+    s += '<text class="royal" x="' + (padL - 8) + '" y="' + (y + 4) + '" text-anchor="end">' + fmtNum(maxBto * f, 0) + '</text>';
+    s += '<text class="brass" x="' + (w - padR + 8) + '" y="' + (y + 4) + '">' + fmtNum(maxToi * f, 1) + '</text>';
   });
-  [0, 25, 50, 75, 100].forEach(b => { s += '<text class="axis" x="' + xFor(b) + '" y="' + (h - 9) + '" text-anchor="middle">' + b + '%</text>'; });
-  s += '<polyline class="line teal" points="' + pts.map(p => xFor(p.bor) + ',' + yF(p.bto / maxBto)).join(' ') + '"/>';
+  [0, 25, 50, 75, 100].forEach(b => { s += '<text x="' + xFor(b) + '" y="' + (h - 9) + '" text-anchor="middle">' + b + '%</text>'; });
+  s += '<polyline class="line royal" points="' + pts.map(p => xFor(p.bor) + ',' + yF(p.bto / maxBto)).join(' ') + '"/>';
   s += '<polyline class="line brass dash" points="' + pts.map(p => xFor(p.bor) + ',' + yF(p.toi / maxToi)).join(' ') + '"/>';
   const cx = xFor(cur.bor);
   s += '<line class="cursor" x1="' + cx + '" y1="' + padT + '" x2="' + cx + '" y2="' + (h - padB) + '"/>';
-  s += '<circle class="knob teal" cx="' + cx + '" cy="' + yF(cur.bto / maxBto) + '" r="5.5"/>';
+  s += '<circle class="knob royal" cx="' + cx + '" cy="' + yF(cur.bto / maxBto) + '" r="5.5"/>';
   s += '<circle class="knob brass" cx="' + cx + '" cy="' + yF(cur.toi / maxToi) + '" r="5.5"/>';
 
   $('#mbIndicatorChartWrap').innerHTML = '<svg class="draggable" viewBox="0 0 ' + w + ' ' + h + '" role="img" aria-label="Grafik BTO dan TOI terhadap BOR">' + s + '</svg>';
   attachBorDrag($('#mbIndicatorChartWrap svg'), x => (x - padL) / plotW * 100);
 }
 
-/* ---------- jembatan Mode B → Mode A ---------- */
+/* ---------- jembatan Utilisasi → Kelayakan ---------- */
 $('#bridgeBtn').addEventListener('click', () => {
   const r = computeModeB();
   const base = (state.params && state.params.capex && state.category === 'ranap') ? state.params : CATEGORIES.ranap;
@@ -1771,7 +1830,7 @@ $('#bridgeBtn').addEventListener('click', () => {
     capacity: r.tt, utilization: r.bor, tariff: r.effTariffPerDay, tariffMode: 'single',
   });
   state.detected = { capacity: true, utilization: true, tariff: true };
-  state.worksheetNote = svgIcon('<path d="M4 12h16M14 6l6 6-6 6"/>') + '<span><b>Diisi dari analisis Utilisasi &amp; Pendapatan:</b> TT, BOR, dan tarif efektif per hari rawat mengikuti hasil di mode tersebut. Parameter lain memakai asumsi sebelumnya — sesuaikan bila perlu.</span>';
+  state.worksheetNote = svgIcon('<path d="M4 12h16M14 6l6 6-6 6"/>') + '<span><b>Diisi dari Utilisasi &amp; Pendapatan:</b> TT, BOR, dan tarif efektif per hari rawat mengikuti hasil di halaman tersebut. Parameter lain memakai asumsi sebelumnya — sesuaikan bila perlu.</span>';
   renderCategories();
   renderWorksheet();
   setMode('a', true);
@@ -1794,7 +1853,6 @@ $('#bridgeBtn').addEventListener('click', () => {
   if (saved) $('#promptInput').value = saved;
   renderCategories();
   updateDetection();
-  $('#footCategory').textContent = CATEGORIES[state.category].label;
   setMode(location.hash === '#utilisasi' ? 'b' : 'a');
 })();
 </script>
