@@ -528,13 +528,28 @@ input[type=range]::-moz-range-track { background: transparent; }
 }
 
 /* ---------- cetak / Export PDF ---------- */
+.print-only { display: none; }
 @media print {
-  .sidebar, .topbar, .scrim, .step-card, .action-bar, .btn-row, .head-side .btn, .card-head .seg, .toast, .foot { display: none !important; }
+  @page { size: A4; margin: 12mm; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sidebar, .topbar, .scrim, .step-card, .action-bar, .btn-row, .head-side .btn, .card-head .seg, .toast, .foot, .caveat { display: none !important; }
+  .print-only { display: block; }
   .main { margin: 0; }
-  body { background: #fff; }
-  .card, .kpi { break-inside: avoid; box-shadow: none; }
+  .content { padding: 0; max-width: none; }
+  body { background: #fff; font-size: 12.5px; }
+  .card, .kpi, .verdict { break-inside: avoid; box-shadow: none; }
+  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
   .table-wrap { overflow: visible; }
+  .proj-table { min-width: 0; font-size: 10.5px; }
+  .proj-table th, .proj-table td { padding: 6px 7px; }
+  .chart svg { min-width: 0; }
+  .mb-grid { grid-template-columns: 240px minmax(0, 1fr); }
+  .mb-inputs { position: static; }
 }
+.assump { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 18px; font-size: 12px; }
+.assump div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px solid var(--line); padding: 4px 0; }
+.assump span { color: var(--ink-faint); }
+.assump b { font-weight: 700; }
   </style>
 </head>
 <body>
@@ -678,6 +693,10 @@ input[type=range]::-moz-range-track { background: transparent; }
             <div class="seg" id="scenarioRow" role="radiogroup" aria-label="Skenario"></div>
           </div>
 
+          <div class="card print-only">
+            <div class="card-head"><div><h3>Asumsi yang dipakai</h3></div></div>
+            <div class="assump" id="printAssump"></div>
+          </div>
           <div class="verdict" id="verdict"></div>
           <div class="kpi-grid" id="kpiGrid"></div>
 
@@ -1175,7 +1194,17 @@ $('#themeToggle').addEventListener('click', () => {
 $('#menuBtn').addEventListener('click', () => document.body.classList.toggle('nav-open'));
 $('#scrim').addEventListener('click', () => document.body.classList.remove('nav-open'));
 $$('.today').forEach(el => { el.textContent = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }); });
-$$('.print-btn').forEach(b => b.addEventListener('click', () => window.print()));
+/* Export PDF: di halaman Kelayakan selalu mencetak hasil (langkah 3), bukan formulir. */
+function exportPdf() {
+  if (!$('#modeA').hidden) {
+    if (state.maxStep < 3) { toast('Hitung kelayakan dulu sebelum Export PDF'); return; }
+    renderResults();
+    goToStep(3);
+  }
+  toast('Pilih tujuan "Simpan sebagai PDF" / "Save as PDF"');
+  setTimeout(() => window.print(), 400);
+}
+$$('.print-btn').forEach(b => b.addEventListener('click', exportPdf));
 
 /* ---------- mode (dengan hash URL) ---------- */
 const MODE_TITLE = { a: 'Kelayakan Investasi', b: 'Utilisasi & Pendapatan' };
@@ -1515,6 +1544,14 @@ function renderResults() {
   if (r.scheme === 'pinjaman' && r.avgDSCR !== null) k.push(kpi('DSCR rata-rata', fmtNum(r.avgDSCR, 2) + '<small>×</small>', r.avgDSCR >= 1.2 ? 'green' : 'red', 'Tenor ' + p.loanTenor + ' thn · target ≥ 1,2×', IC.bars));
   $('#kpiGrid').innerHTML = k.join('');
 
+  const scheme = FINANCING_SCHEMES.find(o => o.key === p.financingScheme);
+  $('#printAssump').innerHTML = [
+    ['Kategori', d.label], ['Skenario', SCENARIOS[state.scenario].label], ['CAPEX', fmtRp(p.capex)],
+    [d.capacityLabel, fmtNum(p.capacity) + ' ' + d.capacityUnitTag], [d.utilLabel, fmtPct(p.utilization)], ['Tahun target', 'ke-' + p.rampYear],
+    ['Tarif rata-rata', fmtRp(p.tariff) + ' / ' + (d.tariffUnitTag.split('/')[1] || 'unit')], ['Opex tetap/tahun', fmtRp(p.fixedOpexAnnual)], ['Opex variabel', fmtPct(p.varOpexPct)],
+    ['Pendanaan', scheme ? scheme.label : '-'], ['Diskonto', fmtPct(p.discountRate)], ['Horizon', p.horizon + ' tahun'],
+  ].map(([k, v]) => '<div><span>' + k + '</span><b>' + esc(v) + '</b></div>').join('');
+
   renderChart(r.rows);
   renderCompare(p);
   renderTable(r.rows, r.scheme);
@@ -1742,7 +1779,8 @@ function renderBedGrid(r) {
   const filled = Math.min(tt, Math.round(tt * r.bor / 100));
   if (document.activeElement !== $('#mbFilled')) $('#mbFilled').value = filled;
   const scale = tt > 240 ? Math.ceil(tt / 240) : 1;
-  const total = Math.ceil(tt / scale), fill = Math.round(filled / scale);
+  /* Proporsional terhadap jumlah kotak, agar BOR 100% selalu mengisi semua kotak. */
+  const total = Math.ceil(tt / scale), fill = tt > 0 ? Math.round(filled / tt * total) : 0;
   let cells = '';
   for (let i = 0; i < total; i++) cells += '<i class="' + (i < fill ? 'on' : '') + '" style="--d:' + (i * 4) + 'ms"></i>';
   $('#mbBedGrid').innerHTML = cells;
