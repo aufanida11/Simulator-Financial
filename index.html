@@ -275,7 +275,7 @@ kbd { font: 600 11px var(--font); padding: 2px 6px; border: 1px solid var(--line
 .ws-group:not(.adv) > .ws-body { flex: 1; display: flex; flex-direction: column; }
 .ws-group:not(.adv) > .ws-body > .seg-summary:last-child { margin-top: auto; }
 .ws-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
-.ws-pair .ws-row { flex-direction: column; align-items: stretch; gap: 6px; }
+.ws-pair .ws-row { flex-direction: column; align-items: stretch; gap: 3px; }
 .ws-pair .input-unit input { width: 100%; min-width: 0; }
 .ws-pair input[readonly] { color: var(--ink-soft); cursor: default; }
 details.adv { grid-column: 1 / -1; }
@@ -284,9 +284,9 @@ details.adv .ws-row { border-bottom: 0; }
 details.adv .check-row { grid-column: 1 / -1; border-top: 1px solid var(--line); }
 .ws-title { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
 .ws-title svg { width: 30px; height: 30px; padding: 7px; border-radius: 8px; background: var(--primary-tint); color: var(--primary); }
-.ws-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
+.ws-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 4px 0; border-bottom: 1px solid var(--line); }
 .ws-row:last-child { border-bottom: 0; }
-.ws-label { font-size: 13.5px; color: var(--ink-soft); font-weight: 600; flex: 1; min-width: 0; }
+.ws-label { font-size: 13px; color: var(--ink-soft); font-weight: 600; flex: 1; min-width: 0; }
 .ws-label .hint { display: block; font-size: 11.5px; color: var(--ink-faint); font-weight: 400; margin-top: 1px; }
 .tag { display: inline-block; font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 999px; margin-left: 7px; vertical-align: 1px; text-transform: uppercase; letter-spacing: .06em; }
 .tag.detected { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-line); }
@@ -295,7 +295,7 @@ details.adv { padding: 0; }
 details.adv > summary { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; cursor: pointer; padding: 18px 22px; font-size: 15px; font-weight: 800; }
 details.adv > summary small { font-size: 12px; font-weight: 500; color: var(--ink-faint); }
 details.adv > .ws-body { padding: 0 22px 14px; }
-.check-row { display: flex; align-items: flex-start; gap: 10px; padding: 11px 0; font-size: 13.5px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+.check-row { display: flex; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 13.5px; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
 .check-row input { margin-top: 3px; accent-color: var(--primary); }
 .check-row small { display: block; font-size: 11.5px; font-weight: 400; color: var(--ink-faint); margin-top: 1px; }
 .tag.check { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-line); }
@@ -304,6 +304,23 @@ details.adv > .ws-body { padding: 0 22px 14px; }
 .note.warn svg { color: var(--amber); }
 
 .ws-stat { font-size: 14px; font-weight: 700; color: var(--ink); padding-right: 10px; }
+.ws-row .input-unit input { padding: 4px 8px; font-size: 13px; }
+.sdm-calc { padding: 2px 0 6px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+.sdm-calc > summary { cursor: pointer; font-weight: 600; color: var(--accent); padding: 3px 0; }
+.sdm-note { margin: 2px 0 6px; font-size: 11.5px; color: var(--ink-faint); }
+.sdm-head, .sdm-row { display: grid; grid-template-columns: minmax(0, 1fr) 62px 92px 24px; gap: 6px; align-items: center; }
+.sdm-head { font-size: 11.5px; font-weight: 600; color: var(--ink-faint); padding-bottom: 3px; }
+.sdm-row { padding: 2px 0; }
+.sdm-row .seg-name { padding: 4px 8px; font-size: 12.5px; }
+.sdm-num { width: 100%; min-width: 0; font: 600 13px var(--font); font-variant-numeric: tabular-nums; text-align: right; padding: 4px 6px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 7px; color: var(--ink); -moz-appearance: textfield; }
+.sdm-num::-webkit-outer-spin-button, .sdm-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.sdm-num:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); }
+.sdm-del { width: 24px; height: 24px; display: grid; place-items: center; border: 0; border-radius: 6px; background: none; color: var(--ink-faint); cursor: pointer; padding: 0; }
+.sdm-del:hover { background: var(--red-bg); color: var(--red); }
+.sdm-del svg { width: 12px; height: 12px; }
+.sdm-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 4px; color: var(--ink-soft); }
+.sdm-foot b { color: var(--ink); }
+.input-unit select { border: 0; border-left: 1px solid var(--line); background: var(--surface-2); color: var(--ink-soft); font: 600 12px var(--font); padding: 0 6px; cursor: pointer; outline: none; }
 .scn-edit { flex: 1 1 100%; display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--line); }
 .scn-edit label { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
 .scn-edit .input-unit { margin-top: 5px; }
@@ -850,7 +867,7 @@ input[type=range]::-moz-range-track { background: transparent; }
       <details class="caveat" id="method">
         <summary>Catatan metodologi</summary>
         <p><b>Kelayakan investasi.</b> Ekstraksi parameter dari teks bebas memakai pencocokan kata kunci sederhana — semua nilai tetap perlu dikonfirmasi pada worksheet. NPV/IRR/ROI dihitung dari arus kas ke RSP UI (arus kas ekuitas bila memakai pinjaman atau KSO-BLT). Depresiasi garis lurus per aset (bangunan dan alkes), CAPEX dibebankan pada tahun ke-0, tanpa fasing konstruksi. Alkes diganti setiap akhir umur ekonomisnya dengan biaya yang sama, tanpa inflasi. Nilai sisa memakai nilai buku di akhir horizon, masuk ke NPV, IRR, dan ROI, tetapi tidak ke payback. Perlu disesuaikan dengan format kajian kelayakan RSP UI yang berlaku — termasuk skema BLT, PSAK 73 untuk sewa alkes, dan struktur Bab III market/demand.</p>
-        <p><b>Tarif, HPP &amp; operasional.</b> Tarif JKN per episode dibagi AVLOS menjadi tarif per hari, lalu ditimbang dengan porsi guarantor. HPP dan operasional dihitung sebagai persen pendapatan, sehingga seluruh biaya ikut turun saat pasien berkurang; ini membuat skenario pesimis lebih ringan dibanding bila ada biaya tetap. BEP utilisasi dihitung dari depresiasi tahunan ÷ margin EBITDA. Angka tarif dan persen biaya awal adalah contoh sampai diisi dengan data RSP UI.</p>
+        <p><b>Tarif, HPP &amp; operasional.</b> Tarif JKN per episode dibagi AVLOS menjadi tarif per hari, lalu ditimbang dengan porsi guarantor. Tiap baris HPP dan operasional bisa dihitung sebagai persen pendapatan (ikut naik-turun dengan pasien) atau jt/tahun (biaya tetap, tanpa inflasi). BEP utilisasi = (biaya tetap + depresiasi tahunan) ÷ margin kontribusi. Angka tarif dan biaya awal adalah contoh sampai diisi dengan data RSP UI.</p>
         <p><b>Indikator rawat inap.</b> Hari rawat tersedia = TT × 365; BOR = hari rawat terisi ÷ hari rawat tersedia; pasien keluar = hari rawat terisi ÷ AVLOS; BTO = pasien keluar ÷ TT; TOI = (hari tersedia − hari terisi) ÷ pasien keluar. Rentang ideal mengacu Barber-Johnson/Kemenkes: BOR 60–85%, AVLOS 6–9 hari, BTO 40–50 kali, TOI 1–3 hari. Kurva mengasumsikan AVLOS dan tarif konstan.</p>
       </details>
 
@@ -1081,8 +1098,8 @@ function guarantorTariff(p) {
   return { jknPerDay, weighted: jkn * jknPerDay + (1 - jkn) * p.tariffNon };
 }
 
-/* ---------- HPP & operasional (persen pendapatan) ---------- */
-/* Persen di bawah ini CONTOH, bukan data RSP UI; ganti dengan data realisasi. */
+/* ---------- HPP & operasional ---------- */
+/* Tiap baris bisa persen pendapatan atau jt/tahun. Semua angka CONTOH, bukan data RSP UI. */
 const HPP_ITEMS = [
   ['Obat & BMHP', 22], ['Laboratorium', 4], ['Darah', 1], ['Alat Operasi', 2], ['Honor Dokter', 14], ['Bahan Habis Pakai', 2],
   ['Gas Medis', 1], ['Bahan Makanan', 1], ['Diklitlat', 1], ['Dana Cadangan Medikolegal', 1], ['Dana Alokasi Universitas', 1],
@@ -1092,9 +1109,14 @@ const OPEX_ITEMS = [
   ['Pemeliharaan / Perbaikan', 2], ['Sewa', 0], ['Asuransi & Konsultan', 1], ['Sistem Informasi', 1], ['Promosi & Iklan', 1],
 ];
 function applyCostItems(p) {
-  const sum = items => items.reduce((s, x) => s + x.value, 0);
-  p.hppPct = sum(p.hppItems);
-  p.opexPct = sum(p.opexItems);
+  const sum = (items, unit) => items.filter(x => x.unit === unit).reduce((s, x) => s + x.value, 0);
+  p.hppPct = sum(p.hppItems, 'pct');
+  p.hppFixed = sum(p.hppItems, 'rp');
+  p.opexPct = sum(p.opexItems, 'pct');
+  p.opexFixed = sum(p.opexItems, 'rp');
+}
+function costLabel(pct, fixed) {
+  return fmtPct(pct) + (fixed ? ' + ' + fmtRp(fixed) + '/thn' : '');
 }
 
 /* ---------- parameter awal per kategori ---------- */
@@ -1113,9 +1135,12 @@ function baseParams(category) {
     p.tariffJkn = 4.5;   /* CONTOH, jt/episode */
     p.tariffNon = 1.6;   /* CONTOH, jt/hari */
   }
-  p.hppItems = HPP_ITEMS.map(([name, value]) => ({ name, value }));
-  p.opexItems = OPEX_ITEMS.map(([name, value]) => ({ name, value }));
+  p.hppItems = HPP_ITEMS.map(([name, value]) => ({ name, value, unit: 'pct' }));
+  p.opexItems = OPEX_ITEMS.map(([name, value]) => ({ name, value, unit: 'pct' }));
   applyCostItems(p);
+  /* Kalkulator SDM kosong sampai diisi; tidak ada gaji contoh. */
+  p.sdm = ['Perawat & bidan', 'Tenaga medis bergaji tetap', 'Penunjang medis', 'Administrasi & umum'].map(name => ({ name, count: 0, salary: 0 }));
+  p.sdmUsed = false;
   p.flags = { tariff: false, opex: false };
   return p;
 }
@@ -1178,8 +1203,8 @@ function buildCashflows(p, mult) {
       revenue -= partnerShare;
     }
 
-    const hpp = revenue * (p.hppPct / 100);
-    const opex = revenue * (p.opexPct / 100);
+    const hpp = revenue * (p.hppPct / 100) + p.hppFixed;
+    const opex = revenue * (p.opexPct / 100) + p.opexFixed;
     const ebitda = revenue - hpp - opex;
     const dep = (t <= lifeB ? capexB / lifeB : 0) + capexE / lifeE;
     const reinvest = t % lifeE === 0 && t < horizon ? capexE : 0;
@@ -1234,11 +1259,11 @@ function bepUtilization(p, mult) {
   mult = mult || { util: 1, tariff: 1, capex: 1 };
   const tariff = p.tariff * mult.tariff;
   const capacityAnnual = p.capacity * p.annualMultiplier;
-  /* HPP dan operasional berupa persen pendapatan, jadi biaya tetap yang harus ditutup adalah depresiasi. */
+  /* Yang harus ditutup: biaya tetap HPP/operasional (jt/tahun) ditambah depresiasi. */
   const contribMargin = 1 - (p.hppPct + p.opexPct) / 100;
   if (contribMargin <= 0 || tariff <= 0 || capacityAnnual <= 0) return Infinity;
   const dep = (p.capexBuilding / Math.max(1, p.usefulLifeBuilding) + p.capexEquip / Math.max(1, p.usefulLifeEquip)) * mult.capex;
-  return (dep / contribMargin / tariff) / capacityAnnual * 100;
+  return ((dep + p.hppFixed + p.opexFixed) / contribMargin / tariff) / capacityAnnual * 100;
 }
 function computeAll(p, mult) {
   const { rows, capex, equityCapex, scheme, residual } = buildCashflows(p, mult);
@@ -1545,23 +1570,25 @@ function renderWorksheet() {
   updateCapex();
   $$('input[data-key]', gInv).forEach(inp => inp.addEventListener('input', updateCapex));
 
+  const gRev = group('Tarif', '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>');
+  wrap.appendChild(gRev); renderTariffGroup($('.ws-body', gRev), d);
+
   const gCap = group('Kapasitas & utilisasi', '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
     field(d.capacityLabel, 'capacity', d.capacityUnitTag, '1', null, true) +
     field(d.utilLabel, 'utilization', '%', '1', null, true) +
     field('Tahun mencapai target', 'rampYear', 'thn ke-', '1', null, true));
   wrap.appendChild(gCap); bindInputs(gCap);
 
-  const gRev = group('Tarif', '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>');
-  wrap.appendChild(gRev); renderTariffGroup($('.ws-body', gRev), d);
-
   const gFin = group('Pendanaan', '<path d="M3 10l9-6 9 6M5 10v8M19 10v8M9 10v8M15 10v8M3 20h18"/>');
   wrap.appendChild(gFin); renderFinancingGroup($('.ws-body', gFin));
 
-  const gHpp = group('HPP (% pendapatan)', '<path d="M6 3h12l2 6H4zM4 9h16v12H4zM9 14h6"/>');
+  const gHpp = group('HPP', '<path d="M6 3h12l2 6H4zM4 9h16v12H4zM9 14h6"/>');
   wrap.appendChild(gHpp); renderCostGroup($('.ws-body', gHpp), 'hppItems', 'Total HPP');
 
-  const gOpex = group('Operasional (% pendapatan)', '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>');
-  wrap.appendChild(gOpex); renderCostGroup($('.ws-body', gOpex), 'opexItems', 'Total Operasional');
+  const gOpex = group('Operasional', '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>');
+  wrap.appendChild(gOpex);
+  const updateOpex = renderCostGroup($('.ws-body', gOpex), 'opexItems', 'Total Operasional');
+  renderSdmCalc($('.ws-body', gOpex), updateOpex);
 
   /* Parameter lanjutan: terlipat, memakai nilai default sampai dibuka. */
   const gPar = document.createElement('details');
@@ -1636,22 +1663,29 @@ function bindGuarantor(body) {
   }));
 }
 
-/* Kartu HPP / Operasional: setiap baris persen pendapatan. */
+/* Pendapatan saat utilisasi target tercapai: dasar konversi saat satuan baris diganti. */
+function targetRevenue(p) {
+  return p.capacity * p.annualMultiplier * (p.utilization / 100) * p.tariff;
+}
+
+/* Kartu HPP / Operasional: tiap baris persen pendapatan atau jt/tahun (biaya tetap). */
 function renderCostGroup(body, itemsKey, totalLabel) {
   const p = state.params;
   body.innerHTML = p[itemsKey].map((x, i) => {
     const id = itemsKey + '-' + i;
     return '<div class="ws-row"><label class="ws-label" for="' + id + '">' + esc(x.name) + '</label>' +
-      '<div class="input-unit"><input id="' + id + '" type="number" step="0.5" class="cost-input" data-idx="' + i + '" value="' + x.value + '"><span>%</span></div></div>';
+      '<div class="input-unit"><input id="' + id + '" type="number" step="' + (x.unit === 'rp' ? '50' : '0.5') + '" class="cost-input" data-idx="' + i + '" value="' + x.value + '">' +
+      '<select class="cost-unit" data-idx="' + i + '" aria-label="Satuan ' + esc(x.name) + '"><option value="pct"' + (x.unit === 'pct' ? ' selected' : '') + '>%</option><option value="rp"' + (x.unit === 'rp' ? ' selected' : '') + '>jt/thn</option></select></div></div>';
   }).join('') + '<div class="seg-summary cost-summary"></div>';
   const update = () => {
     applyCostItems(p);
     const margin = 100 - p.hppPct - p.opexPct;
-    $('.cost-summary', body).innerHTML = '<span>' + totalLabel + ' <b>' + fmtPct(itemsKey === 'hppItems' ? p.hppPct : p.opexPct) + '</b></span>';
+    const isHpp = itemsKey === 'hppItems';
+    $('.cost-summary', body).innerHTML = '<span>' + totalLabel + ' <b>' + costLabel(isHpp ? p.hppPct : p.opexPct, isHpp ? p.hppFixed : p.opexFixed) + '</b></span>';
     $$('.margin-note').forEach(el => el.remove());
     const last = $$('.cost-summary').pop();
     if (last) {
-      last.insertAdjacentHTML('beforeend', '<span class="margin-note">Margin EBITDA <b>' + fmtPct(margin) + '</b></span>');
+      last.insertAdjacentHTML('beforeend', '<span class="margin-note">Margin kontribusi <b>' + fmtPct(margin) + '</b></span>');
       last.classList.toggle('warn', margin <= 0);
     }
   };
@@ -1661,6 +1695,82 @@ function renderCostGroup(body, itemsKey, totalLabel) {
     p.flags.opex = true;
     update();
   }));
+  /* Ganti satuan: nilainya dikonversi memakai pendapatan pada utilisasi target. */
+  $$('.cost-unit', body).forEach(sel => sel.addEventListener('change', () => {
+    const item = p[itemsKey][+sel.dataset.idx];
+    const rev = targetRevenue(p);
+    if (rev > 0) {
+      item.value = sel.value === 'rp' ? Math.round(item.value / 100 * rev) : Math.round(item.value / rev * 1000) / 10;
+    }
+    item.unit = sel.value;
+    const inp = $('.cost-input[data-idx="' + sel.dataset.idx + '"]', body);
+    inp.value = item.value;
+    inp.step = item.unit === 'rp' ? '50' : '0.5';
+    update();
+  }));
+  return update;
+}
+
+/* Kalkulator SDM: jumlah pegawai × gaji per tahun mengisi baris Kepegawaian dalam jt/tahun. */
+function sdmTotals(p) {
+  return {
+    people: p.sdm.reduce((s, x) => s + x.count, 0),
+    cost: p.sdm.reduce((s, x) => s + x.count * x.salary, 0),
+  };
+}
+function renderSdmCalc(body, updateOpex) {
+  const p = state.params;
+  const idx = p.opexItems.findIndex(x => x.name === 'Kepegawaian');
+  const row = $('.cost-input[data-idx="' + idx + '"]', body).closest('.ws-row');
+  const box = document.createElement('details');
+  box.className = 'sdm-calc';
+  box.innerHTML = '<summary>Hitung dari jumlah SDM</summary>' +
+    '<p class="sdm-note">Totalnya mengisi Kepegawaian dalam jt/tahun. Honor Dokter sudah ada di HPP, jangan dihitung dua kali.</p>' +
+    '<div class="sdm-head"><span>Kategori</span><span>Jumlah</span><span>Gaji (jt/thn)</span><span></span></div>' +
+    '<div class="sdm-list"></div>' +
+    '<div class="sdm-foot"><button type="button" class="link-btn sdm-add">+ Tambah kategori</button><span class="sdm-total"></span></div>';
+  row.after(box);
+
+  const applyTotal = () => {
+    const t = sdmTotals(p);
+    $('.sdm-total', box).innerHTML = '<b>' + fmtNum(t.people) + '</b> orang · <b>' + fmtRp(t.cost) + '</b> / tahun';
+    if (t.cost <= 0 && !p.sdmUsed) return;
+    p.sdmUsed = t.cost > 0;
+    const item = p.opexItems[idx];
+    item.unit = 'rp';
+    item.value = Math.round(t.cost);
+    p.flags.opex = true;
+    const inp = $('.cost-input[data-idx="' + idx + '"]', body);
+    inp.value = item.value;
+    inp.step = '50';
+    $('.cost-unit[data-idx="' + idx + '"]', body).value = 'rp';
+    updateOpex();
+  };
+  const drawList = () => {
+    $('.sdm-list', box).innerHTML = p.sdm.map((x, i) =>
+      '<div class="sdm-row"><input type="text" class="seg-name sdm-name" data-idx="' + i + '" value="' + esc(x.name) + '" aria-label="Kategori SDM ' + (i + 1) + '">' +
+      '<input type="number" min="0" step="1" class="sdm-num" data-field="count" data-idx="' + i + '" value="' + x.count + '" aria-label="Jumlah ' + esc(x.name) + '">' +
+      '<input type="number" min="0" step="5" class="sdm-num" data-field="salary" data-idx="' + i + '" value="' + x.salary + '" aria-label="Gaji per tahun ' + esc(x.name) + '">' +
+      '<button type="button" class="sdm-del" data-idx="' + i + '" aria-label="Hapus ' + esc(x.name) + '">' + svgIcon('<path d="M18 6L6 18M6 6l12 12"/>') + '</button></div>'
+    ).join('');
+    $$('.sdm-name', box).forEach(inp => inp.addEventListener('input', () => { p.sdm[+inp.dataset.idx].name = inp.value; }));
+    $$('.sdm-num', box).forEach(inp => inp.addEventListener('input', () => {
+      p.sdm[+inp.dataset.idx][inp.dataset.field] = parseFloat(inp.value) || 0;
+      applyTotal();
+    }));
+    $$('.sdm-del', box).forEach(b => b.addEventListener('click', () => {
+      p.sdm.splice(+b.dataset.idx, 1);
+      drawList();
+      applyTotal();
+    }));
+  };
+  $('.sdm-add', box).addEventListener('click', () => {
+    p.sdm.push({ name: 'Kategori baru', count: 0, salary: 0 });
+    drawList();
+    applyTotal();
+  });
+  drawList();
+  applyTotal();
 }
 
 function renderTariffGroup(body, d) {
@@ -1838,11 +1948,13 @@ function renderResults() {
   $('#printAssump').innerHTML = [
     ['Kategori', d.label], ['Skenario', SCENARIOS[state.scenario].label + ': ' + SCENARIOS[state.scenario].hint], ['CAPEX bangunan', fmtRp(p.capexBuilding) + ' · ' + p.usefulLifeBuilding + ' thn'], ['CAPEX alkes', fmtRp(p.capexEquip) + ' · ' + p.usefulLifeEquip + ' thn'], ['Nilai sisa', p.useResidual ? fmtRp(r.residual) : 'Tidak dihitung'],
     [d.capacityLabel, fmtNum(p.capacity) + ' ' + d.capacityUnitTag], [d.utilLabel, fmtPct(p.utilization)], ['Tahun target', 'ke-' + p.rampYear],
-    ['Tarif rata-rata', fmtRp(p.tariff) + ' / ' + (d.tariffUnitTag.split('/')[1] || 'unit')], ['HPP', fmtPct(p.hppPct) + ' pendapatan'], ['Operasional', fmtPct(p.opexPct) + ' pendapatan'],
+    ['Tarif rata-rata', fmtRp(p.tariff) + ' / ' + (d.tariffUnitTag.split('/')[1] || 'unit')], ['HPP', costLabel(p.hppPct, p.hppFixed)], ['Operasional', costLabel(p.opexPct, p.opexFixed)],
     ['Pendanaan', scheme ? scheme.label : '-'], ['Diskonto', fmtPct(p.discountRate)], ['Horizon', p.horizon + ' tahun'],
   ].concat(p.tariffMode === 'segmented' && p.annualMultiplier === 365 ? [
     ['Guarantor', 'JKN ' + fmtPct(p.jknPct) + ' · Non-JKN ' + fmtPct(100 - p.jknPct)], ['AVLOS', fmtNum(p.avlos, 1) + ' hari'],
     ['Tarif JKN', fmtRp(p.tariffJkn) + ' / episode'], ['Tarif Non-JKN', fmtRp(p.tariffNon) + ' / hari'],
+  ] : []).concat(p.sdmUsed ? [
+    ['SDM', fmtNum(sdmTotals(p).people) + ' orang · ' + fmtRp(sdmTotals(p).cost) + ' / tahun'],
   ] : []).map(([k, v]) => '<div><span>' + k + '</span><b>' + esc(v) + '</b></div>').join('');
 
   renderChart(r.rows);
