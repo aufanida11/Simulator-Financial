@@ -276,7 +276,7 @@ kbd { font: 600 11px var(--font); padding: 2px 6px; border: 1px solid var(--line
 .ws-group:not(.adv) > .ws-body > .seg-summary:last-child { margin-top: auto; }
 .ws-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
 .ws-pair .ws-row { flex-direction: column; align-items: stretch; gap: 3px; }
-.ws-pair .input-unit input { width: 100%; min-width: 0; }
+.ws-pair .ws-row .input-unit input { width: 100%; min-width: 0; flex: 1; }
 .ws-pair input[readonly] { color: var(--ink-soft); cursor: default; }
 details.adv { grid-column: 1 / -1; }
 details.adv > .ws-body { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; }
@@ -304,7 +304,8 @@ details.adv > .ws-body { padding: 0 22px 14px; }
 .note.warn svg { color: var(--amber); }
 
 .ws-stat { font-size: 14px; font-weight: 700; color: var(--ink); padding-right: 10px; }
-.ws-row .input-unit input { padding: 4px 8px; font-size: 13px; }
+.tag.manual { background: var(--primary-tint); color: var(--primary); border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent); }
+.ws-row .input-unit input { width: 116px; padding: 4px 8px; font-size: 13px; }
 .sdm-calc { padding: 2px 0 6px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
 .sdm-calc > summary { cursor: pointer; font-weight: 600; color: var(--accent); padding: 3px 0; }
 .sdm-note { margin: 2px 0 6px; font-size: 11.5px; color: var(--ink-faint); }
@@ -1141,6 +1142,7 @@ function baseParams(category) {
   /* Kalkulator SDM kosong sampai diisi; tidak ada gaji contoh. */
   p.sdm = ['Perawat & bidan', 'Tenaga medis bergaji tetap', 'Penunjang medis', 'Administrasi & umum'].map(name => ({ name, count: 0, salary: 0 }));
   p.sdmUsed = false;
+  p.manual = {};
   p.flags = { tariff: false, opex: false };
   return p;
 }
@@ -1522,7 +1524,9 @@ function field(label, key, unit, step, div, showTag) {
   const isDetected = showTag && Object.prototype.hasOwnProperty.call(state.detected, tagKey) && (tagKey !== 'capex' || p[key] > 0);
   const val = div ? p[key] / div : p[key];
   const needsCheck = isDetected && state.conf[tagKey] && state.conf[tagKey].level === 'check';
-  const tag = showTag ? '<span class="tag ' + (needsCheck ? 'check' : isDetected ? 'detected' : 'default') + '"' + (needsCheck ? ' title="' + esc(state.conf[tagKey].note) + '"' : '') + '>' + (needsCheck ? 'perlu dicek' : isDetected ? 'terdeteksi' : 'baseline') + '</span>' : '';
+  const isManual = p.manual && p.manual[key];
+  const tag = !showTag ? '' : isManual ? '<span class="tag manual">manual</span>' :
+    '<span class="tag ' + (needsCheck ? 'check' : isDetected ? 'detected' : 'default') + '"' + (needsCheck ? ' title="' + esc(state.conf[tagKey].note) + '"' : '') + '>' + (needsCheck ? 'perlu dicek' : isDetected ? 'terdeteksi' : 'baseline') + '</span>';
   const hint = HINTS[key] ? '<small class="hint">' + HINTS[key] + '</small>' : '';
   const id = 'f-' + key;
   return '<div class="ws-row"><label class="ws-label" for="' + id + '">' + label + tag + hint + '</label>' +
@@ -1533,6 +1537,14 @@ function bindInputs(container) {
   $$('input[data-key]', container).forEach(inp => inp.addEventListener('input', () => {
     const v = parseFloat(inp.value);
     state.params[inp.dataset.key] = (isNaN(v) ? 0 : v) * (parseFloat(inp.dataset.div) || 1);
+    /* Nilai yang diketik pengguna bukan lagi baseline atau hasil baca narasi. */
+    state.params.manual[inp.dataset.key] = true;
+    const tag = inp.closest('.ws-row').querySelector('.tag');
+    if (tag) {
+      tag.className = 'tag manual';
+      tag.textContent = 'manual';
+      tag.removeAttribute('title');
+    }
   }));
 }
 
@@ -2278,6 +2290,7 @@ $('#bridgeBtn').addEventListener('click', () => {
     capacity: r.tt, utilization: r.bor, tariff: r.effTariffPerDay, tariffMode: 'single', avlos: r.avlos,
   });
   state.params.flags.tariff = true;
+  state.params.manual = {};
   state.detected = { capacity: true, utilization: true, tariff: true };
   state.conf = {};
   state.worksheetNote = svgIcon('<path d="M4 12h16M14 6l6 6-6 6"/>') + '<span><b>Diisi dari Utilisasi &amp; Pendapatan:</b> TT, BOR, dan tarif efektif per hari rawat mengikuti hasil di halaman tersebut. Parameter lain memakai asumsi sebelumnya — sesuaikan bila perlu.</span>';
