@@ -291,25 +291,12 @@ details.adv > .ws-body { padding: 0 22px 14px; }
 .note.warn { background: var(--amber-bg); border-color: var(--amber-line); }
 .note.warn svg { color: var(--amber); }
 
-.room-top { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 8px 0 12px; }
-.room-top label, .room-top .room-stat { display: block; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
-.room-top .input-unit { margin-top: 4px; }
-.room-top .input-unit input { width: 100%; min-width: 0; }
-.room-top .input-unit span { min-width: 30px; padding: 0 7px; }
-.room-stat b { display: block; margin-top: 4px; padding: 7px 0; font-size: 14px; color: var(--ink); }
-.room-head, .room-row { display: grid; grid-template-columns: minmax(0, 1fr) 54px 74px 74px 26px; gap: 6px; align-items: center; }
-.room-head { font-size: 11.5px; font-weight: 600; color: var(--ink-faint); line-height: 1.3; padding-bottom: 5px; }
-.room-row { padding: 4px 0; }
-.room-num { width: 100%; min-width: 0; font: 600 13px var(--font); font-variant-numeric: tabular-nums; text-align: right; padding: 7px 8px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 8px; color: var(--ink); -moz-appearance: textfield; }
-.room-num::-webkit-outer-spin-button, .room-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.room-num:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); }
-.room-del { width: 26px; height: 26px; display: grid; place-items: center; border: 0; border-radius: 6px; background: none; color: var(--ink-faint); cursor: pointer; padding: 0; }
-.room-del:hover { background: var(--red-bg); color: var(--red); }
-.room-del svg { width: 13px; height: 13px; }
-.seg-breakdown { width: 100%; margin-top: 8px; font-size: 12px; }
-.seg-breakdown summary { cursor: pointer; font-weight: 600; color: var(--ink-soft); padding: 4px 0; }
-.seg-breakdown div { display: flex; justify-content: space-between; gap: 10px; padding: 4px 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); }
-.seg-breakdown b { color: var(--ink); font-weight: 600; white-space: nowrap; }
+.ws-stat { font-size: 14px; font-weight: 700; color: var(--ink); padding-right: 10px; }
+.scn-edit { flex: 1 1 100%; display: flex; align-items: flex-end; gap: 12px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid var(--line); }
+.scn-edit label { font-size: 12.5px; font-weight: 600; color: var(--ink-soft); }
+.scn-edit .input-unit { margin-top: 5px; }
+.scn-edit .input-unit input { width: 72px; }
+.scn-edit .input-unit span { min-width: 30px; padding: 0 8px; }
 
 .input-unit { display: flex; align-items: stretch; border: 1.5px solid var(--line); border-radius: 9px; background: var(--surface); overflow: hidden; flex: none; }
 .input-unit:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-tint); }
@@ -688,6 +675,7 @@ input[type=range]::-moz-range-track { background: transparent; }
               <p class="muted" id="resultCat"></p>
             </div>
             <div class="seg" id="scenarioRow" role="radiogroup" aria-label="Skenario"></div>
+            <div class="scn-edit" id="scnEdit"></div>
           </div>
 
           <div class="card print-only">
@@ -848,7 +836,7 @@ input[type=range]::-moz-range-track { background: transparent; }
       <details class="caveat" id="method">
         <summary>Catatan metodologi</summary>
         <p><b>Kelayakan investasi.</b> Ekstraksi parameter dari teks bebas memakai pencocokan kata kunci sederhana — semua nilai tetap perlu dikonfirmasi pada worksheet. NPV/IRR/ROI dihitung dari arus kas ke RSP UI (arus kas ekuitas bila memakai pinjaman atau KSO-BLT). Depresiasi garis lurus per aset (bangunan dan alkes), CAPEX dibebankan pada tahun ke-0, tanpa fasing konstruksi. Alkes diganti setiap akhir umur ekonomisnya dengan biaya yang sama, tanpa inflasi. Nilai sisa memakai nilai buku di akhir horizon, masuk ke NPV, IRR, dan ROI, tetapi tidak ke payback. Perlu disesuaikan dengan format kajian kelayakan RSP UI yang berlaku — termasuk skema BLT, PSAK 73 untuk sewa alkes, dan struktur Bab III market/demand.</p>
-        <p><b>Ruang × guarantor &amp; opex.</b> Porsi segmen = bed ruang ÷ total bed × persen guarantor, dengan BOR yang sama untuk semua ruang. Tarif JKN per episode dibagi AVLOS menjadi tarif per hari. Tarif tertimbang dan komponen opex awal adalah angka contoh sampai diisi dengan data RSP UI.</p>
+        <p><b>Tarif, HPP &amp; operasional.</b> Tarif JKN per episode dibagi AVLOS menjadi tarif per hari, lalu ditimbang dengan porsi guarantor. HPP dan operasional dihitung sebagai persen pendapatan, sehingga seluruh biaya ikut turun saat pasien berkurang; ini membuat skenario pesimis lebih ringan dibanding bila ada biaya tetap. BEP utilisasi dihitung dari depresiasi tahunan ÷ margin EBITDA. Angka tarif dan persen biaya awal adalah contoh sampai diisi dengan data RSP UI.</p>
         <p><b>Indikator rawat inap.</b> Hari rawat tersedia = TT × 365; BOR = hari rawat terisi ÷ hari rawat tersedia; pasien keluar = hari rawat terisi ÷ AVLOS; BTO = pasien keluar ÷ TT; TOI = (hari tersedia − hari terisi) ÷ pasien keluar. Rentang ideal mengacu Barber-Johnson/Kemenkes: BOR 60–85%, AVLOS 6–9 hari, BTO 40–50 kali, TOI 1–3 hari. Kurva mengasumsikan AVLOS dan tarif konstan.</p>
       </details>
 
@@ -873,7 +861,7 @@ const CATEGORIES = {
     label: 'Rawat inap', desc: 'Gedung/ruang rawat, penambahan TT, kelas eksekutif',
     capacityLabel: 'Tempat tidur (TT)', capacityUnitTag: 'TT', utilLabel: 'Okupansi / BOR target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/hari', annualMultiplier: 365,
-    capex: 30000, capacity: 40, utilization: 70, tariff: 1.2, fixedOpexAnnual: 4500, varOpexPct: 55,
+    capex: 30000, capacity: 40, utilization: 70, tariff: 1.2,
     usefulLife: 20, rampYear: 3, taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 8,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 10,
@@ -883,7 +871,7 @@ const CATEGORIES = {
     label: 'Alat kesehatan', desc: 'CT scan, MRI, cath lab, endoskopi, dan sejenisnya',
     capacityLabel: 'Kapasitas tindakan/tahun', capacityUnitTag: 'tindakan', utilLabel: 'Utilisasi alat target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/tindakan', annualMultiplier: 1,
-    capex: 12000, capacity: 3000, utilization: 60, tariff: 1.5, fixedOpexAnnual: 1200, varOpexPct: 35,
+    capex: 12000, capacity: 3000, utilization: 60, tariff: 1.5,
     usefulLife: 8, rampYear: 2, taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 6,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 8,
@@ -897,7 +885,7 @@ const CATEGORIES = {
     label: 'Layanan baru', desc: 'Klinik/poli unggulan, pusat layanan terpadu',
     capacityLabel: 'Kapasitas kunjungan-tindakan/tahun', capacityUnitTag: 'unit', utilLabel: 'Utilisasi layanan target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/unit', annualMultiplier: 1,
-    capex: 20000, capacity: 5000, utilization: 55, tariff: 1.0, fixedOpexAnnual: 3000, varOpexPct: 45,
+    capex: 20000, capacity: 5000, utilization: 55, tariff: 1.0,
     usefulLife: 12, rampYear: 3, taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 8,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 10,
@@ -911,7 +899,7 @@ const CATEGORIES = {
     label: 'Renovasi / ekspansi', desc: 'Renovasi gedung, perluasan ruang dan fasilitas',
     capacityLabel: 'Unit/ruang tambahan', capacityUnitTag: 'unit', utilLabel: 'Tingkat pemanfaatan target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/unit', annualMultiplier: 1,
-    capex: 15000, capacity: 20, utilization: 65, tariff: 0.8, fixedOpexAnnual: 2000, varOpexPct: 50,
+    capex: 15000, capacity: 20, utilization: 65, tariff: 0.8,
     usefulLife: 20, rampYear: 3, taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 8,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 10,
@@ -929,11 +917,24 @@ const FINANCING_SCHEMES = [
   { key: 'kso', label: 'KSO-BLT', desc: 'Kerja sama dengan mitra' },
 ];
 
-const SCENARIOS = {
-  pesimis: { label: 'Pesimis', hint: 'Utilisasi −20%, tarif −5%, CAPEX +10%', mult: { util: 0.80, tariff: 0.95, capex: 1.10 } },
-  moderat: { label: 'Moderat', hint: 'Sesuai asumsi worksheet', mult: { util: 1.00, tariff: 1.00, capex: 1.00 } },
-  optimis: { label: 'Optimis', hint: 'Utilisasi +15%, tarif +5%, CAPEX −3%', mult: { util: 1.15, tariff: 1.05, capex: 0.97 } },
+/* Penyesuaian tiap skenario dalam persen terhadap asumsi worksheet; bisa diedit di halaman hasil. */
+const SCENARIO_DEFAULTS = {
+  pesimis: { util: -20, tariff: -5, capex: 10 },
+  moderat: { util: 0, tariff: 0, capex: 0 },
+  optimis: { util: 15, tariff: 5, capex: -3 },
 };
+const SCENARIOS = {
+  pesimis: { label: 'Pesimis', delta: Object.assign({}, SCENARIO_DEFAULTS.pesimis) },
+  moderat: { label: 'Moderat', delta: Object.assign({}, SCENARIO_DEFAULTS.moderat) },
+  optimis: { label: 'Optimis', delta: Object.assign({}, SCENARIO_DEFAULTS.optimis) },
+};
+function refreshScenario(s) {
+  const d = s.delta;
+  s.mult = { util: 1 + d.util / 100, tariff: 1 + d.tariff / 100, capex: 1 + d.capex / 100 };
+  const fmt = v => (v > 0 ? '+' : v < 0 ? '−' : '') + String(Math.abs(v)).replace('.', ',') + '%';
+  s.hint = !d.util && !d.tariff && !d.capex ? 'Sesuai asumsi worksheet' : 'Utilisasi ' + fmt(d.util) + ', tarif ' + fmt(d.tariff) + ', CAPEX ' + fmt(d.capex);
+}
+Object.keys(SCENARIOS).forEach(k => refreshScenario(SCENARIOS[k]));
 
 /* Rentang ideal indikator rawat inap (Barber-Johnson / Kemenkes). */
 const IDEAL = { bor: [60, 85], avlos: [6, 9], bto: [40, 50], toi: [1, 3] };
@@ -1058,45 +1059,31 @@ function readNarrative(text) {
   return { values, conf, rooms, capexItems: items };
 }
 
-/* ---------- ruang × guarantor ---------- */
-/* CONTOH, bukan data RSP UI: [tarif Non-JKN jt/hari, tarif JKN jt/episode]. Ganti dengan SK tarif & INA-CBG. */
-const ROOM_TARIFF_CONTOH = {
-  'VIP': [2.5, 5.0], 'VVIP': [3.5, 5.0], 'Kelas 1': [1.6, 4.5], 'Kelas 2': [1.1, 3.5], 'Kelas 3': [0.75, 2.8],
-  'Isolasi': [1.8, 7.0], 'ICU': [3.0, 12.0], 'NICU': [3.0, 12.0], 'PICU': [3.0, 12.0], 'HCU': [2.2, 9.0],
-};
-function makeRoom(name, beds) {
-  const t = ROOM_TARIFF_CONTOH[name] || [1.2, 4.0];
-  return { name, beds, tariffNon: t[0], tariffJkn: t[1] };
-}
-/* Porsi tiap segmen dari jumlah bed × persen guarantor; tarif JKN per episode dibagi AVLOS menjadi per hari. */
-function roomSegments(p) {
-  const total = p.rooms.reduce((s, r) => s + r.beds, 0);
+/* ---------- tarif JKN / Non-JKN ---------- */
+/* Tarif JKN per episode dibagi AVLOS menjadi per hari, lalu ditimbang dengan porsi guarantor. */
+function guarantorTariff(p) {
   const jkn = Math.min(100, Math.max(0, p.jknPct)) / 100;
-  const avlos = p.avlos > 0 ? p.avlos : 1;
-  const rows = [];
-  p.rooms.forEach(r => {
-    const s = total > 0 ? r.beds / total : 0;
-    rows.push({ name: r.name + ' · JKN', share: s * jkn, perDay: r.tariffJkn / avlos });
-    rows.push({ name: r.name + ' · Non-JKN', share: s * (1 - jkn), perDay: r.tariffNon });
-  });
-  return { total, rows, weighted: rows.reduce((s, x) => s + x.share * x.perDay, 0) };
+  const jknPerDay = p.tariffJkn / (p.avlos > 0 ? p.avlos : 1);
+  return { jknPerDay, weighted: jkn * jknPerDay + (1 - jkn) * p.tariffNon };
+}
+
+/* ---------- HPP & operasional (persen pendapatan) ---------- */
+/* Persen di bawah ini CONTOH, bukan data RSP UI; ganti dengan data realisasi. */
+const HPP_ITEMS = [
+  ['Obat & BMHP', 22], ['Laboratorium', 4], ['Darah', 1], ['Alat Operasi', 2], ['Honor Dokter', 14], ['Bahan Habis Pakai', 2],
+  ['Gas Medis', 1], ['Bahan Makanan', 1], ['Diklitlat', 1], ['Dana Cadangan Medikolegal', 1], ['Dana Alokasi Universitas', 1],
+];
+const OPEX_ITEMS = [
+  ['Kepegawaian', 20], ['Kepegawaian Lainnya', 3], ['Material', 2], ['Rumah Tangga', 1], ['Utilitas', 4],
+  ['Pemeliharaan / Perbaikan', 2], ['Sewa', 0], ['Asuransi & Konsultan', 1], ['Sistem Informasi', 1], ['Promosi & Iklan', 1],
+];
+function applyCostItems(p) {
+  const sum = items => items.reduce((s, x) => s + x.value, 0);
+  p.hppPct = sum(p.hppItems);
+  p.opexPct = sum(p.opexItems);
 }
 
 /* ---------- parameter awal per kategori ---------- */
-/* Komponen opex: pecahan CONTOH dari baseline kategori, bukan data RSP UI. */
-function makeOpexItems(p) {
-  return [
-    { key: 'sdm', name: 'SDM (gaji & tunjangan)', kind: 'fixed', value: Math.round(p.fixedOpexAnnual * 0.6) },
-    { key: 'utilitas', name: 'Utilitas (listrik, air, gas)', kind: 'fixed', value: Math.round(p.fixedOpexAnnual * 0.2) },
-    { key: 'pemeliharaan', name: 'Pemeliharaan & lain-lain', kind: 'fixed', value: Math.round(p.fixedOpexAnnual * 0.2) },
-    { key: 'bmhp', name: 'BMHP & obat', kind: 'var', value: Math.round(p.varOpexPct * 0.55) },
-    { key: 'jasa', name: 'Jasa pelayanan', kind: 'var', value: Math.round(p.varOpexPct * 0.45) },
-  ];
-}
-function applyOpexItems(p) {
-  p.fixedOpexAnnual = p.opexItems.filter(x => x.kind === 'fixed').reduce((s, x) => s + x.value, 0);
-  p.varOpexPct = p.opexItems.filter(x => x.kind === 'var').reduce((s, x) => s + x.value, 0);
-}
 function baseParams(category) {
   const p = cloneParams(CATEGORIES[category]);
   /* Baseline satu aset; kategori alkes seluruhnya alat, lainnya seluruhnya bangunan. */
@@ -1107,12 +1094,14 @@ function baseParams(category) {
   p.usefulLifeEquip = isEquip ? p.usefulLife : 8;
   p.useResidual = true;
   if (p.annualMultiplier === 365) {
-    p.rooms = [makeRoom('VIP', 4), makeRoom('Kelas 1', 8), makeRoom('Kelas 2', 12), makeRoom('Kelas 3', 16)];
     p.jknPct = 70;
     p.avlos = 4;
+    p.tariffJkn = 4.5;   /* CONTOH, jt/episode */
+    p.tariffNon = 1.6;   /* CONTOH, jt/hari */
   }
-  p.opexItems = makeOpexItems(p);
-  applyOpexItems(p);
+  p.hppItems = HPP_ITEMS.map(([name, value]) => ({ name, value }));
+  p.opexItems = OPEX_ITEMS.map(([name, value]) => ({ name, value }));
+  applyCostItems(p);
   p.flags = { tariff: false, opex: false };
   return p;
 }
@@ -1162,7 +1151,7 @@ function buildCashflows(p, mult) {
   const elapsedE = horizon % lifeE;
   const residual = !p.useResidual ? 0 :
     capexB * Math.max(0, 1 - horizon / lifeB) + (elapsedE > 0 ? capexE * (1 - elapsedE / lifeE) : 0);
-  rows.push({ t: 0, util: 0, volume: 0, revenue: 0, partnerShare: 0, opex: 0, ebitda: 0, dep: 0, interest: 0, principal: 0, reinvest: 0, residual: 0, ni: 0, cash: -equityCapex, cum, cumOp, dscr: null });
+  rows.push({ t: 0, util: 0, volume: 0, revenue: 0, partnerShare: 0, hpp: 0, opex: 0, ebitda: 0, dep: 0, interest: 0, principal: 0, reinvest: 0, residual: 0, ni: 0, cash: -equityCapex, cum, cumOp, dscr: null });
 
   for (let t = 1; t <= horizon; t++) {
     const util = targetUtil * Math.min(1, t / rampYear);
@@ -1175,8 +1164,9 @@ function buildCashflows(p, mult) {
       revenue -= partnerShare;
     }
 
-    const opex = revenue * (p.varOpexPct / 100) + p.fixedOpexAnnual;
-    const ebitda = revenue - opex;
+    const hpp = revenue * (p.hppPct / 100);
+    const opex = revenue * (p.opexPct / 100);
+    const ebitda = revenue - hpp - opex;
     const dep = (t <= lifeB ? capexB / lifeB : 0) + capexE / lifeE;
     const reinvest = t % lifeE === 0 && t < horizon ? capexE : 0;
     const resNow = t === horizon ? residual : 0;
@@ -1195,7 +1185,7 @@ function buildCashflows(p, mult) {
     cum += cash;
     cumOp += cash - resNow;
     const dscr = (interest + principal) > 0 ? ebitda / (interest + principal) : null;
-    rows.push({ t, util, volume, revenue, partnerShare, opex, ebitda, dep, interest, principal, reinvest, residual: resNow, ni, cash, cum, cumOp, dscr });
+    rows.push({ t, util, volume, revenue, partnerShare, hpp, opex, ebitda, dep, interest, principal, reinvest, residual: resNow, ni, cash, cum, cumOp, dscr });
   }
   return { rows, capex, equityCapex, loanAmount, scheme, residual };
 }
@@ -1230,9 +1220,11 @@ function bepUtilization(p, mult) {
   mult = mult || { util: 1, tariff: 1, capex: 1 };
   const tariff = p.tariff * mult.tariff;
   const capacityAnnual = p.capacity * p.annualMultiplier;
-  const contribMargin = 1 - p.varOpexPct / 100;
+  /* HPP dan operasional berupa persen pendapatan, jadi biaya tetap yang harus ditutup adalah depresiasi. */
+  const contribMargin = 1 - (p.hppPct + p.opexPct) / 100;
   if (contribMargin <= 0 || tariff <= 0 || capacityAnnual <= 0) return Infinity;
-  return (p.fixedOpexAnnual / contribMargin / tariff) / capacityAnnual * 100;
+  const dep = (p.capexBuilding / Math.max(1, p.usefulLifeBuilding) + p.capexEquip / Math.max(1, p.usefulLifeEquip)) * mult.capex;
+  return (dep / contribMargin / tariff) / capacityAnnual * 100;
 }
 function computeAll(p, mult) {
   const { rows, capex, equityCapex, scheme, residual } = buildCashflows(p, mult);
@@ -1315,7 +1307,6 @@ const state = {
   params: {},
   detected: {},
   conf: {},
-  detectedRooms: [],
   detectedCapex: [],
   scenario: 'moderat',
   worksheetNote: null,
@@ -1453,7 +1444,6 @@ $('#parseBtn').addEventListener('click', () => {
   const read = readNarrative($('#promptInput').value.trim());
   state.detected = read.values;
   state.conf = read.conf;
-  state.detectedRooms = read.rooms;
   state.detectedCapex = read.capexItems;
   state.params = paramsFromNarrative();
   state.worksheetNote = null;
@@ -1471,10 +1461,7 @@ function paramsFromNarrative() {
     p.capexBuilding = sumOf(x => x.label === 'bangunan') + (state.category === 'alkes' ? 0 : unlabeled);
     p.capexEquip = sumOf(x => x.label === 'alkes') + (state.category === 'alkes' ? unlabeled : 0);
   }
-  if (p.annualMultiplier === 365 && state.detectedRooms.length) {
-    p.rooms = state.detectedRooms.map(r => makeRoom(r.name, r.beds));
-    if (!p.flags.tariff) p.tariffMode = 'segmented';
-  }
+  if (p.annualMultiplier === 365 && !p.flags.tariff) p.tariffMode = 'segmented';
   return p;
 }
 
@@ -1487,8 +1474,7 @@ const HINTS = {
   utilization: 'Tercapai penuh pada tahun target; naik linier sebelumnya.',
   rampYear: 'Tahun ketika utilisasi target tercapai.',
   discountRate: 'Biaya modal untuk menghitung NPV.',
-  varOpexPct: 'Biaya yang ikut naik-turun dengan pendapatan (BHP, jasa medis).',
-  fixedOpexAnnual: 'Gaji tetap, pemeliharaan, utilitas.',
+  avlos: 'Mengubah tarif JKN per episode menjadi per hari.',
 };
 
 function field(label, key, unit, step, div, showTag) {
@@ -1554,8 +1540,11 @@ function renderWorksheet() {
   const gRev = group('Tarif', '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>');
   wrap.appendChild(gRev); renderTariffGroup($('.ws-body', gRev), d);
 
-  const gOpex = group('Biaya operasional (opex)', '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>');
-  wrap.appendChild(gOpex); renderOpexGroup($('.ws-body', gOpex));
+  const gHpp = group('HPP (% pendapatan)', '<path d="M6 3h12l2 6H4zM4 9h16v12H4zM9 14h6"/>');
+  wrap.appendChild(gHpp); renderCostGroup($('.ws-body', gHpp), 'hppItems', 'Total HPP');
+
+  const gOpex = group('Operasional (% pendapatan)', '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>');
+  wrap.appendChild(gOpex); renderCostGroup($('.ws-body', gOpex), 'opexItems', 'Total Operasional');
 
   const gFin = group('Pendanaan', '<path d="M3 10l9-6 9 6M5 10v8M19 10v8M9 10v8M15 10v8M3 20h18"/>');
   wrap.appendChild(gFin); renderFinancingGroup($('.ws-body', gFin));
@@ -1563,6 +1552,7 @@ function renderWorksheet() {
   /* Parameter lanjutan: terlipat, memakai nilai default sampai dibuka. */
   const gPar = document.createElement('details');
   gPar.className = 'card ws-group adv';
+  gPar.open = true;
   gPar.innerHTML = '<summary>Parameter lanjutan <small id="advSummary"></small></summary><div class="ws-body">' +
     field('Diskonto / WACC', 'discountRate', '%', '0.5', null, false) +
     field('Tarif pajak efektif', 'taxRate', '%', '1', null, false) +
@@ -1607,80 +1597,53 @@ function segWeightedTariff(segments) {
   return segments.reduce((s, x) => s + (x.share / 100) * x.tariff, 0);
 }
 
-/* Tarif ruang × guarantor (rawat inap): input per ruang, porsi segmen dihitung otomatis. */
-function roomTableHTML(p) {
-  return '<div class="room-top">' +
-    '<div><label for="f-jkn">JKN</label><div class="input-unit"><input id="f-jkn" type="number" step="0.5" class="room-param" data-param="jknPct" value="' + p.jknPct + '"><span>%</span></div></div>' +
-    '<div class="room-stat">Non-JKN<b id="roomNon"></b></div>' +
-    '<div><label for="f-avlos">AVLOS</label><div class="input-unit"><input id="f-avlos" type="number" step="0.1" class="room-param" data-param="avlos" value="' + p.avlos + '"><span>hari</span></div></div>' +
-    '</div>' +
-    '<div class="room-head"><span>Ruang</span><span>Bed</span><span>JKN (jt/episode)</span><span>Non-JKN (jt/hari)</span><span></span></div>' +
-    p.rooms.map((r, i) =>
-      '<div class="room-row"><input type="text" class="seg-name room-name" data-idx="' + i + '" value="' + esc(r.name) + '" aria-label="Nama ruang ' + (i + 1) + '">' +
-      '<input type="number" step="1" class="room-num" data-field="beds" data-idx="' + i + '" value="' + r.beds + '" aria-label="Jumlah bed ' + esc(r.name) + '">' +
-      '<input type="number" step="0.1" class="room-num" data-field="tariffJkn" data-idx="' + i + '" value="' + r.tariffJkn + '" aria-label="Tarif JKN per episode ' + esc(r.name) + '">' +
-      '<input type="number" step="0.05" class="room-num" data-field="tariffNon" data-idx="' + i + '" value="' + r.tariffNon + '" aria-label="Tarif Non-JKN per hari ' + esc(r.name) + '">' +
-      '<button type="button" class="room-del" data-idx="' + i + '" aria-label="Hapus ' + esc(r.name) + '">' + svgIcon('<path d="M18 6L6 18M6 6l12 12"/>') + '</button></div>'
-    ).join('') +
-    '<button type="button" class="link-btn" id="roomAdd">+ Tambah ruang</button>' +
-    '<div class="seg-summary" id="roomSummary"></div>' +
-    '<details class="seg-breakdown"><summary>Rincian porsi per segmen</summary><div id="roomBreakdown" style="display:block;border:0;padding:0"></div></details>';
+/* Tarif rawat inap: JKN per episode dan Non-JKN per hari. */
+function guarantorHTML() {
+  return field('Porsi JKN', 'jknPct', '%', '0.5', null, true) +
+    '<div class="ws-row"><span class="ws-label">Porsi Non-JKN</span><span class="ws-stat" id="nonPct"></span></div>' +
+    field('AVLOS', 'avlos', 'hari', '0.1', null, true) +
+    field('Tarif JKN', 'tariffJkn', 'jt/episode', '0.1', null, false) +
+    field('Tarif Non-JKN', 'tariffNon', 'jt/hari', '0.05', null, false) +
+    '<div class="seg-summary" id="guarantorSummary"></div>';
 }
 
-function bindRoomTable(body, d) {
+function bindGuarantor(body) {
   const p = state.params;
   const update = () => {
-    const r = roomSegments(p);
+    const r = guarantorTariff(p);
     p.tariff = r.weighted;
-    p.capacity = r.total;
-    const cap = $('#f-capacity');
-    if (cap) cap.value = r.total;
-    $('#roomNon', body).textContent = fmtPct(100 - p.jknPct);
-    const warn = p.jknPct < 0 || p.jknPct > 100;
-    $('#roomSummary', body).className = 'seg-summary' + (warn ? ' warn' : '');
-    $('#roomSummary', body).innerHTML = '<span>Total <b>' + fmtNum(r.total) + ' TT</b></span><span>Tarif tertimbang <b>' + fmtRp(r.weighted) + '</b> / hari</span>';
-    $('#roomBreakdown', body).innerHTML = r.rows.map(x =>
-      '<div><span>' + esc(x.name) + '</span><b>' + fmtPct(x.share * 100) + ' · ' + fmtRp(x.perDay) + '/hari</b></div>').join('');
+    $('#nonPct', body).textContent = fmtPct(100 - p.jknPct);
+    $('#guarantorSummary', body).innerHTML = '<span>JKN setara <b>' + fmtRp(r.jknPerDay) + '</b> / hari</span><span>Tarif tertimbang <b>' + fmtRp(r.weighted) + '</b> / hari</span>';
   };
   update();
-  $$('.room-param', body).forEach(inp => inp.addEventListener('input', () => {
-    p[inp.dataset.param] = parseFloat(inp.value) || 0;
+  $$('input[data-key]', body).forEach(inp => inp.addEventListener('input', () => {
+    if (inp.dataset.key === 'tariffJkn' || inp.dataset.key === 'tariffNon') p.flags.tariff = true;
     update();
   }));
-  $$('.room-name', body).forEach(inp => inp.addEventListener('input', () => {
-    p.rooms[+inp.dataset.idx].name = inp.value;
-    update();
-  }));
-  $$('.room-num', body).forEach(inp => inp.addEventListener('input', () => {
-    p.rooms[+inp.dataset.idx][inp.dataset.field] = parseFloat(inp.value) || 0;
-    if (inp.dataset.field !== 'beds') p.flags.tariff = true;
-    update();
-  }));
-  $$('.room-del', body).forEach(b => b.addEventListener('click', () => {
-    p.rooms.splice(+b.dataset.idx, 1);
-    renderTariffGroup(body, d);
-  }));
-  $('#roomAdd', body).addEventListener('click', () => {
-    p.rooms.push(makeRoom('Ruang baru', 0));
-    renderTariffGroup(body, d);
-  });
 }
 
-function renderOpexGroup(body) {
+/* Kartu HPP / Operasional: setiap baris persen pendapatan. */
+function renderCostGroup(body, itemsKey, totalLabel) {
   const p = state.params;
-  const row = (x, i, unit, step) =>
-    '<div class="ws-row"><label class="ws-label" for="ox-' + x.key + '">' + x.name + '</label>' +
-    '<div class="input-unit"><input id="ox-' + x.key + '" type="number" step="' + step + '" class="opex-input" data-idx="' + i + '" value="' + x.value + '"><span>' + unit + '</span></div></div>';
-  body.innerHTML = '<p class="fin-note" style="margin:0 0 6px">Angka awal adalah contoh. Isi dengan data RSP UI.</p>' +
-    p.opexItems.map((x, i) => x.kind === 'fixed' ? row(x, i, 'jt/thn', '50') : row(x, i, '% pend.', '1')).join('') +
-    '<div class="seg-summary" id="opexSummary"></div>';
+  body.innerHTML = p[itemsKey].map((x, i) => {
+    const id = itemsKey + '-' + i;
+    return '<div class="ws-row"><label class="ws-label" for="' + id + '">' + esc(x.name) + '</label>' +
+      '<div class="input-unit"><input id="' + id + '" type="number" step="0.5" class="cost-input" data-idx="' + i + '" value="' + x.value + '"><span>%</span></div></div>';
+  }).join('') + '<div class="seg-summary cost-summary"></div>';
   const update = () => {
-    applyOpexItems(p);
-    $('#opexSummary', body).innerHTML = '<span>Opex tetap <b>' + fmtRp(p.fixedOpexAnnual) + '</b> / tahun</span><span>Opex variabel <b>' + fmtPct(p.varOpexPct) + '</b> pendapatan</span>';
+    applyCostItems(p);
+    const margin = 100 - p.hppPct - p.opexPct;
+    $('.cost-summary', body).innerHTML = '<span>' + totalLabel + ' <b>' + fmtPct(itemsKey === 'hppItems' ? p.hppPct : p.opexPct) + '</b></span>';
+    $$('.margin-note').forEach(el => el.remove());
+    const last = $$('.cost-summary').pop();
+    if (last) {
+      last.insertAdjacentHTML('beforeend', '<span class="margin-note">Margin EBITDA <b>' + fmtPct(margin) + '</b></span>');
+      last.classList.toggle('warn', margin <= 0);
+    }
   };
   update();
-  $$('.opex-input', body).forEach(inp => inp.addEventListener('input', () => {
-    p.opexItems[+inp.dataset.idx].value = parseFloat(inp.value) || 0;
+  $$('.cost-input', body).forEach(inp => inp.addEventListener('input', () => {
+    p[itemsKey][+inp.dataset.idx].value = parseFloat(inp.value) || 0;
     p.flags.opex = true;
     update();
   }));
@@ -1692,10 +1655,10 @@ function renderTariffGroup(body, d) {
   const isRanap = d.annualMultiplier === 365;
   let html = '<div class="seg seg-full" role="radiogroup" aria-label="Mode tarif">' +
     '<button type="button" class="seg-btn' + (!seg ? ' active' : '') + '" data-tmode="single" role="radio" aria-checked="' + !seg + '">Tarif tunggal</button>' +
-    '<button type="button" class="seg-btn' + (seg ? ' active' : '') + '" data-tmode="segmented" role="radio" aria-checked="' + seg + '">' + (isRanap ? 'Ruang × guarantor' : 'Tarif per segmen') + '</button></div>';
+    '<button type="button" class="seg-btn' + (seg ? ' active' : '') + '" data-tmode="segmented" role="radio" aria-checked="' + seg + '">' + (isRanap ? 'JKN / Non-JKN' : 'Tarif per segmen') + '</button></div>';
 
   if (seg && isRanap) {
-    html += roomTableHTML(p);
+    html += guarantorHTML();
   } else if (seg) {
     html += '<div class="seg-table"><div class="seg-head"><span>Segmen</span><span>Porsi</span><span>Tarif (jt)</span></div>' +
       p.segments.map((s, i) =>
@@ -1708,9 +1671,6 @@ function renderTariffGroup(body, d) {
   }
 
   body.innerHTML = html;
-  const capInput = $('#f-capacity');
-  if (capInput) capInput.disabled = seg && isRanap;
-  if (seg && isRanap) bindRoomTable(body, d);
 
   /* Ringkasan diperbarui tanpa me-render ulang input, agar fokus tidak hilang saat mengetik. */
   const updateSummary = () => {
@@ -1729,7 +1689,7 @@ function renderTariffGroup(body, d) {
     state.params.tariffMode = b.dataset.tmode;
     renderTariffGroup(body, d);
   }));
-  $$('.seg-name:not(.room-name)', body).forEach(inp => inp.addEventListener('input', () => {
+  $$('.seg-name', body).forEach(inp => inp.addEventListener('input', () => {
     p.segments[+inp.dataset.idx].name = inp.value;
   }));
   $$('.seg-input', body).forEach(inp => inp.addEventListener('input', () => {
@@ -1738,6 +1698,7 @@ function renderTariffGroup(body, d) {
     updateSummary();
   }));
   bindInputs(body);
+  if (seg && isRanap) bindGuarantor(body);
   const tariffInput = $('#f-tariff', body);
   if (tariffInput) tariffInput.addEventListener('input', () => { p.flags.tariff = true; });
 }
@@ -1776,6 +1737,34 @@ function setScenario(k) {
   renderResults();
 }
 
+/* Input penyesuaian skenario aktif. Dibuat ulang hanya saat skenario berganti, agar fokus tidak hilang saat mengetik. */
+function renderScenarioEditor() {
+  const s = SCENARIOS[state.scenario];
+  const box = $('#scnEdit');
+  box.dataset.for = state.scenario;
+  const input = (key, label) => '<label>' + label + '<div class="input-unit"><input type="number" step="1" data-delta="' + key + '" value="' + s.delta[key] + '"><span>%</span></div></label>';
+  box.innerHTML = input('util', 'Utilisasi') + input('tariff', 'Tarif') + input('capex', 'CAPEX') +
+    '<button type="button" class="btn ghost sm" id="scnReset">Kembalikan default</button>';
+  $$('input[data-delta]', box).forEach(inp => inp.addEventListener('input', () => {
+    s.delta[inp.dataset.delta] = parseFloat(inp.value) || 0;
+    refreshScenario(s);
+    saveScenarios();
+    renderResults();
+  }));
+  $('#scnReset', box).addEventListener('click', () => {
+    s.delta = Object.assign({}, SCENARIO_DEFAULTS[state.scenario]);
+    refreshScenario(s);
+    saveScenarios();
+    renderScenarioEditor();
+    renderResults();
+  });
+}
+function saveScenarios() {
+  const out = {};
+  Object.keys(SCENARIOS).forEach(k => { out[k] = SCENARIOS[k].delta; });
+  store.set('scenarios', out);
+}
+
 /* Satu kolom indikator: tone = blue | green | red | amber | indigo | gray. */
 function kpi(label, value, tone, sub, icon) {
   return '<div class="kpi ' + (tone || '') + '">' +
@@ -1803,11 +1792,12 @@ function renderResults() {
   lastResult = r;
 
   renderScenarioRow();
+  if ($('#scnEdit').dataset.for !== state.scenario) renderScenarioEditor();
   $('#resultCat').textContent = d.label + ' · ' + SCENARIOS[state.scenario].label + ': ' + SCENARIOS[state.scenario].hint.toLowerCase();
 
   const placeholders = [];
   if (!p.flags.tariff) placeholders.push('tarif');
-  if (!p.flags.opex) placeholders.push('opex');
+  if (!p.flags.opex) placeholders.push('HPP/operasional');
   $('#dataWarn').hidden = !placeholders.length;
   $('#dataWarn').innerHTML = svgIcon('<path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/>') +
     '<span><b>Hasil belum final:</b> ' + placeholders.join(' dan ') + ' masih memakai angka contoh, bukan data RSP UI. Isi di worksheet sebelum dipakai sebagai kesimpulan FS.</span>';
@@ -1833,12 +1823,13 @@ function renderResults() {
 
   const scheme = FINANCING_SCHEMES.find(o => o.key === p.financingScheme);
   $('#printAssump').innerHTML = [
-    ['Kategori', d.label], ['Skenario', SCENARIOS[state.scenario].label], ['CAPEX bangunan', fmtRp(p.capexBuilding) + ' · ' + p.usefulLifeBuilding + ' thn'], ['CAPEX alkes', fmtRp(p.capexEquip) + ' · ' + p.usefulLifeEquip + ' thn'], ['Nilai sisa', p.useResidual ? fmtRp(r.residual) : 'Tidak dihitung'],
+    ['Kategori', d.label], ['Skenario', SCENARIOS[state.scenario].label + ': ' + SCENARIOS[state.scenario].hint], ['CAPEX bangunan', fmtRp(p.capexBuilding) + ' · ' + p.usefulLifeBuilding + ' thn'], ['CAPEX alkes', fmtRp(p.capexEquip) + ' · ' + p.usefulLifeEquip + ' thn'], ['Nilai sisa', p.useResidual ? fmtRp(r.residual) : 'Tidak dihitung'],
     [d.capacityLabel, fmtNum(p.capacity) + ' ' + d.capacityUnitTag], [d.utilLabel, fmtPct(p.utilization)], ['Tahun target', 'ke-' + p.rampYear],
-    ['Tarif rata-rata', fmtRp(p.tariff) + ' / ' + (d.tariffUnitTag.split('/')[1] || 'unit')], ['Opex tetap/tahun', fmtRp(p.fixedOpexAnnual)], ['Opex variabel', fmtPct(p.varOpexPct)],
+    ['Tarif rata-rata', fmtRp(p.tariff) + ' / ' + (d.tariffUnitTag.split('/')[1] || 'unit')], ['HPP', fmtPct(p.hppPct) + ' pendapatan'], ['Operasional', fmtPct(p.opexPct) + ' pendapatan'],
     ['Pendanaan', scheme ? scheme.label : '-'], ['Diskonto', fmtPct(p.discountRate)], ['Horizon', p.horizon + ' tahun'],
-  ].concat(p.tariffMode === 'segmented' && p.rooms ? [
-    ['Bed', p.rooms.map(x => x.name + ' ' + x.beds).join(', ')], ['Guarantor', 'JKN ' + fmtPct(p.jknPct)], ['AVLOS', fmtNum(p.avlos, 1) + ' hari'],
+  ].concat(p.tariffMode === 'segmented' && p.annualMultiplier === 365 ? [
+    ['Guarantor', 'JKN ' + fmtPct(p.jknPct) + ' · Non-JKN ' + fmtPct(100 - p.jknPct)], ['AVLOS', fmtNum(p.avlos, 1) + ' hari'],
+    ['Tarif JKN', fmtRp(p.tariffJkn) + ' / episode'], ['Tarif Non-JKN', fmtRp(p.tariffNon) + ' / hari'],
   ] : []).map(([k, v]) => '<div><span>' + k + '</span><b>' + esc(v) + '</b></div>').join('');
 
   renderChart(r.rows);
@@ -1874,7 +1865,8 @@ function tableCols(scheme, rows) {
     { h: 'Pendapatan', f: r => fmtRp(r.revenue), raw: r => r.revenue.toFixed(2) },
   ];
   if (scheme === 'kso') cols.push({ h: 'Bagi hasil mitra', f: r => fmtRp(r.partnerShare), raw: r => r.partnerShare.toFixed(2) });
-  cols.push({ h: 'Opex', f: r => fmtRp(r.opex), raw: r => r.opex.toFixed(2) });
+  cols.push({ h: 'HPP', f: r => fmtRp(r.hpp), raw: r => r.hpp.toFixed(2) });
+  cols.push({ h: 'Operasional', f: r => fmtRp(r.opex), raw: r => r.opex.toFixed(2) });
   cols.push({ h: 'EBITDA', f: r => fmtRp(r.ebitda), raw: r => r.ebitda.toFixed(2), key: 'ebitda' });
   cols.push({ h: 'Depresiasi', f: r => fmtRp(r.dep), raw: r => r.dep.toFixed(2) });
   if (scheme === 'pinjaman') {
@@ -2181,6 +2173,11 @@ $('#bridgeBtn').addEventListener('click', () => {
   $('#mbBORnum').value = mbState.bor;
   setTariffMode(mbState.tariffMode || 'day');
   updateSliderFill();
+
+  const savedScn = store.get('scenarios', null);
+  if (savedScn) Object.keys(SCENARIOS).forEach(k => {
+    if (savedScn[k]) { SCENARIOS[k].delta = Object.assign({}, SCENARIO_DEFAULTS[k], savedScn[k]); refreshScenario(SCENARIOS[k]); }
+  });
 
   const saved = store.get('prompt', '');
   if (saved) $('#promptInput').value = saved;
