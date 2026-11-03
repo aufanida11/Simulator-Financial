@@ -300,10 +300,9 @@ details.adv > .ws-body { padding: 0 22px 14px; }
 .check-row small { display: block; font-size: 11.5px; font-weight: 400; color: var(--ink-faint); margin-top: 1px; }
 .tag.check { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-line); }
 .dchip.check { background: var(--amber-bg); color: var(--amber); }
-.note.warn { background: var(--amber-bg); border-color: var(--amber-line); }
-.note.warn svg { color: var(--amber); }
 
 .ws-stat { font-size: 14px; font-weight: 700; color: var(--ink); padding-right: 10px; }
+.input-unit.invalid { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-bg); }
 .tag.manual { background: var(--primary-tint); color: var(--primary); border: 1px solid color-mix(in srgb, var(--primary) 25%, transparent); }
 .ws-row .input-unit input { width: 116px; padding: 4px 8px; font-size: 13px; }
 .sdm-calc { padding: 2px 0 6px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
@@ -652,7 +651,7 @@ input[type=range]::-moz-range-track { background: transparent; }
         <section class="panel show" id="panel-1">
           <div class="card">
             <div class="card-head">
-              <div><h3>Jenis pengembangan</h3><p class="muted">Pilih kategori — asumsi baseline menyesuaikan.</p></div>
+              <div><h3>Jenis pengembangan</h3><p class="muted">Pilih kategori — label dan satuan menyesuaikan.</p></div>
             </div>
             <div class="cat-grid" id="catGrid" role="radiogroup" aria-label="Kategori pengembangan"></div>
           </div>
@@ -690,7 +689,7 @@ input[type=range]::-moz-range-track { background: transparent; }
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
                 Kembali
               </button>
-              <button class="btn ghost" id="resetBtn" type="button">Reset ke baseline</button>
+              <button class="btn ghost" id="resetBtn" type="button">Reset isian</button>
             </div>
             <button class="btn primary" id="calcBtn" type="button">
               Hitung kelayakan
@@ -714,7 +713,6 @@ input[type=range]::-moz-range-track { background: transparent; }
             <div class="card-head"><div><h3>Asumsi yang dipakai</h3></div></div>
             <div class="assump" id="printAssump"></div>
           </div>
-          <div class="note warn" id="dataWarn" hidden></div>
           <div class="verdict" id="verdict"></div>
           <div class="kpi-grid" id="kpiGrid"></div>
 
@@ -868,7 +866,7 @@ input[type=range]::-moz-range-track { background: transparent; }
       <details class="caveat" id="method">
         <summary>Catatan metodologi</summary>
         <p><b>Kelayakan investasi.</b> Ekstraksi parameter dari teks bebas memakai pencocokan kata kunci sederhana — semua nilai tetap perlu dikonfirmasi pada worksheet. NPV/IRR/ROI dihitung dari arus kas ke RSP UI (arus kas ekuitas bila memakai pinjaman atau KSO-BLT). Depresiasi garis lurus per aset (bangunan dan alkes), CAPEX dibebankan pada tahun ke-0, tanpa fasing konstruksi. Alkes diganti setiap akhir umur ekonomisnya dengan biaya yang sama, tanpa inflasi. Nilai sisa memakai nilai buku di akhir horizon, masuk ke NPV, IRR, dan ROI, tetapi tidak ke payback. Perlu disesuaikan dengan format kajian kelayakan RSP UI yang berlaku — termasuk skema BLT, PSAK 73 untuk sewa alkes, dan struktur Bab III market/demand.</p>
-        <p><b>Tarif, HPP &amp; operasional.</b> Tarif JKN per episode dibagi AVLOS menjadi tarif per hari, lalu ditimbang dengan porsi guarantor. Tiap baris HPP dan operasional bisa dihitung sebagai persen pendapatan (ikut naik-turun dengan pasien) atau jt/tahun (biaya tetap, tanpa inflasi). BEP utilisasi = (biaya tetap + depresiasi tahunan) ÷ margin kontribusi. Angka tarif dan biaya awal adalah contoh sampai diisi dengan data RSP UI.</p>
+        <p><b>Tarif, HPP &amp; operasional.</b> Tarif JKN per episode dibagi AVLOS menjadi tarif per hari, lalu ditimbang dengan porsi guarantor. Tiap baris HPP dan operasional bisa dihitung sebagai persen pendapatan (ikut naik-turun dengan pasien) atau jt/tahun (biaya tetap, tanpa inflasi). BEP utilisasi = (biaya tetap + depresiasi tahunan) ÷ margin kontribusi.</p>
         <p><b>Indikator rawat inap.</b> Hari rawat tersedia = TT × 365; BOR = hari rawat terisi ÷ hari rawat tersedia; pasien keluar = hari rawat terisi ÷ AVLOS; BTO = pasien keluar ÷ TT; TOI = (hari tersedia − hari terisi) ÷ pasien keluar. Rentang ideal mengacu Barber-Johnson/Kemenkes: BOR 60–85%, AVLOS 6–9 hari, BTO 40–50 kali, TOI 1–3 hari. Kurva mengasumsikan AVLOS dan tarif konstan.</p>
       </details>
 
@@ -885,7 +883,7 @@ input[type=range]::-moz-range-track { background: transparent; }
 
 <script>
 /* =========================================================================
-   MODEL — asumsi baseline, ekstraksi teks, rumus keuangan & indikator ranap
+   MODEL — kategori, ekstraksi teks, rumus keuangan & indikator ranap
    ========================================================================= */
 
 const CATEGORIES = {
@@ -893,8 +891,7 @@ const CATEGORIES = {
     label: 'Rawat inap', desc: 'Gedung/ruang rawat, penambahan TT, kelas eksekutif',
     capacityLabel: 'Tempat tidur (TT)', capacityUnitTag: 'TT', utilLabel: 'Okupansi / BOR target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/hari', annualMultiplier: 365,
-    capex: 30000, capacity: 40, utilization: 70, tariff: 1.2,
-    usefulLife: 20, rampYear: 3, taxRate: 0, discountRate: 10, horizon: 10,
+    taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 8,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 10,
     tariffMode: 'single',
@@ -903,42 +900,39 @@ const CATEGORIES = {
     label: 'Alat kesehatan', desc: 'CT scan, MRI, cath lab, endoskopi, dan sejenisnya',
     capacityLabel: 'Kapasitas tindakan/tahun', capacityUnitTag: 'tindakan', utilLabel: 'Utilisasi alat target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/tindakan', annualMultiplier: 1,
-    capex: 12000, capacity: 3000, utilization: 60, tariff: 1.5,
-    usefulLife: 8, rampYear: 2, taxRate: 0, discountRate: 10, horizon: 10,
+    taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 6,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 8,
     tariffMode: 'single', segments: [
-      { name: 'Pasien umum', share: 30, tariff: 1.95 },
-      { name: 'BPJS', share: 55, tariff: 1.2 },
-      { name: 'Asuransi swasta', share: 15, tariff: 1.725 },
+      { name: 'Pasien umum', share: 0, tariff: 0 },
+      { name: 'BPJS', share: 0, tariff: 0 },
+      { name: 'Asuransi swasta', share: 0, tariff: 0 },
     ],
   },
   layanan: {
     label: 'Layanan baru', desc: 'Klinik/poli unggulan, pusat layanan terpadu',
     capacityLabel: 'Kapasitas kunjungan-tindakan/tahun', capacityUnitTag: 'unit', utilLabel: 'Utilisasi layanan target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/unit', annualMultiplier: 1,
-    capex: 20000, capacity: 5000, utilization: 55, tariff: 1.0,
-    usefulLife: 12, rampYear: 3, taxRate: 0, discountRate: 10, horizon: 10,
+    taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 8,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 10,
     tariffMode: 'single', segments: [
-      { name: 'Pasien umum', share: 30, tariff: 1.3 },
-      { name: 'BPJS', share: 55, tariff: 0.8 },
-      { name: 'Asuransi swasta', share: 15, tariff: 1.15 },
+      { name: 'Pasien umum', share: 0, tariff: 0 },
+      { name: 'BPJS', share: 0, tariff: 0 },
+      { name: 'Asuransi swasta', share: 0, tariff: 0 },
     ],
   },
   renovasi: {
     label: 'Renovasi / ekspansi', desc: 'Renovasi gedung, perluasan ruang dan fasilitas',
     capacityLabel: 'Unit/ruang tambahan', capacityUnitTag: 'unit', utilLabel: 'Tingkat pemanfaatan target',
     tariffLabel: 'Tarif rata-rata', tariffUnitTag: 'jt/unit', annualMultiplier: 1,
-    capex: 15000, capacity: 20, utilization: 65, tariff: 0.8,
-    usefulLife: 20, rampYear: 3, taxRate: 0, discountRate: 10, horizon: 10,
+    taxRate: 0, discountRate: 10, horizon: 10,
     financingScheme: 'internal', loanPortionPct: 60, interestRate: 9, loanTenor: 8,
     partnerCapexPct: 30, partnerRevSharePct: 20, partnerContractYears: 10,
     tariffMode: 'single', segments: [
-      { name: 'Pasien umum', share: 30, tariff: 1.04 },
-      { name: 'BPJS', share: 55, tariff: 0.64 },
-      { name: 'Asuransi swasta', share: 15, tariff: 0.92 },
+      { name: 'Pasien umum', share: 0, tariff: 0 },
+      { name: 'BPJS', share: 0, tariff: 0 },
+      { name: 'Asuransi swasta', share: 0, tariff: 0 },
     ],
   },
 };
@@ -1100,14 +1094,14 @@ function guarantorTariff(p) {
 }
 
 /* ---------- HPP & operasional ---------- */
-/* Tiap baris bisa persen pendapatan atau jt/tahun. Semua angka CONTOH, bukan data RSP UI. */
+/* Tiap baris bisa persen pendapatan atau jt/tahun; mulai dari 0 sampai diisi. */
 const HPP_ITEMS = [
-  ['Obat & BMHP', 22], ['Laboratorium', 4], ['Darah', 1], ['Alat Operasi', 2], ['Honor Dokter', 14], ['Bahan Habis Pakai', 2],
-  ['Gas Medis', 1], ['Bahan Makanan', 1], ['Diklitlat', 1], ['Dana Cadangan Medikolegal', 1], ['Dana Alokasi Universitas', 1],
+  'Obat & BMHP', 'Laboratorium', 'Darah', 'Alat Operasi', 'Honor Dokter', 'Bahan Habis Pakai',
+  'Gas Medis', 'Bahan Makanan', 'Diklitlat', 'Dana Cadangan Medikolegal', 'Dana Alokasi Universitas',
 ];
 const OPEX_ITEMS = [
-  ['Kepegawaian', 20], ['Kepegawaian Lainnya', 3], ['Material', 2], ['Rumah Tangga', 1], ['Utilitas', 4],
-  ['Pemeliharaan / Perbaikan', 2], ['Sewa', 0], ['Asuransi & Konsultan', 1], ['Sistem Informasi', 1], ['Promosi & Iklan', 1],
+  'Kepegawaian', 'Kepegawaian Lainnya', 'Material', 'Rumah Tangga', 'Utilitas',
+  'Pemeliharaan / Perbaikan', 'Sewa', 'Asuransi & Konsultan', 'Sistem Informasi', 'Promosi & Iklan',
 ];
 function applyCostItems(p) {
   const sum = (items, unit) => items.filter(x => x.unit === unit).reduce((s, x) => s + x.value, 0);
@@ -1123,27 +1117,19 @@ function costLabel(pct, fixed) {
 /* ---------- parameter awal per kategori ---------- */
 function baseParams(category) {
   const p = cloneParams(CATEGORIES[category]);
-  /* Baseline satu aset; kategori alkes seluruhnya alat, lainnya seluruhnya bangunan. */
-  const isEquip = category === 'alkes';
-  p.capexBuilding = isEquip ? 0 : p.capex;
-  p.capexEquip = isEquip ? p.capex : 0;
-  p.usefulLifeBuilding = isEquip ? 20 : p.usefulLife;
-  p.usefulLifeEquip = isEquip ? p.usefulLife : 8;
-  p.useResidual = true;
-  if (p.annualMultiplier === 365) {
-    p.jknPct = 70;
-    p.avlos = 4;
-    p.tariffJkn = 4.5;   /* CONTOH, jt/episode */
-    p.tariffNon = 1.6;   /* CONTOH, jt/hari */
-  }
-  p.hppItems = HPP_ITEMS.map(([name, value]) => ({ name, value, unit: 'pct' }));
-  p.opexItems = OPEX_ITEMS.map(([name, value]) => ({ name, value, unit: 'pct' }));
+  /* Asumsi proyek mulai dari 0; hanya diisi dari uraian atau oleh pengguna. */
+  Object.assign(p, {
+    capexBuilding: 0, capexEquip: 0, usefulLifeBuilding: 0, usefulLifeEquip: 0,
+    capacity: 0, utilization: 0, rampYear: 0, tariff: 0, useResidual: true,
+  });
+  if (p.annualMultiplier === 365) Object.assign(p, { jknPct: 0, avlos: 0, tariffJkn: 0, tariffNon: 0 });
+  p.hppItems = HPP_ITEMS.map(name => ({ name, value: 0, unit: 'pct' }));
+  p.opexItems = OPEX_ITEMS.map(name => ({ name, value: 0, unit: 'pct' }));
   applyCostItems(p);
   /* Kalkulator SDM kosong sampai diisi; tidak ada gaji contoh. */
   p.sdm = ['Perawat & bidan', 'Tenaga medis bergaji tetap', 'Penunjang medis', 'Administrasi & umum'].map(name => ({ name, count: 0, salary: 0 }));
   p.sdmUsed = false;
   p.manual = {};
-  p.flags = { tariff: false, opex: false };
   return p;
 }
 
@@ -1415,7 +1401,10 @@ function goToStep(n) {
 }
 $$('.step').forEach(b => b.addEventListener('click', () => {
   const n = +b.dataset.step;
-  if (n === 3) renderResults();
+  if (n === 3) {
+    if (!checkRequired()) { goToStep(2); return; }
+    renderResults();
+  }
   goToStep(n);
 }));
 
@@ -1495,14 +1484,13 @@ $('#parseBtn').addEventListener('click', () => {
 
 function paramsFromNarrative() {
   const p = Object.assign(baseParams(state.category), state.detected);
-  p.flags.tariff = Object.prototype.hasOwnProperty.call(state.detected, 'tariff');
   if (state.detectedCapex.length) {
     const sumOf = f => state.detectedCapex.filter(f).reduce((s, x) => s + x.juta, 0);
     const unlabeled = sumOf(x => !x.label);
     p.capexBuilding = sumOf(x => x.label === 'bangunan') + (state.category === 'alkes' ? 0 : unlabeled);
     p.capexEquip = sumOf(x => x.label === 'alkes') + (state.category === 'alkes' ? unlabeled : 0);
   }
-  if (p.annualMultiplier === 365 && !p.flags.tariff) p.tariffMode = 'segmented';
+  if (p.annualMultiplier === 365 && !Object.prototype.hasOwnProperty.call(state.detected, 'tariff')) p.tariffMode = 'segmented';
   return p;
 }
 
@@ -1526,7 +1514,8 @@ function field(label, key, unit, step, div, showTag) {
   const needsCheck = isDetected && state.conf[tagKey] && state.conf[tagKey].level === 'check';
   const isManual = p.manual && p.manual[key];
   const tag = !showTag ? '' : isManual ? '<span class="tag manual">manual</span>' :
-    '<span class="tag ' + (needsCheck ? 'check' : isDetected ? 'detected' : 'default') + '"' + (needsCheck ? ' title="' + esc(state.conf[tagKey].note) + '"' : '') + '>' + (needsCheck ? 'perlu dicek' : isDetected ? 'terdeteksi' : 'baseline') + '</span>';
+    needsCheck ? '<span class="tag check" title="' + esc(state.conf[tagKey].note) + '">perlu dicek</span>' :
+    isDetected ? '<span class="tag detected">terdeteksi</span>' : '<span class="tag default">belum diisi</span>';
   const hint = HINTS[key] ? '<small class="hint">' + HINTS[key] + '</small>' : '';
   const id = 'f-' + key;
   return '<div class="ws-row"><label class="ws-label" for="' + id + '">' + label + tag + hint + '</label>' +
@@ -1537,7 +1526,7 @@ function bindInputs(container) {
   $$('input[data-key]', container).forEach(inp => inp.addEventListener('input', () => {
     const v = parseFloat(inp.value);
     state.params[inp.dataset.key] = (isNaN(v) ? 0 : v) * (parseFloat(inp.dataset.div) || 1);
-    /* Nilai yang diketik pengguna bukan lagi baseline atau hasil baca narasi. */
+    /* Nilai yang diketik pengguna bukan lagi hasil baca narasi. */
     state.params.manual[inp.dataset.key] = true;
     const tag = inp.closest('.ws-row').querySelector('.tag');
     if (tag) {
@@ -1563,8 +1552,8 @@ function renderWorksheet() {
 
   const checks = Object.keys(state.conf).filter(k => state.conf[k].level === 'check').map(k => esc(state.conf[k].note));
   $('#extractNote').innerHTML = state.worksheetNote || (keys.length
-    ? svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/>') + '<span><b>' + keys.length + ' parameter terbaca</b> dari uraian (ditandai <span class="tag detected">terdeteksi</span>). Sisanya memakai baseline kategori “' + d.label + '”. Periksa dan sesuaikan sebelum dihitung.' + (checks.length ? ' <b>Perlu dicek:</b> ' + checks.join(' ') : '') + '</span>'
-    : svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>') + '<span><b>Tidak ada parameter yang terbaca</b> dari uraian — worksheet memakai baseline kategori “' + d.label + '”. Sesuaikan nilai di bawah sebelum dihitung.</span>');
+    ? svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/>') + '<span><b>' + keys.length + ' parameter terbaca</b> dari uraian (ditandai <span class="tag detected">terdeteksi</span>). Isian lain masih 0 dan ditandai belum diisi. Periksa dan lengkapi sebelum dihitung.' + (checks.length ? ' <b>Perlu dicek:</b> ' + checks.join(' ') : '') + '</span>'
+    : svgIcon('<circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/>') + '<span><b>Tidak ada parameter yang terbaca</b> dari uraian — semua isian masih 0. Isi nilai di bawah sebelum dihitung.</span>');
 
   const wrap = $('#worksheetGroups');
   wrap.innerHTML = '';
@@ -1669,10 +1658,7 @@ function bindGuarantor(body) {
     $('#guarantorSummary', body).innerHTML = '<span>JKN setara <b>' + fmtRp(r.jknPerDay) + '</b> / hari</span><span>Tarif tertimbang <b>' + fmtRp(r.weighted) + '</b> / hari</span>';
   };
   update();
-  $$('input[data-key]', body).forEach(inp => inp.addEventListener('input', () => {
-    if (inp.dataset.key === 'tariffJkn' || inp.dataset.key === 'tariffNon') p.flags.tariff = true;
-    update();
-  }));
+  $$('input[data-key]', body).forEach(inp => inp.addEventListener('input', update));
 }
 
 /* Pendapatan saat utilisasi target tercapai: dasar konversi saat satuan baris diganti. */
@@ -1704,7 +1690,6 @@ function renderCostGroup(body, itemsKey, totalLabel) {
   update();
   $$('.cost-input', body).forEach(inp => inp.addEventListener('input', () => {
     p[itemsKey][+inp.dataset.idx].value = parseFloat(inp.value) || 0;
-    p.flags.opex = true;
     update();
   }));
   /* Ganti satuan: nilainya dikonversi memakai pendapatan pada utilisasi target. */
@@ -1751,7 +1736,6 @@ function renderSdmCalc(body, updateOpex) {
     const item = p.opexItems[idx];
     item.unit = 'rp';
     item.value = Math.round(t.cost);
-    p.flags.opex = true;
     const inp = $('.cost-input[data-idx="' + idx + '"]', body);
     inp.value = item.value;
     inp.step = '50';
@@ -1830,23 +1814,61 @@ function renderTariffGroup(body, d) {
   }));
   $$('.seg-input', body).forEach(inp => inp.addEventListener('input', () => {
     p.segments[+inp.dataset.idx][inp.dataset.field] = parseFloat(inp.value) || 0;
-    p.flags.tariff = true;
     updateSummary();
   }));
   bindInputs(body);
   if (seg && isRanap) bindGuarantor(body);
-  const tariffInput = $('#f-tariff', body);
-  if (tariffInput) tariffInput.addEventListener('input', () => { p.flags.tariff = true; });
 }
 
 $('#resetBtn').addEventListener('click', () => {
   state.params = paramsFromNarrative();
   state.worksheetNote = null;
   renderWorksheet();
-  toast('Worksheet dikembalikan ke baseline');
+  toast('Isian dikembalikan ke hasil baca uraian');
 });
 $('#backTo1').addEventListener('click', () => goToStep(1));
+/* Isian wajib yang masih kosong: menghasilkan label dan id kolomnya. */
+function missingInputs(p) {
+  const miss = [];
+  const need = (ok, label, id) => { if (!ok) miss.push({ label, id }); };
+  need(p.capexBuilding + p.capexEquip > 0, 'CAPEX', 'f-capexBuilding');
+  if (p.capexBuilding > 0) need(p.usefulLifeBuilding > 0, 'umur ekonomis bangunan', 'f-usefulLifeBuilding');
+  if (p.capexEquip > 0) need(p.usefulLifeEquip > 0, 'umur ekonomis alkes', 'f-usefulLifeEquip');
+  need(p.capacity > 0, 'kapasitas', 'f-capacity');
+  need(p.utilization > 0, 'utilisasi/BOR', 'f-utilization');
+  need(p.rampYear > 0, 'tahun mencapai target', 'f-rampYear');
+  if (p.tariffMode === 'segmented' && p.annualMultiplier === 365) {
+    if (p.jknPct > 0) {
+      need(p.tariffJkn > 0, 'tarif JKN', 'f-tariffJkn');
+      need(p.avlos > 0, 'AVLOS', 'f-avlos');
+    }
+    if (p.jknPct < 100) need(p.tariffNon > 0, 'tarif Non-JKN', 'f-tariffNon');
+  } else {
+    need(p.tariff > 0, 'tarif', 'f-tariff');
+  }
+  need(p.hppPct + p.hppFixed + p.opexPct + p.opexFixed > 0, 'HPP/operasional', 'hppItems-0');
+  return miss;
+}
+function checkRequired() {
+  $$('.input-unit.invalid').forEach(el => el.classList.remove('invalid'));
+  const miss = missingInputs(state.params);
+  if (!miss.length) return true;
+  miss.forEach(m => {
+    const el = document.getElementById(m.id);
+    if (el) el.closest('.input-unit').classList.add('invalid');
+  });
+  const first = document.getElementById(miss[0].id);
+  if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  toast('Lengkapi dulu: ' + miss.map(m => m.label).join(', '));
+  return false;
+}
+$('#worksheetGroups').addEventListener('input', e => {
+  const box = e.target.closest('.input-unit');
+  if (box) box.classList.remove('invalid');
+});
+
 $('#calcBtn').addEventListener('click', () => {
+  if (!checkRequired()) return;
   state.scenario = 'moderat';
   state.maxStep = 3;
   renderResults();
@@ -1930,13 +1952,6 @@ function renderResults() {
   renderScenarioRow();
   if ($('#scnEdit').dataset.for !== state.scenario) renderScenarioEditor();
   $('#resultCat').textContent = d.label + ' · ' + SCENARIOS[state.scenario].label + ': ' + SCENARIOS[state.scenario].hint.toLowerCase();
-
-  const placeholders = [];
-  if (!p.flags.tariff) placeholders.push('tarif');
-  if (!p.flags.opex) placeholders.push('HPP/operasional');
-  $('#dataWarn').hidden = !placeholders.length;
-  $('#dataWarn').innerHTML = svgIcon('<path d="M12 8v5M12 17h.01"/><circle cx="12" cy="12" r="9"/>') +
-    '<span><b>Hasil belum final:</b> ' + placeholders.join(' dan ') + ' masih memakai angka contoh, bukan data RSP UI. Isi di worksheet sebelum dipakai sebagai kesimpulan FS.</span>';
 
   const v = verdict(r, p);
   const vIcon = v.level === 'good' ? CHECK : v.level === 'warn' ? '<path d="M12 8v5M12 17h.01"/><path d="M10.3 3.9L2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/>' : '<path d="M18 6L6 18M6 6l12 12"/>';
@@ -2289,7 +2304,6 @@ $('#bridgeBtn').addEventListener('click', () => {
   state.params = Object.assign(cloneParams(base), {
     capacity: r.tt, utilization: r.bor, tariff: r.effTariffPerDay, tariffMode: 'single', avlos: r.avlos,
   });
-  state.params.flags.tariff = true;
   state.params.manual = {};
   state.detected = { capacity: true, utilization: true, tariff: true };
   state.conf = {};
