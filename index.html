@@ -268,8 +268,20 @@ kbd { font: 600 11px var(--font); padding: 2px 6px; border: 1px solid var(--line
 .note { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 10px; background: var(--accent-tint); color: var(--ink-soft); font-size: 13px; margin-bottom: 18px; border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent); }
 .note svg { color: var(--accent); margin-top: 2px; }
 .note b { color: var(--ink); }
-.ws-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+/* Kartu sebaris sama tinggi, sehingga tidak ada ruang kosong di antaranya. */
+.ws-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
 .ws-grid .card { margin: 0; }
+.ws-group:not(.adv) { display: flex; flex-direction: column; }
+.ws-group:not(.adv) > .ws-body { flex: 1; display: flex; flex-direction: column; }
+.ws-group:not(.adv) > .ws-body > .seg-summary:last-child { margin-top: auto; }
+.ws-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+.ws-pair .ws-row { flex-direction: column; align-items: stretch; gap: 6px; }
+.ws-pair .input-unit input { width: 100%; min-width: 0; }
+.ws-pair input[readonly] { color: var(--ink-soft); cursor: default; }
+details.adv { grid-column: 1 / -1; }
+details.adv > .ws-body { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; }
+details.adv .ws-row { border-bottom: 0; }
+details.adv .check-row { grid-column: 1 / -1; border-top: 1px solid var(--line); }
 .ws-title { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
 .ws-title svg { width: 30px; height: 30px; padding: 7px; border-radius: 8px; background: var(--primary-tint); color: var(--primary); }
 .ws-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--line); }
@@ -329,10 +341,10 @@ details.adv > .ws-body { padding: 0 22px 14px; }
 
 /* ---------- indikator: satu kartu dengan kolom bersekat ---------- */
 .kpi-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-bottom: 18px;
-  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(118px, 1fr); margin-bottom: 18px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow-x: auto;
 }
-.kpi { --tone: var(--ink); padding: 18px 18px 16px; box-shadow: 1px 0 0 var(--line), 0 1px 0 var(--line); display: flex; flex-direction: column; min-width: 0; }
+.kpi { --tone: var(--ink); padding: 16px 14px 14px; box-shadow: 1px 0 0 var(--line), 0 1px 0 var(--line); display: flex; flex-direction: column; min-width: 0; }
 .kpi.blue, .kpi.indigo { --tone: var(--primary); }
 .kpi.green { --tone: var(--green); }
 .kpi.red { --tone: var(--red); }
@@ -485,6 +497,8 @@ input[type=range]::-moz-range-track { background: transparent; }
   .topbar { display: flex; }
   .menu-btn { display: grid; }
   .ws-grid { grid-template-columns: minmax(0, 1fr); }
+  details.adv > .ws-body { grid-template-columns: minmax(0, 1fr); }
+  details.adv .ws-row { border-bottom: 1px solid var(--line); }
   .mb-grid { grid-template-columns: minmax(0, 1fr); }
   .mb-inputs { position: static; }
 }
@@ -503,7 +517,7 @@ input[type=range]::-moz-range-track { background: transparent; }
   .range-pill { display: none; }
   .kbd-hint { display: none; }
   .card-foot .btn { width: 100%; }
-  .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpi-grid { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: hidden; }
   .kpi { padding: 14px 13px 13px; }
   .kpi-value { font-size: 21px; }
   .card-head .seg { width: 100%; }
@@ -532,7 +546,7 @@ input[type=range]::-moz-range-track { background: transparent; }
   .content { padding: 0; max-width: none; }
   body { background: #fff; font-size: 12.5px; }
   .card, .kpi, .verdict { break-inside: avoid; box-shadow: none; }
-  .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+  .kpi-grid { grid-auto-flow: row; grid-template-columns: repeat(3, 1fr); overflow: hidden; }
   .table-wrap { overflow: visible; }
   .proj-table { min-width: 0; font-size: 10.5px; }
   .proj-table th, .proj-table td { padding: 6px 7px; }
@@ -1540,14 +1554,14 @@ function renderWorksheet() {
   const gRev = group('Tarif', '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/>');
   wrap.appendChild(gRev); renderTariffGroup($('.ws-body', gRev), d);
 
+  const gFin = group('Pendanaan', '<path d="M3 10l9-6 9 6M5 10v8M19 10v8M9 10v8M15 10v8M3 20h18"/>');
+  wrap.appendChild(gFin); renderFinancingGroup($('.ws-body', gFin));
+
   const gHpp = group('HPP (% pendapatan)', '<path d="M6 3h12l2 6H4zM4 9h16v12H4zM9 14h6"/>');
   wrap.appendChild(gHpp); renderCostGroup($('.ws-body', gHpp), 'hppItems', 'Total HPP');
 
   const gOpex = group('Operasional (% pendapatan)', '<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>');
   wrap.appendChild(gOpex); renderCostGroup($('.ws-body', gOpex), 'opexItems', 'Total Operasional');
-
-  const gFin = group('Pendanaan', '<path d="M3 10l9-6 9 6M5 10v8M19 10v8M9 10v8M15 10v8M3 20h18"/>');
-  wrap.appendChild(gFin); renderFinancingGroup($('.ws-body', gFin));
 
   /* Parameter lanjutan: terlipat, memakai nilai default sampai dibuka. */
   const gPar = document.createElement('details');
@@ -1599,11 +1613,11 @@ function segWeightedTariff(segments) {
 
 /* Tarif rawat inap: JKN per episode dan Non-JKN per hari. */
 function guarantorHTML() {
-  return field('Porsi JKN', 'jknPct', '%', '0.5', null, true) +
-    '<div class="ws-row"><span class="ws-label">Porsi Non-JKN</span><span class="ws-stat" id="nonPct"></span></div>' +
-    field('AVLOS', 'avlos', 'hari', '0.1', null, true) +
+  return '<div class="ws-pair">' + field('Porsi JKN', 'jknPct', '%', '0.5', null, true) +
+    '<div class="ws-row"><label class="ws-label" for="nonPct">Porsi Non-JKN</label><div class="input-unit"><input id="nonPct" type="text" readonly tabindex="-1"><span>%</span></div></div>' +
     field('Tarif JKN', 'tariffJkn', 'jt/episode', '0.1', null, false) +
-    field('Tarif Non-JKN', 'tariffNon', 'jt/hari', '0.05', null, false) +
+    field('Tarif Non-JKN', 'tariffNon', 'jt/hari', '0.05', null, false) + '</div>' +
+    field('AVLOS', 'avlos', 'hari', '0.1', null, true) +
     '<div class="seg-summary" id="guarantorSummary"></div>';
 }
 
@@ -1612,7 +1626,7 @@ function bindGuarantor(body) {
   const update = () => {
     const r = guarantorTariff(p);
     p.tariff = r.weighted;
-    $('#nonPct', body).textContent = fmtPct(100 - p.jknPct);
+    $('#nonPct', body).value = fmtNum(100 - p.jknPct, 1);
     $('#guarantorSummary', body).innerHTML = '<span>JKN setara <b>' + fmtRp(r.jknPerDay) + '</b> / hari</span><span>Tarif tertimbang <b>' + fmtRp(r.weighted) + '</b> / hari</span>';
   };
   update();
@@ -1807,9 +1821,8 @@ function renderResults() {
   $('#verdict').className = 'verdict ' + v.level;
   $('#verdict').innerHTML = '<span class="verdict-icon">' + svgIcon(vIcon) + '</span><div><b>' + v.title + '</b><p>' + v.text + '</p></div>';
 
-  const equityNote = r.scheme !== 'internal' ? 'arus kas ekuitas' : 'arus kas proyek';
   const k = [];
-  k.push(kpi('NPV', fmtRp(r.NPV), r.NPV >= 0 ? 'green' : 'red', 'Diskonto ' + fmtPct(p.discountRate) + ' · ' + equityNote + (r.residual > 0 ? ' · termasuk nilai sisa ' + fmtRp(r.residual) : ''), IC.npv));
+  k.push(kpi('NPV', fmtRp(r.NPV), r.NPV >= 0 ? 'green' : 'red', 'Diskonto ' + fmtPct(p.discountRate) + (r.residual > 0 ? ' · nilai sisa ' + fmtRp(r.residual) : ''), IC.npv));
   k.push(kpi('IRR', r.IRR === null ? 'n/a' : fmtNum(r.IRR, 1) + '<small>%</small>', r.IRR === null ? 'gray' : (r.IRR >= p.discountRate ? 'blue' : 'red'),
     r.IRR === null ? 'Tidak konvergen' : 'vs diskonto ' + fmtPct(p.discountRate), IC.irr));
   k.push(kpi('Payback', r.PB === null ? '> ' + p.horizon + '<small>thn</small>' : fmtNum(r.PB, 1) + '<small>thn</small>', r.PB === null ? 'red' : 'gray',
