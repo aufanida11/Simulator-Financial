@@ -137,6 +137,21 @@ h3 { font-size: 15px; font-weight: 800; }
 .nav-item:hover { background: var(--side-hover); }
 .nav-item.active { background: var(--side-active); color: var(--side-bg); font-weight: 700; }
 .nav-spacer { margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, .14); }
+.side-label { font-size: 12px; font-weight: 600; color: var(--side-faint); padding: 12px 12px 4px; }
+.side-history { flex: 1; min-height: 60px; overflow-y: auto; margin-bottom: 8px; }
+.hist-empty { font-size: 12px; color: var(--side-faint); padding: 2px 12px; }
+.hist-item { display: flex; align-items: center; border-radius: 8px; margin-bottom: 2px; }
+.hist-item:hover { background: var(--side-hover); }
+.hist-item.active { background: rgba(255, 255, 255, .14); }
+.hist-open { flex: 1; min-width: 0; text-align: left; border: 0; background: none; cursor: pointer; padding: 6px 4px 6px 12px; color: var(--side-ink); }
+.hist-open b { display: block; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hist-open small { display: block; font-size: 11px; color: var(--side-faint); }
+.hist-act { flex: none; width: 24px; height: 24px; display: grid; place-items: center; border: 0; border-radius: 6px; background: none; color: var(--side-faint); cursor: pointer; padding: 0; opacity: 0; }
+.hist-item:hover .hist-act, .hist-item.active .hist-act, .hist-act:focus-visible { opacity: 1; }
+.hist-act:hover { color: #fff; background: rgba(255, 255, 255, .14); }
+.hist-act svg { width: 13px; height: 13px; }
+@media (hover: none) { .hist-act { opacity: 1; } }
+.save-status { font-size: 12px; font-weight: 600; color: var(--ink-faint); white-space: nowrap; }
 .scrim { display: none; }
 
 .main { flex: 1; min-width: 0; margin-left: 236px; display: flex; flex-direction: column; }
@@ -596,7 +611,23 @@ input[type=range]::-moz-range-track { background: transparent; }
       Utilisasi &amp; Pendapatan
     </button>
 
+    <div class="side-label">Riwayat proyek</div>
+    <button class="nav-item" type="button" id="newProjectBtn">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      Rencana baru
+    </button>
+    <div class="side-history" id="histList"></div>
+
     <div class="nav-spacer">
+      <button class="nav-item" type="button" id="backupBtn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        Unduh Cadangan
+      </button>
+      <button class="nav-item" type="button" id="restoreBtn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></svg>
+        Buka Cadangan
+      </button>
+      <input type="file" id="restoreFile" accept=".json,application/json" hidden>
       <button class="nav-item" type="button" data-target="method">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2z"/><path d="M8 7h8M8 11h6"/></svg>
         Catatan Metodologi
@@ -644,6 +675,7 @@ input[type=range]::-moz-range-track { background: transparent; }
             <li><button class="step" data-step="2" type="button" disabled><span class="step-num">2</span><span class="step-text"><b>Konfirmasi asumsi</b></span></button></li>
             <li><button class="step" data-step="3" type="button" disabled><span class="step-num">3</span><span class="step-text"><b>Hasil kelayakan</b></span></button></li>
           </ol>
+          <span class="save-status" id="saveStatus" role="status"></span>
           <span class="range-pill">Kategori <b id="catPill">Rawat inap</b></span>
         </div>
 
@@ -1335,6 +1367,7 @@ const state = {
   detected: {},
   conf: {},
   detectedCapex: [],
+  projectId: null,
   scenario: 'moderat',
   worksheetNote: null,
   maxStep: 1,
@@ -1480,6 +1513,7 @@ $('#parseBtn').addEventListener('click', () => {
   state.maxStep = 2;
   renderWorksheet();
   goToStep(2);
+  ensureProject();
 });
 
 function paramsFromNarrative() {
@@ -1875,11 +1909,7 @@ $('#calcBtn').addEventListener('click', () => {
   goToStep(3);
 });
 $('#backTo2').addEventListener('click', () => goToStep(2));
-$('#restartBtn').addEventListener('click', () => {
-  state.maxStep = 1;
-  goToStep(1);
-  $('#promptInput').focus();
-});
+$('#restartBtn').addEventListener('click', () => newProject());
 
 /* ---------- langkah 3: hasil ---------- */
 let lastResult = null;
@@ -2314,6 +2344,281 @@ $('#bridgeBtn').addEventListener('click', () => {
   state.maxStep = Math.max(state.maxStep, 2);
   goToStep(2);
   toast('Proyeksi utilisasi dipakai sebagai asumsi');
+  ensureProject('Proyeksi ' + fmtNum(r.tt) + ' TT, BOR ' + fmtPct(r.bor));
+});
+
+/* ---------- riwayat proyek (tersimpan di browser ini) ---------- */
+const PROJECTS_KEY = 'skrs:projects';
+const BACKUP_MAX_BYTES = 5 * 1024 * 1024;
+let projects = [];
+let saveTimer = null;
+
+const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+const asNum = v => { const n = Number(v); return isFinite(n) ? n : 0; };
+const asList = v => (Array.isArray(v) ? v.slice(0, 100) : []);
+
+/* Semua data proyek, termasuk dari file cadangan, dibersihkan sebelum dipakai:
+   hanya kolom yang dikenal dengan tipe yang benar. Teks tetap di-escape saat ditampilkan. */
+function cleanParams(raw, category) {
+  const base = baseParams(category);
+  const src = raw && typeof raw === 'object' ? raw : {};
+  Object.keys(base).forEach(k => {
+    if (!(k in src)) return;
+    if (typeof base[k] === 'number') base[k] = asNum(src[k]);
+    else if (typeof base[k] === 'boolean') base[k] = !!src[k];
+  });
+  if (src.tariffMode === 'single' || src.tariffMode === 'segmented') base.tariffMode = src.tariffMode;
+  if (FINANCING_SCHEMES.some(o => o.key === src.financingScheme)) base.financingScheme = src.financingScheme;
+  const costs = (list, fallback) => fallback.map((item, i) => {
+    const x = asList(list)[i] || {};
+    return { name: item.name, value: asNum(x.value), unit: x.unit === 'rp' ? 'rp' : 'pct' };
+  });
+  base.hppItems = costs(src.hppItems, base.hppItems);
+  base.opexItems = costs(src.opexItems, base.opexItems);
+  applyCostItems(base);
+  if (base.segments && Array.isArray(src.segments)) {
+    base.segments = asList(src.segments).map(x => ({ name: String(x && x.name || ''), share: asNum(x && x.share), tariff: asNum(x && x.tariff) }));
+  }
+  if (Array.isArray(src.sdm)) {
+    base.sdm = asList(src.sdm).map(x => ({ name: String(x && x.name || ''), count: asNum(x && x.count), salary: asNum(x && x.salary) }));
+  }
+  base.manual = {};
+  Object.keys(src.manual && typeof src.manual === 'object' ? src.manual : {}).forEach(k => {
+    if (typeof base[k] === 'number' && src.manual[k] === true) base.manual[k] = true;
+  });
+  return base;
+}
+function cleanProject(raw) {
+  if (!raw || typeof raw !== 'object' || !Object.prototype.hasOwnProperty.call(CATEGORIES, raw.category)) return null;
+  const known = Object.keys(DETECT_LABELS);
+  const detected = {}, conf = {};
+  known.forEach(k => {
+    if (raw.detected && k in raw.detected) detected[k] = asNum(raw.detected[k]);
+    if (raw.conf && raw.conf[k]) conf[k] = { level: raw.conf[k].level === 'check' ? 'check' : 'high', note: String(raw.conf[k].note || '') };
+  });
+  const scenarios = {};
+  Object.keys(SCENARIOS).forEach(k => {
+    const d = raw.scenarios && raw.scenarios[k] || SCENARIO_DEFAULTS[k];
+    scenarios[k] = { util: asNum(d.util), tariff: asNum(d.tariff), capex: asNum(d.capex) };
+  });
+  return {
+    id: /^[\w-]{1,40}$/.test(String(raw.id)) ? String(raw.id) : newId(),
+    name: String(raw.name || 'Tanpa nama').slice(0, 120),
+    updatedAt: asNum(raw.updatedAt) || Date.now(),
+    category: raw.category,
+    prompt: String(raw.prompt || '').slice(0, 5000),
+    params: cleanParams(raw.params, raw.category),
+    detected, conf,
+    detectedCapex: asList(raw.detectedCapex).map(x => ({ juta: asNum(x && x.juta), label: x && (x.label === 'bangunan' || x.label === 'alkes') ? x.label : '' })),
+    maxStep: Math.min(3, Math.max(1, Math.round(asNum(raw.maxStep)) || 1)),
+    scenario: Object.prototype.hasOwnProperty.call(SCENARIOS, raw.scenario) ? raw.scenario : 'moderat',
+    scenarios,
+  };
+}
+
+function loadProjects() {
+  projects = [];
+  try {
+    const list = JSON.parse(localStorage.getItem(PROJECTS_KEY) || '[]');
+    projects = asList(list).map(cleanProject).filter(Boolean);
+  } catch (e) { /* storage tidak tersedia atau rusak */ }
+}
+function writeProjects() {
+  try {
+    localStorage.setItem(PROJECTS_KEY, JSON.stringify(projects));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+function setSaveStatus(ok) {
+  $('#saveStatus').textContent = !state.projectId ? '' : ok
+    ? 'Tersimpan ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })
+    : 'Gagal menyimpan di browser ini';
+}
+
+function saveNow() {
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  if (!state.projectId) return;
+  const current = projects.find(x => x.id === state.projectId);
+  if (!current) return;
+  const scenarios = {};
+  Object.keys(SCENARIOS).forEach(k => { scenarios[k] = SCENARIOS[k].delta; });
+  Object.assign(current, {
+    updatedAt: Date.now(), category: state.category, prompt: $('#promptInput').value,
+    params: state.params, detected: state.detected, conf: state.conf, detectedCapex: state.detectedCapex,
+    maxStep: state.maxStep, scenario: state.scenario, scenarios,
+  });
+  setSaveStatus(writeProjects());
+  renderHistory();
+}
+function queueSave() {
+  if (!state.projectId) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 500);
+}
+
+function defaultProjectName() {
+  const text = $('#promptInput').value.trim().split('\n')[0].replace(/^rencana pengembangan\s+/i, '');
+  return text ? text.slice(0, 60) : CATEGORIES[state.category].label + ' ' + new Date().toLocaleDateString('id-ID');
+}
+/* Dipanggil saat rencana pertama kali diproses, seperti chat baru yang masuk riwayat. */
+function ensureProject(name) {
+  if (!state.projectId) {
+    const id = newId();
+    projects.push({ id, name: name || defaultProjectName(), updatedAt: Date.now() });
+    state.projectId = id;
+    store.set('lastProject', id);
+  }
+  saveNow();
+}
+
+function newProject() {
+  saveNow();
+  state.projectId = null;
+  state.category = 'ranap';
+  state.categoryTouched = false;
+  state.params = {};
+  state.detected = {};
+  state.conf = {};
+  state.detectedCapex = [];
+  state.worksheetNote = null;
+  state.scenario = 'moderat';
+  state.maxStep = 1;
+  Object.keys(SCENARIOS).forEach(k => {
+    SCENARIOS[k].delta = Object.assign({}, SCENARIO_DEFAULTS[k]);
+    refreshScenario(SCENARIOS[k]);
+  });
+  $('#scnEdit').dataset.for = '';
+  $('#promptInput').value = '';
+  store.set('lastProject', null);
+  setSaveStatus(true);
+  renderCategories();
+  updateDetection();
+  setMode('a', true);
+  goToStep(1);
+  renderHistory();
+  $('#promptInput').focus();
+}
+
+function openProject(id, keepMode) {
+  const pr = projects.find(x => x.id === id);
+  if (!pr) return;
+  if (state.projectId !== id) saveNow();
+  state.projectId = id;
+  state.category = pr.category;
+  state.categoryTouched = true;
+  state.params = cloneParams(pr.params);
+  state.detected = pr.detected;
+  state.conf = pr.conf;
+  state.detectedCapex = pr.detectedCapex;
+  state.worksheetNote = null;
+  state.scenario = pr.scenario;
+  Object.keys(SCENARIOS).forEach(k => {
+    SCENARIOS[k].delta = Object.assign({}, pr.scenarios[k]);
+    refreshScenario(SCENARIOS[k]);
+  });
+  $('#scnEdit').dataset.for = '';
+  $('#promptInput').value = pr.prompt;
+  store.set('lastProject', id);
+  renderCategories();
+  updateDetection();
+  renderWorksheet();
+  const complete = !missingInputs(state.params).length;
+  state.maxStep = pr.maxStep === 3 && !complete ? 2 : Math.max(2, pr.maxStep);
+  if (state.maxStep === 3) renderResults();
+  if (!keepMode) setMode('a', true);
+  document.body.classList.remove('nav-open');
+  goToStep(state.maxStep);
+  $('#saveStatus').textContent = 'Terakhir disimpan ' + formatSaved(pr.updatedAt);
+  renderHistory();
+}
+
+function formatSaved(ms) {
+  return new Date(ms).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+}
+function renderHistory() {
+  const sorted = projects.slice().sort((a, b) => b.updatedAt - a.updatedAt);
+  $('#histList').innerHTML = !sorted.length ? '<p class="hist-empty">Belum ada proyek. Proyek tersimpan otomatis setelah rencana diproses.</p>' :
+    sorted.map(x =>
+      '<div class="hist-item' + (x.id === state.projectId ? ' active' : '') + '" data-id="' + esc(x.id) + '">' +
+      '<button type="button" class="hist-open" title="' + esc(x.name) + '"><b>' + esc(x.name) + '</b><small>' + formatSaved(x.updatedAt) + '</small></button>' +
+      '<button type="button" class="hist-act" data-act="rename" aria-label="Ganti nama ' + esc(x.name) + '" title="Ganti nama">' + svgIcon('<path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/>') + '</button>' +
+      '<button type="button" class="hist-act" data-act="delete" aria-label="Hapus ' + esc(x.name) + '" title="Hapus">' + svgIcon('<path d="M18 6L6 18M6 6l12 12"/>') + '</button></div>'
+    ).join('');
+}
+$('#histList').addEventListener('click', e => {
+  const item = e.target.closest('.hist-item');
+  if (!item) return;
+  const id = item.dataset.id;
+  const pr = projects.find(x => x.id === id);
+  const act = e.target.closest('.hist-act');
+  if (!act) { openProject(id); return; }
+  if (act.dataset.act === 'rename') {
+    const name = window.prompt('Nama proyek:', pr.name);
+    if (name && name.trim()) {
+      pr.name = name.trim().slice(0, 120);
+      writeProjects();
+      renderHistory();
+    }
+    return;
+  }
+  if (window.confirm('Hapus proyek "' + pr.name + '"? Tindakan ini tidak bisa dibatalkan.')) {
+    projects = projects.filter(x => x.id !== id);
+    writeProjects();
+    if (state.projectId === id) { state.projectId = null; newProject(); }
+    renderHistory();
+    toast('Proyek dihapus');
+  }
+});
+$('#newProjectBtn').addEventListener('click', newProject);
+$('#modeA').addEventListener('input', queueSave);
+$('#modeA').addEventListener('change', queueSave);
+$('#modeA').addEventListener('click', queueSave);
+window.addEventListener('pagehide', saveNow);
+
+/* ---------- file cadangan ---------- */
+$('#backupBtn').addEventListener('click', () => {
+  saveNow();
+  if (!projects.length) { toast('Belum ada proyek untuk dicadangkan'); return; }
+  const blob = new Blob([JSON.stringify({ app: 'simulator-kelayakan', version: 1, projects }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'cadangan-simulator-kelayakan-' + new Date().toISOString().slice(0, 10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  toast(projects.length + ' proyek dicadangkan');
+});
+$('#restoreBtn').addEventListener('click', () => $('#restoreFile').click());
+$('#restoreFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  if (file.size > BACKUP_MAX_BYTES) { toast('File cadangan terlalu besar'); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    let incoming = [];
+    try {
+      const data = JSON.parse(reader.result);
+      if (data.app !== 'simulator-kelayakan') throw new Error('bukan cadangan');
+      incoming = asList(data.projects).map(cleanProject).filter(Boolean);
+    } catch (err) {
+      toast('File ini bukan cadangan simulator yang valid');
+      return;
+    }
+    let added = 0;
+    incoming.forEach(pr => {
+      const same = projects.find(x => x.id === pr.id);
+      if (!same) { projects.push(pr); added++; }
+      else if (pr.updatedAt > same.updatedAt) { Object.assign(same, pr); added++; }
+    });
+    const ok = writeProjects();
+    renderHistory();
+    toast(ok ? added + ' proyek ditambahkan dari cadangan' : 'Gagal menyimpan di browser ini');
+  };
+  reader.onerror = () => toast('File cadangan tidak bisa dibaca');
+  reader.readAsText(file);
 });
 
 /* ---------- init ---------- */
@@ -2336,6 +2641,12 @@ $('#bridgeBtn').addEventListener('click', () => {
   renderCategories();
   updateDetection();
   setMode(location.hash === '#utilisasi' ? 'b' : 'a');
+
+  /* Muat riwayat dan lanjutkan proyek terakhir, seperti membuka kembali percakapan. */
+  loadProjects();
+  renderHistory();
+  const last = store.get('lastProject', null);
+  if (last && projects.some(x => x.id === last)) openProject(last, true);
 })();
 </script>
 </body>
